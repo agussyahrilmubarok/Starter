@@ -4,7 +4,6 @@ import (
 	"backend/internal/domain"
 	"backend/internal/dto"
 	"backend/internal/repository"
-	"backend/pkg/exception"
 	"backend/pkg/helper"
 	"context"
 	"fmt"
@@ -32,7 +31,7 @@ func (uc *authUseCase) Register(ctx context.Context, param *dto.UserCreateReques
 	if err := uc.userRepository.Create(ctx, &user); err != nil {
 		if strings.Contains(err.Error(), "duplicate key") {
 			if strings.Contains(err.Error(), "email") {
-				return nil, exception.NewUnprocessableEntity("Email already used", exception.HttpErrMap("Email", "Email already exists"))
+				return nil, domain.ErrUserEmailUsed
 			}
 		}
 		return nil, err
@@ -48,11 +47,11 @@ func (uc *authUseCase) Register(ctx context.Context, param *dto.UserCreateReques
 func (uc *authUseCase) Login(ctx context.Context, param *dto.UserLoginRequest) (*dto.AuthDTO, error) {
 	user, err := uc.userRepository.FindByEmail(ctx, param.Email)
 	if user == nil && err == nil {
-		return nil, exception.NewBadRequest("User not found", exception.HttpErrMap("Email", "Email is not registred"))
+		return nil, domain.ErrUserNotFound
 	}
 
 	if err := helper.PasswordCompare(user.Password, param.Password); err != nil {
-		return nil, exception.NewBadRequest("User not found", exception.HttpErrMap("Password", "Password does not match"))
+		return nil, domain.ErrUserPasswordInvalid
 	}
 
 	token := helper.GenerateToken(fmt.Sprint(user.ID))

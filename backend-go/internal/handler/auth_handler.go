@@ -1,99 +1,116 @@
 package handler
 
 import (
-	"backend/internal/model"
-	"backend/internal/service"
-	"backend/pkg/exception"
+	"backend/internal/domain"
+	"backend/internal/dto"
+	"backend/internal/usecase"
 	"backend/pkg/helper"
-	"backend/pkg/response"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type AuthHandler struct {
-	authService service.IAuthService
+	authUseCase usecase.IAuthUseCase
 }
 
-func NewAuthHandler(authService service.IAuthService) *AuthHandler {
+func NewAuthHandler(
+	authUseCase usecase.IAuthUseCase,
+) *AuthHandler {
 	return &AuthHandler{
-		authService: authService,
+		authUseCase: authUseCase,
 	}
 }
 
 func (h *AuthHandler) Register(c *gin.Context) {
-	var req model.UserCreateRequest
+	var req dto.UserCreateRequest
 	if err := c.ShouldBindBodyWithJSON(&req); err != nil {
-		log.Printf("[WARN] failed validate request body: %v\n", err)
-		c.JSON(http.StatusUnprocessableEntity, response.HttpError{
-			Success: false,
-			Message: "Validation errors",
-			Errors:  helper.ValidateRequest(err),
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
+			"success": false,
+			"message": "Validation Error",
+			"errors":  helper.ValidateRequest(err),
 		})
 		return
 	}
 
-	result, err := h.authService.Register(c.Request.Context(), &req)
+	result, err := h.authUseCase.Register(c.Request.Context(), &req)
 	if err != nil {
-		log.Printf("[ERROR] failed register new user: %v\n", err)
-		if ex, ok := err.(*exception.Exception); ok {
-			c.JSON(ex.Code, response.HttpError{
-				Success: false,
-				Message: ex.Message,
-				Errors:  ex.Err,
+		switch err {
+		case domain.ErrUserEmailUsed:
+			c.JSON(http.StatusBadRequest, gin.H{
+				"success": false,
+				"message": "Email is already used",
+				"errors": gin.H{
+					"email": "Email is already used",
+				},
+			})
+			return
+		default:
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"success": false,
+				"message": "Internal server error",
+				"errors": gin.H{
+					"error": "Internal server error",
+				},
 			})
 			return
 		}
-		c.JSON(http.StatusInternalServerError, response.HttpError{
-			Success: false,
-			Message: "Internal Server Error",
-			Errors:  response.HttpErrMap("Error", err.Error()),
-		})
-		return
 	}
 
-	c.JSON(http.StatusOK, response.HttpSuccess{
-		Success: true,
-		Message: "User register successfully",
-		Data:    result,
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "Register user successfully",
+		"data":    result,
 	})
 }
 
 func (h *AuthHandler) Login(c *gin.Context) {
-	var req model.UserLoginRequest
+	var req dto.UserLoginRequest
 	if err := c.ShouldBindBodyWithJSON(&req); err != nil {
-		log.Printf("[WARN] failed validate request body: %v\n", err)
-		c.JSON(http.StatusUnprocessableEntity, response.HttpError{
-			Success: false,
-			Message: "Validation errors",
-			Errors:  helper.ValidateRequest(err),
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
+			"success": false,
+			"message": "Validation errors",
+			"errors":  helper.ValidateRequest(err),
 		})
 		return
 	}
 
-	result, err := h.authService.Login(c.Request.Context(), &req)
+	result, err := h.authUseCase.Login(c.Request.Context(), &req)
 	if err != nil {
-		log.Printf("[ERROR] failed login user: %v\n", err)
-		if ex, ok := err.(*exception.Exception); ok {
-			c.JSON(ex.Code, response.HttpError{
-				Success: false,
-				Message: ex.Message,
-				Errors:  ex.Err,
+		switch err {
+		case domain.ErrUserNotFound:
+			c.JSON(http.StatusBadRequest, gin.H{
+				"success": false,
+				"message": "User not found",
+				"errors": gin.H{
+					"email": "Email is not registered",
+				},
+			})
+			return
+		case domain.ErrUserPasswordInvalid:
+			c.JSON(http.StatusBadRequest, gin.H{
+				"success": false,
+				"message": "User not found",
+				"errors": gin.H{
+					"password": "Password does not match",
+				},
+			})
+			return
+		default:
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"success": false,
+				"message": "Internal server error",
+				"errors": gin.H{
+					"error": "Internal server error",
+				},
 			})
 			return
 		}
-		c.JSON(http.StatusInternalServerError, response.HttpError{
-			Success: false,
-			Message: "Internal Server Error",
-			Errors:  response.HttpErrMap("Error", err.Error()),
-		})
-		return
 	}
 
-	c.JSON(http.StatusOK, response.HttpSuccess{
-		Success: true,
-		Message: "Login Success",
-		Data:    result,
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "User login successfully",
+		"data":    result,
 	})
 }

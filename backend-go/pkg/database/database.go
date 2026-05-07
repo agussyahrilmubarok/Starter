@@ -1,10 +1,8 @@
 package database
 
 import (
-	"backend/internal/entity"
 	"backend/pkg/config"
 	"fmt"
-	"log"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -22,17 +20,8 @@ func NewDatabase() (*gorm.DB, error) {
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatalf("[ERROR] failed to connect to database: %v\n", err)
 		return nil, err
 	}
-	log.Printf("[INFO] database connected successfully")
-
-	err = db.AutoMigrate(&entity.User{})
-	if err != nil {
-		log.Fatalf("[ERROR] failed to migrated database: %v\n", err)
-		return nil, err
-	}
-	log.Printf("[INFO] database migrated successfully\n")
 
 	return db, nil
 }
