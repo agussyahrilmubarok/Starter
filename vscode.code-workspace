@@ -1,0 +1,12 @@
+{
+    "folders": [
+        {
+            "name": "backend-go",
+            "path": "./backend-go"
+        },
+        {
+            "name": "all",
+            "path": "."
+        }
+    ]
+}
