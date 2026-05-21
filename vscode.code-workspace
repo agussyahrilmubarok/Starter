@@ -5,6 +5,22 @@
             "path": "./backend-go"
         },
         {
+            "name": "backend-spring",
+            "path": "./backend-spring"
+        },
+        {
+            "name": "frontend-react-ts",
+            "path": "./frontend-react-ts"
+        },
+        {
+            "name": "frontend-vue-ts",
+            "path": "./frontend-vue-ts"
+        },
+        {
+            "name": "template-go",
+            "path": "./template-go"
+        },
+        {
             "name": "all",
             "path": "."
         }
