@@ -1,2 +1,2 @@
-- [ ] Make backend-go, backend-spring RESTful API for user domain.
+- [ ] Make backend-spring RESTful API for user domain.
 - [ ]

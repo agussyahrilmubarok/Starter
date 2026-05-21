@@ -4,13 +4,14 @@
             "name": "backend-go",
             "path": "./backend-go"
         },
+        {
+            "name": "frontend-react-ts",
+            "path": "./frontend-react-ts"
+        },
+        
         // {
         //     "name": "backend-spring",
         //     "path": "./backend-spring"
-        // },
-        // {
-        //     "name": "frontend-react-ts",
-        //     "path": "./frontend-react-ts"
         // },
         // {
         //     "name": "frontend-vue-ts",
