@@ -1,12 +1,21 @@
 package domain
 
-import "time"
+import (
+	"errors"
+	"time"
+)
 
+// User represents the user entity within the system.
 type User struct {
-	ID        string
-	Name      string
-	Email     string
-	Password  string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        string    `json:"id" gorm:"primaryKey;type:varchar(36)"`
+	Name      string    `json:"name" gorm:"type:varchar(100);not null"`
+	Email     string    `json:"email" gorm:"type:varchar(100);unique;not null"`
+	Password  string    `json:"password,omitempty" gorm:"type:varchar(255);not null"`
+	CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime"`
+	UpdatedAt time.Time `json:"updated_at" gorm:"autoUpdateTime"`
 }
+
+var (
+	ErrUserNotFound    = errors.New("user not found")
+	ErrUserEmailExists = errors.New("user email exists")
+)

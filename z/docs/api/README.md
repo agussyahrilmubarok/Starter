@@ -44,12 +44,14 @@ POST /auth/signup
 
 ```json
 {
+  "success": true,
   "message": "user created",
   "data": {
     "id": "usr_xxx",
     "name": "John Doe",
     "email": "john@example.com",
-    "created_at": "2026-05-21T10:00:00Z"
+    "created_at": "2026-05-21T10:00:00Z",
+    "updated_at": "2026-05-21T10:00:00Z"
   }
 }
 ```
@@ -62,7 +64,11 @@ POST /auth/signup
 
 ```json
 {
-  "message": "invalid request"
+  "success": false,
+  "message": "invalid request",
+  "errors": {
+    "error": "error"
+  }
 }
 ```
 
