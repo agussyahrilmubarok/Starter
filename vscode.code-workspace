@@ -17,8 +17,12 @@
             "path": "./frontend-vue-ts"
         },
         {
-            "name": "template-go",
-            "path": "./template-go"
+            "name": "web-go",
+            "path": "./web-go"
+        },
+        {
+            "name": "web-spring",
+            "path": "./web-spring"
         },
         {
             "name": "all",
