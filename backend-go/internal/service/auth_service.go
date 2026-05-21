@@ -8,6 +8,7 @@ import (
 	"agussyahrilmubarok.github.io/backend/internal/model"
 	"agussyahrilmubarok.github.io/backend/internal/repository"
 	"agussyahrilmubarok.github.io/backend/pkg/helper"
+	"github.com/google/uuid"
 )
 
 //go:generate mockery --name=IAuthService
@@ -24,7 +25,10 @@ type authService struct {
 // SignUp implements [IAuthService].
 func (s *authService) SignUp(ctx context.Context, param model.SignUpRequest) (*model.AuthResponse, error) {
 	exist, err := s.userRepository.FindByEmail(ctx, param.Email)
-	if exist != nil || err != nil {
+	if err != nil {
+		return nil, err
+	}
+	if exist != nil {
 		return nil, domain.ErrUserEmailExists
 	}
 
@@ -34,6 +38,7 @@ func (s *authService) SignUp(ctx context.Context, param model.SignUpRequest) (*m
 	}
 
 	user := &domain.User{
+		ID:       uuid.New().String(),
 		Name:     param.Name,
 		Email:    strings.ToLower(param.Email),
 		Password: hashPassword,

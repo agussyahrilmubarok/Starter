@@ -76,7 +76,7 @@ func NewApp(
 
 	jwtService := service.NewJWTService(&config.JWT)
 	authService := service.NewAuthService(userRepository, jwtService)
-	userService := service.NewUserService()
+	userService := service.NewUserService(userRepository)
 
 	return &App{
 		config: config,
