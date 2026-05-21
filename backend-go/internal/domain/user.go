@@ -16,6 +16,8 @@ type User struct {
 }
 
 var (
-	ErrUserNotFound    = errors.New("user not found")
-	ErrUserEmailExists = errors.New("user email exists")
+	ErrUserNotFound         = errors.New("user not found")
+	ErrUserEmailExists      = errors.New("user email exists")
+	ErrUserEmailNotFound    = errors.New("user email not found")
+	ErrUserPasswordNotMatch = errors.New("user password not match")
 )

@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"agussyahrilmubarok.github.io/backend/internal/config"
+	"agussyahrilmubarok.github.io/backend/internal/domain"
 	"agussyahrilmubarok.github.io/backend/internal/repository"
 	"agussyahrilmubarok.github.io/backend/internal/service"
 	"agussyahrilmubarok.github.io/backend/pkg/logger"
@@ -23,11 +24,14 @@ type App struct {
 
 	userRepository repository.IUserRepository
 
+	jwtService  service.IJWTService
 	authService service.IAuthService
 	userService service.IUserService
 }
 
 func (app *App) Run() error {
+	app.autoMigrate()
+
 	handler := app.setGinRouter()
 
 	server := &http.Server{
@@ -60,13 +64,18 @@ func (app *App) Run() error {
 	return nil
 }
 
+func (app *App) autoMigrate() {
+	app.db.AutoMigrate(&domain.User{})
+}
+
 func NewApp(
 	config *config.Config,
 	db *gorm.DB,
 ) *App {
 	userRepository := repository.NewUserRepository(db)
 
-	authService := service.NewAuthService(userRepository)
+	jwtService := service.NewJWTService(&config.JWT)
+	authService := service.NewAuthService(userRepository, jwtService)
 	userService := service.NewUserService()
 
 	return &App{
@@ -75,6 +84,7 @@ func NewApp(
 
 		userRepository: userRepository,
 
+		jwtService:  jwtService,
 		authService: authService,
 		userService: userService,
 	}

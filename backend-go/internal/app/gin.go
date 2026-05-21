@@ -32,6 +32,7 @@ func (app *App) setGinRouter() http.Handler {
 		auth := v1.Group("/auth")
 		{
 			auth.POST("/sign-up", authHandler.SignUp)
+			auth.POST("/sign-in", authHandler.SignIn)
 		}
 	}
 

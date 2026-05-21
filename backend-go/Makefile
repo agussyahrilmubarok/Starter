@@ -1,4 +1,5 @@
-api:
+# export PATH=$PATH:$(go env GOPATH)/bin
+dev/api:
 	go run cmd/api/main.go
 
 swagger/install:
@@ -8,5 +9,3 @@ swagger/install:
 
 swagger/gin/generate:
 	swag init -g internal/app/gin.go -o api/gin/docs
-
-# export PATH=$PATH:$(go env GOPATH)/bin

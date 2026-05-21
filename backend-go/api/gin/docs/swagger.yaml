@@ -9,6 +9,16 @@ definitions:
       message:
         type: string
     type: object
+  model.SignInRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
   model.SignUpRequest:
     properties:
       email:
@@ -39,6 +49,44 @@ info:
   title: Backend API
   version: "1.0"
 paths:
+  /v1/auth/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user account
+      parameters:
+      - description: Sign In Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.SignInRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.SuccessResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Sign in
+      tags:
+      - Auth
   /v1/auth/sign-up:
     post:
       consumes:

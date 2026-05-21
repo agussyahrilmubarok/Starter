@@ -18,6 +18,7 @@ type IAuthService interface {
 
 type authService struct {
 	userRepository repository.IUserRepository
+	jwtService     IJWTService
 }
 
 // SignUp implements [IAuthService].
@@ -42,21 +43,49 @@ func (s *authService) SignUp(ctx context.Context, param model.SignUpRequest) (*m
 		return nil, err
 	}
 
+	tokenString, err := s.jwtService.Generate(ctx, user.ID)
+	if err != nil {
+		s.userRepository.DeleteByID(ctx, user.ID)
+		return nil, err
+	}
+
 	return &model.AuthResponse{
-		Token: "token",
+		Token: tokenString,
 		User:  model.ToUserResponse(user),
 	}, nil
 }
 
 // SignIn implements [IAuthService].
 func (s *authService) SignIn(ctx context.Context, param model.SignInRequest) (*model.AuthResponse, error) {
-	panic("unimplemented")
+	user, err := s.userRepository.FindByEmail(ctx, strings.ToLower(param.Email))
+	if err != nil {
+		return nil, err
+	}
+	if user == nil {
+		return nil, domain.ErrUserEmailNotFound
+	}
+
+	if ok := helper.PasswordCheck(param.Password, user.Password); !ok {
+		return nil, domain.ErrUserPasswordNotMatch
+	}
+
+	tokenString, err := s.jwtService.Generate(ctx, user.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.AuthResponse{
+		Token: tokenString,
+		User:  model.ToUserResponse(user),
+	}, nil
 }
 
 func NewAuthService(
 	userRepository repository.IUserRepository,
+	jwtService IJWTService,
 ) IAuthService {
 	return &authService{
 		userRepository: userRepository,
+		jwtService:     jwtService,
 	}
 }

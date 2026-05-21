@@ -9,6 +9,7 @@ import (
 type Config struct {
 	App      AppConfig
 	Database DatabaseConfig
+	JWT      JWTConfig
 }
 
 type AppConfig struct {
@@ -25,6 +26,11 @@ type DatabaseConfig struct {
 	DBName   string
 	SSLMode  string
 	TimeZone string
+}
+
+type JWTConfig struct {
+	SecretKey string
+	ExpTime   string
 }
 
 // Load config file, filepath = "configs/config.yml"
@@ -58,6 +64,10 @@ func Load(filepath string) (*Config, error) {
 			DBName:   viper.GetString("database.dbname"),
 			SSLMode:  viper.GetString("database.sslmode"),
 			TimeZone: viper.GetString("database.timezone"),
+		},
+		JWT: JWTConfig{
+			SecretKey: viper.GetString("jwt.secret_key"),
+			ExpTime:   viper.GetString("jwt.exp_time"),
 		},
 	}, nil
 }

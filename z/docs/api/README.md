@@ -44,14 +44,16 @@ POST /auth/signup
 
 ```json
 {
-  "success": true,
-  "message": "user created",
+  "message": "signup success",
   "data": {
-    "id": "usr_xxx",
-    "name": "John Doe",
-    "email": "john@example.com",
-    "created_at": "2026-05-21T10:00:00Z",
-    "updated_at": "2026-05-21T10:00:00Z"
+    "token": "token",
+    "user": {
+      "id": "usr_xxx",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "created_at": "2026-05-21T10:00:00Z",
+      "updated_at": "2026-05-21T10:00:00Z"
+    }
   }
 }
 ```
@@ -103,8 +105,14 @@ POST /auth/signin
 {
   "message": "signin success",
   "data": {
-    "access_token": "jwt_token_here",
-    "token_type": "Bearer"
+    "token": "token",
+    "user": {
+      "id": "usr_xxx",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "created_at": "2026-05-21T10:00:00Z",
+      "updated_at": "2026-05-21T10:00:00Z"
+    }
   }
 }
 ```

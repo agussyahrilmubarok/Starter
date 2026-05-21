@@ -11,3 +11,7 @@ database:
   dbname: sandbox_db
   sslmode: disable
   timezone: Asia/Jakarta
+
+jwt:
+  secret_key: your-super-secret-key
+  exp_time: 24h
