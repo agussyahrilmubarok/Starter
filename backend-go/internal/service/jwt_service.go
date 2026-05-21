@@ -6,7 +6,10 @@ import (
 	"time"
 
 	"agussyahrilmubarok.github.io/backend/internal/config"
+	"agussyahrilmubarok.github.io/backend/pkg/logger"
+
 	"github.com/golang-jwt/jwt/v5"
+	"go.uber.org/zap"
 )
 
 //go:generate mockery --name=IJWTService
@@ -26,8 +29,11 @@ type jwtClaims struct {
 
 // Generate implements [IJWTService].
 func (s *jwtService) Generate(ctx context.Context, userID string) (string, error) {
+	log := logger.FromCtx(ctx).With(zap.String("user_id", userID))
+
 	expTime, err := time.ParseDuration(s.config.ExpTime)
 	if err != nil {
+		log.Error("jwt: failed to parse exp time", zap.Error(err))
 		return "", err
 	}
 
@@ -40,11 +46,20 @@ func (s *jwtService) Generate(ctx context.Context, userID string) (string, error
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(s.config.SecretKey))
+	signed, err := token.SignedString([]byte(s.config.SecretKey))
+	if err != nil {
+		log.Error("jwt: failed to sign token", zap.Error(err))
+		return "", err
+	}
+
+	log.Debug("jwt: token generated", zap.Time("expires_at", claims.ExpiresAt.Time))
+	return signed, nil
 }
 
 // Validate implements [IJWTService].
 func (s *jwtService) Validate(ctx context.Context, tokenString string) (string, error) {
+	log := logger.FromCtx(ctx)
+
 	token, err := jwt.ParseWithClaims(tokenString, &jwtClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("unexpected signing method")
@@ -52,20 +67,21 @@ func (s *jwtService) Validate(ctx context.Context, tokenString string) (string, 
 		return []byte(s.config.SecretKey), nil
 	})
 	if err != nil {
+		log.Warn("jwt: failed to parse token", zap.Error(err))
 		return "", err
 	}
 
 	claims, ok := token.Claims.(*jwtClaims)
 	if !ok || !token.Valid {
+		log.Warn("jwt: invalid token claims")
 		return "", errors.New("invalid token")
 	}
 
+	log.Debug("jwt: token valid", zap.String("user_id", claims.UserID))
 	return claims.UserID, nil
 }
 
-func NewJWTService(
-	config *config.JWTConfig,
-) IJWTService {
+func NewJWTService(config *config.JWTConfig) IJWTService {
 	return &jwtService{
 		config: config,
 	}

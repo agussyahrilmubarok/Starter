@@ -1,83 +1,130 @@
 package logger
 
 import (
+	"context"
 	"os"
 	"path/filepath"
+	"sync"
 	"time"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-var Log *zap.Logger
+type ctxKey struct{}
 
-func Init(logFilePath string) error {
-	// Encoder config
-	encoderConfig := zapcore.EncoderConfig{
-		TimeKey:        "time",
-		LevelKey:       "level",
-		NameKey:        "logger",
-		CallerKey:      "caller",
-		MessageKey:     "message",
-		StacktraceKey:  "stacktrace",
-		LineEnding:     zapcore.DefaultLineEnding,
-		EncodeLevel:    zapcore.CapitalColorLevelEncoder, // colored for console
-		EncodeTime:     zapcore.TimeEncoderOfLayout(time.DateTime),
-		EncodeDuration: zapcore.StringDurationEncoder,
-		EncodeCaller:   zapcore.ShortCallerEncoder,
+var (
+	once   sync.Once
+	logger *zap.Logger
+)
+
+type Options struct {
+	LogFilePath string
+	LogLevel    zapcore.Level
+	MaxSize     int // MB
+	MaxBackups  int
+	MaxAge      int // days
+	Compress    bool
+}
+
+func DefaultOptions() Options {
+	return Options{
+		LogFilePath: "logs/app.log",
+		LogLevel:    zapcore.DebugLevel,
+		MaxSize:     5,
+		MaxBackups:  10,
+		MaxAge:      14,
+		Compress:    true,
 	}
+}
 
-	// Console core
-	consoleEncoder := zapcore.NewConsoleEncoder(encoderConfig)
-	consoleCore := zapcore.NewCore(
-		consoleEncoder,
-		zapcore.AddSync(os.Stdout),
-		zapcore.DebugLevel,
-	)
+// Init initializes the logger with the given options.
+// Must be called once at application startup.
+func Init(opts Options) error {
+	var initErr error
 
-	// Create log directory if not exists
-	if err := os.MkdirAll(filepath.Dir(logFilePath), 0755); err != nil {
-		return err
+	once.Do(func() {
+		// log directory
+		if err := os.MkdirAll(filepath.Dir(opts.LogFilePath), 0o755); err != nil {
+			initErr = err
+			return
+		}
+
+		// log level
+		logLevel := zap.NewAtomicLevelAt(opts.LogLevel)
+
+		// console encoder (human-readable + colored)
+		consoleCfg := zap.NewDevelopmentEncoderConfig()
+		consoleCfg.EncodeLevel = zapcore.CapitalColorLevelEncoder
+		consoleCfg.EncodeTime = zapcore.TimeEncoderOfLayout(time.DateTime)
+		consoleCfg.EncodeCaller = zapcore.ShortCallerEncoder
+		consoleEncoder := zapcore.NewConsoleEncoder(consoleCfg)
+
+		// file encoder (JSON, no color)
+		fileCfg := zap.NewProductionEncoderConfig()
+		fileCfg.TimeKey = "timestamp"
+		fileCfg.EncodeTime = zapcore.ISO8601TimeEncoder
+		fileCfg.EncodeLevel = zapcore.CapitalLevelEncoder
+		fileCfg.EncodeCaller = zapcore.ShortCallerEncoder
+		fileEncoder := zapcore.NewJSONEncoder(fileCfg)
+
+		// log rotation (lumberjack)
+		rotation := zapcore.AddSync(&lumberjack.Logger{
+			Filename:   opts.LogFilePath,
+			MaxSize:    opts.MaxSize,
+			MaxBackups: opts.MaxBackups,
+			MaxAge:     opts.MaxAge,
+			Compress:   opts.Compress,
+		})
+
+		// tee: write to both console and file
+		core := zapcore.NewTee(
+			zapcore.NewCore(consoleEncoder, zapcore.AddSync(os.Stdout), logLevel),
+			zapcore.NewCore(fileEncoder, rotation, logLevel),
+		)
+
+		logger = zap.New(core,
+			zap.AddCaller(),
+			zap.AddStacktrace(zapcore.ErrorLevel),
+		)
+	})
+
+	return initErr
+}
+
+// Get returns the global logger instance.
+// Falls back to a no-op logger if Init has not been called.
+func Get() *zap.Logger {
+	if logger != nil {
+		return logger
 	}
+	return zap.NewNop()
+}
 
-	// File core
-	logFile, err := os.OpenFile(logFilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		return err
+// Sync flushes any buffered log entries.
+// Should be deferred in main: defer logger.Sync()
+func Sync() {
+	if logger != nil {
+		_ = logger.Sync()
 	}
-
-	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder // no color for file
-	fileEncoder := zapcore.NewJSONEncoder(encoderConfig)
-	fileCore := zapcore.NewCore(
-		fileEncoder,
-		zapcore.AddSync(logFile),
-		zapcore.DebugLevel,
-	)
-
-	// Combine console and file core
-	core := zapcore.NewTee(consoleCore, fileCore)
-
-	Log = zap.New(core, zap.AddCaller(), zap.AddStacktrace(zapcore.ErrorLevel))
-
-	return nil
 }
 
-func Info(msg string, fields ...zap.Field) {
-	Log.Info(msg, fields...)
+// FromCtx returns the Logger associated with the ctx.
+// Falls back to the global logger, or a no-op if not initialized.
+func FromCtx(ctx context.Context) *zap.Logger {
+	if l, ok := ctx.Value(ctxKey{}).(*zap.Logger); ok {
+		return l
+	}
+	return Get()
 }
 
-func Debug(msg string, fields ...zap.Field) {
-	Log.Debug(msg, fields...)
-}
-
-func Warn(msg string, fields ...zap.Field) {
-	Log.Warn(msg, fields...)
-}
-
-func Error(msg string, fields ...zap.Field) {
-	Log.Error(msg, fields...)
-}
-
-func Fatal(msg string, fields ...zap.Field) {
-	Log.Fatal(msg, fields...)
+// WithCtx returns a copy of ctx with the Logger attached.
+func WithCtx(ctx context.Context, l *zap.Logger) context.Context {
+	if lp, ok := ctx.Value(ctxKey{}).(*zap.Logger); ok {
+		if lp == l {
+			return ctx
+		}
+	}
+	return context.WithValue(ctx, ctxKey{}, l)
 }

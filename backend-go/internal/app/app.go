@@ -21,6 +21,7 @@ import (
 type App struct {
 	config *config.Config
 	db     *gorm.DB
+	log    *zap.Logger
 
 	userRepository repository.IUserRepository
 
@@ -40,9 +41,9 @@ func (app *App) Run() error {
 	}
 
 	go func() {
-		logger.Info("Server started", zap.String("port", app.config.App.Port))
+		app.log.Info("Server started", zap.String("port", app.config.App.Port))
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			logger.Fatal("Failed to start server", zap.Error(err))
+			app.log.Fatal("Failed to start server", zap.Error(err))
 		}
 	}()
 
@@ -50,17 +51,17 @@ func (app *App) Run() error {
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 
-	logger.Info("Shutting down server...")
+	app.log.Info("Shutting down server...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	if err := server.Shutdown(ctx); err != nil {
-		logger.Error("Server forced to shutdown", zap.Error(err))
+		app.log.Error("Server forced to shutdown", zap.Error(err))
 		return err
 	}
 
-	logger.Info("Server exited")
+	app.log.Info("Server exited")
 	return nil
 }
 
@@ -81,6 +82,7 @@ func NewApp(
 	return &App{
 		config: config,
 		db:     db,
+		log:    logger.Get(),
 
 		userRepository: userRepository,
 

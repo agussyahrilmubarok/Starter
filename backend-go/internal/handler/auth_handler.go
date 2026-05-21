@@ -28,7 +28,6 @@ type authHandler struct {
 // @Router       /v1/auth/sign-up [post]
 func (h *authHandler) SignUp(c *gin.Context) {
 	var req model.SignUpRequest
-
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, model.ErrorResponse{
 			Message: "Validation error",
@@ -78,7 +77,6 @@ func (h *authHandler) SignUp(c *gin.Context) {
 // @Router       /v1/auth/sign-in [post]
 func (h *authHandler) SignIn(c *gin.Context) {
 	var req model.SignInRequest
-
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, model.ErrorResponse{
 			Message: "Validation error",

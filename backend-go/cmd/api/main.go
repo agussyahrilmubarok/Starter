@@ -7,19 +7,19 @@ import (
 	"agussyahrilmubarok.github.io/backend/internal/config"
 	"agussyahrilmubarok.github.io/backend/pkg/database"
 	"agussyahrilmubarok.github.io/backend/pkg/logger"
-	"go.uber.org/zap"
 )
 
 func main() {
-	if err := logger.Init("logs/app.log"); err != nil {
-		log.Fatalf("Failed to init logger: %v", err)
-	}
-	defer logger.Log.Sync()
-
 	cfg, err := config.Load("configs/config.yml")
 	if err != nil {
-		logger.Fatal("Failed to load config", zap.Error(err))
+		log.Fatalf("Failed to load config: %v", err)
 	}
+
+	err = logger.Init(logger.DefaultOptions())
+	if err != nil {
+		log.Fatalf("Failed to init logger: %v", err)
+	}
+	defer logger.Sync()
 
 	db, err := database.NewPostgres(&database.PostgresConfig{
 		Host:     cfg.Database.Host,
@@ -31,11 +31,11 @@ func main() {
 		TimeZone: cfg.Database.TimeZone,
 	})
 	if err != nil {
-		logger.Fatal("Failed to connect to database", zap.Error(err))
+		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
 	app := app.NewApp(cfg, db)
 	if err := app.Run(); err != nil {
-		logger.Fatal("Failed to run application", zap.Error(err))
+		log.Fatalf("Failed to run application: %v", err)
 	}
 }

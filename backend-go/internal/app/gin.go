@@ -22,7 +22,10 @@ import (
 // @name Authorization
 // @description Input your Bearer token in this format: Bearer <token>
 func (app *App) setGinRouter() http.Handler {
+	gin.SetMode(gin.ReleaseMode)
+
 	router := gin.Default()
+	router.Use(app.requestIDMiddleware())
 
 	authHandler := handler.NewAuthHandler(app.authService)
 	userHandler := handler.NewUserHandler(app.userService)
