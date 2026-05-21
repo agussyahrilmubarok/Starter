@@ -1,30 +1,28 @@
 import { useState, type FC, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
 import toast from "react-hot-toast";
-import { useSignUp } from "../../hooks/auth/useSignUp";
+import { useSignIn } from "../../hooks/auth/useSignIn";
 import type { ValidationErrors } from "../../utils/error";
 
-const SignUp: FC = () => {
+const SignIn: FC = () => {
   const navigate = useNavigate();
-  const { mutate, isPending } = useSignUp();
+  const { mutate, isPending } = useSignIn();
 
-  const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errors, setErrors] = useState<ValidationErrors>({});
 
-  const handleSignUp = async (e: FormEvent) => {
+  const handleSignIn = async (e: FormEvent) => {
     e.preventDefault();
 
     mutate(
       {
-        name,
         email,
         password,
       },
       {
         onSuccess: () => {
-          toast.success("Sign up successfully");
+          toast.success("Sign in successfully");
           navigate("/sign-in");
         },
         onError: (error: any) => {
@@ -45,32 +43,12 @@ const SignUp: FC = () => {
       <div className="col-11 col-sm-10 col-md-8 col-lg-5">
         <div className="card border-0 rounded-4 shadow-lg">
           <div className="card-body p-4 p-md-5">
-            <h3 className="fw-bold text-center mb-2">Create Account</h3>
+            <h3 className="fw-bold text-center mb-2">Sign In</h3>
             <p className="text-secondary text-center mb-4">
-              Sign up to continue
+              Welcome back! Please enter your details
             </p>
 
-            <form onSubmit={handleSignUp}>
-              <div className="row">
-                <div className="col-md-12 mb-3">
-                  <div className="form-group">
-                    <label className="form-label fw-semibold">Full Name</label>
-                    <input
-                      type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className={`form-control rounded-3 ${
-                        errors.name ? "is-invalid" : ""
-                      }`}
-                      placeholder="Enter your full name"
-                    />
-                    {errors.name && (
-                      <div className="invalid-feedback">{errors.name}</div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
+            <form onSubmit={handleSignIn}>
               <div className="row">
                 <div className="col-md-12 mb-3">
                   <div className="form-group">
@@ -117,16 +95,16 @@ const SignUp: FC = () => {
                 className="btn btn-primary w-100 rounded-4 mt-4"
                 disabled={isPending}
               >
-                {isPending ? "Loading..." : "Sign Up"}
+                {isPending ? "Loading..." : "Sign In"}
               </button>
 
               <div className="text-center mt-3">
-                <span className="text-secondary">Already have an account?</span>
+                <span className="text-secondary">Don't have an account?</span>
                 <Link
-                  to="/sign-in"
+                  to="/sign-up"
                   className="text-decoration-none fw-semibold ms-1"
                 >
-                  Sign In
+                  Sign Up
                 </Link>
               </div>
             </form>
@@ -137,4 +115,4 @@ const SignUp: FC = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;
