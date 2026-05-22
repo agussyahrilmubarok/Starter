@@ -2,7 +2,7 @@ import { type FC } from "react";
 import { Link } from "react-router";
 import { useUsers } from "../../../hooks/user/useUsers";
 import DashboardLayout from "../../../layouts/DashboardLayout";
-import type { UserResponse } from "../../../types/user";
+import { type User } from "../../../types/user";
 import useDocumentTitle from "../../../hooks/common/useDocumentTitle";
 
 const UsersIndex: FC = () => {
@@ -16,7 +16,7 @@ const UsersIndex: FC = () => {
         <div className="card-header d-flex justify-content-between align-items-center">
           <span>USERS</span>
           <Link
-            to="/admin/users/create"
+            to="/dashboard/users/create"
             className="btn btn-sm btn-success rounded-4 shadow-sm border-0"
           >
             ADD USER
@@ -46,7 +46,7 @@ const UsersIndex: FC = () => {
               </tr>
             </thead>
             <tbody>
-              {users?.map((user: UserResponse) => (
+              {users?.map((user: User) => (
                 <tr key={user.id}>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
