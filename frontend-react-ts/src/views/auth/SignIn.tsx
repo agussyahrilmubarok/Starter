@@ -1,12 +1,16 @@
 import { useState, type FC, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
+import { type AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useSignIn } from "../../hooks/auth/useSignIn";
-import { type ValidationErrors } from "../../utils/error";
 import { useAuthStore } from "../../stores/auth";
-import { type AuthUser } from "../../types/auth";
+import { type AuthUser, type SignInResponse } from "../../types/auth";
+import { type ValidationErrors } from "../../types/common";
+import useDocumentTitle from "../../hooks/common/useDocumentTitle";
 
 const SignIn: FC = () => {
+  useDocumentTitle("Sign In");
+
   const navigate = useNavigate();
   const { mutate, isPending } = useSignIn();
   const { setAuth } = useAuthStore();
@@ -24,7 +28,7 @@ const SignIn: FC = () => {
         password,
       },
       {
-        onSuccess: (data: any) => {
+        onSuccess: (data: SignInResponse) => {
           toast.success(data?.message || "Sign in successfully");
 
           const d = data.data;
@@ -40,9 +44,9 @@ const SignIn: FC = () => {
 
           navigate("/dashboard");
         },
-        onError: (error: any) => {
-          console.log(error.response?.data?.errors);
-          const validationErrors = error.response?.data?.errors;
+        onError: (error: Error) => {
+          const axiosError = error as AxiosError<{ errors: Record<string, string> }>;
+          const validationErrors = axiosError.response?.data?.errors;
           if (validationErrors) {
             setErrors(validationErrors);
           } else {

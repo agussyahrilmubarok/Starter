@@ -1,10 +1,14 @@
 import { useState, type FC, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
+import { type AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useSignUp } from "../../hooks/auth/useSignUp";
-import type { ValidationErrors } from "../../utils/error";
+import { type ValidationErrors } from "../../types/common";
+import useDocumentTitle from "../../hooks/common/useDocumentTitle";
 
 const SignUp: FC = () => {
+  useDocumentTitle("Sign Up");
+
   const navigate = useNavigate();
   const { mutate, isPending } = useSignUp();
 
@@ -27,9 +31,9 @@ const SignUp: FC = () => {
           toast.success("Sign up successfully");
           navigate("/sign-in");
         },
-        onError: (error: any) => {
-          console.log(error.response?.data?.errors);
-          const validationErrors = error.response?.data?.errors;
+        onError: (error: Error) => {
+          const axiosError = error as AxiosError<{ errors: Record<string, string> }>;
+          const validationErrors = axiosError.response?.data?.errors;
           if (validationErrors) {
             setErrors(validationErrors);
           } else {

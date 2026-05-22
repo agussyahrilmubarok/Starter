@@ -1,7 +1,10 @@
 import { type FC } from "react";
 import { Link } from "react-router";
+import useDocumentTitle from "../../hooks/common/useDocumentTitle";
 
 const Home: FC = () => {
+  useDocumentTitle("Home");
+
   return (
     <div className="min-vh-100 d-flex align-items-center justify-content-center">
       <div className="container">

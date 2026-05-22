@@ -1,13 +1,19 @@
 import { type FC } from "react";
 import DashboardLayout from "../../layouts/DashboardLayout";
+import { useAuthStore } from "../../stores/auth";
+import useDocumentTitle from "../../hooks/common/useDocumentTitle";
 
 const Dashboard: FC = () => {
+  useDocumentTitle("Dashboard");
+
+  const { user } = useAuthStore();
+
   return (
     <DashboardLayout>
       <div className="card border-0 rounded-4 shadow-sm">
         <div className="card-header">DASHBOARD</div>
         <div className="card-body">
-          Selamat Datang, <strong></strong>
+          Selamat Datang, <strong>{ user?.name || "" }</strong>
         </div>
       </div>
     </DashboardLayout>
