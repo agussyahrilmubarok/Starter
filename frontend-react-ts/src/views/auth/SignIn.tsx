@@ -21,9 +21,9 @@ const SignIn: FC = () => {
         password,
       },
       {
-        onSuccess: () => {
-          toast.success("Sign in successfully");
-          navigate("/sign-in");
+        onSuccess: (data: any) => {
+          toast.success(data?.message || "Sign in successfully");
+          navigate("/dashboard");
         },
         onError: (error: any) => {
           console.log(error.response?.data?.errors);
