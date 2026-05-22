@@ -5,6 +5,7 @@ import SignUp from "../views/auth/SignUp";
 import SignIn from "../views/auth/SignIn";
 import Dashboard from "../views/dashboard/Index";
 import Profile from "../views/dashboard/profile/Index";
+import UsersIndex from "../views/dashboard/users/Index";
 
 export default function AppRoutes() {
   return (
@@ -19,6 +20,7 @@ export default function AppRoutes() {
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/profile" element={<Profile />} />
+        <Route path="/dashboard/users" element={<UsersIndex />} />
       </Route>
     </Routes>
   );

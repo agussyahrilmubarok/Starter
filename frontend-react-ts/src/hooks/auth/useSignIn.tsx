@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import Api from "../../services/api";
-import type { SignInResponse } from "../../types/auth";
+import { type SignInResponse } from "../../types/auth";
+import { PublicApi } from "../../services/api";
 
 interface SignInRequest {
   email: string;
@@ -10,8 +10,7 @@ interface SignInRequest {
 export const useSignIn = () => {
   return useMutation({
     mutationFn: async (payload: SignInRequest) => {
-      const response = await Api.post<SignInResponse>("/auth/sign-in", payload);
-      
+      const response = await PublicApi.post<SignInResponse>("/auth/sign-in", payload);
       return response.data;
     },
   });

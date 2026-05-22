@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import Api from "../../services/api";
+import { PublicApi } from "../../services/api";
 
 interface SignUpRequest {
   name: string;
@@ -10,7 +10,7 @@ interface SignUpRequest {
 export const useSignUp = () => {
   return useMutation({
     mutationFn: async (payload: SignUpRequest) => {
-      const response = await Api.post("/auth/sign-up", payload);
+      const response = await PublicApi.post("/auth/sign-up", payload);
       return response.data;
     },
   });
