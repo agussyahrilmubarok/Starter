@@ -2,11 +2,14 @@ import { useState, type FC, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { useSignIn } from "../../hooks/auth/useSignIn";
-import type { ValidationErrors } from "../../utils/error";
+import { type ValidationErrors } from "../../utils/error";
+import { useAuthStore } from "../../stores/auth";
+import { type AuthUser } from "../../types/auth";
 
 const SignIn: FC = () => {
   const navigate = useNavigate();
   const { mutate, isPending } = useSignIn();
+  const { setAuth } = useAuthStore();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -23,6 +26,18 @@ const SignIn: FC = () => {
       {
         onSuccess: (data: any) => {
           toast.success(data?.message || "Sign in successfully");
+
+          const d = data.data;
+          const token = d.token;
+          const user: AuthUser = {
+            id: d.user.id,
+            name: d.user.name,
+            email: d.user.email,
+            created_at: d.user.created_at,
+            updated_at: d.user.updated_at,
+          };
+          setAuth(token, user);
+
           navigate("/dashboard");
         },
         onError: (error: any) => {
