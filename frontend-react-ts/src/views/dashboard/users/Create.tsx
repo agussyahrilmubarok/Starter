@@ -4,12 +4,12 @@ import { type AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useUserCreate } from "../../../hooks/user/useUserCreate";
 import { type ValidationErrors } from "../../../types/common";
+import { type UserResponse } from "../../../types/user";
 import useDocumentTitle from "../../../hooks/common/useDocumentTitle";
 import DashboardLayout from "../../../layouts/DashboardLayout";
-import { type UserResponse } from "../../../types/user";
 
 const UserCreate: FC = () => {
-  useDocumentTitle("Users");
+  useDocumentTitle("Create User");
 
   const navigate = useNavigate();
   const { mutate, isPending } = useUserCreate();

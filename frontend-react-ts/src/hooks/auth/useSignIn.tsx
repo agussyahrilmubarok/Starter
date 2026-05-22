@@ -1,11 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { type SignInResponse } from "../../types/auth";
 import { PublicApi } from "../../services/api";
-
-interface SignInRequest {
-  email: string;
-  password: string;
-}
+import { type SignInRequest, type SignInResponse } from "../../types/auth";
 
 export const useSignIn = () => {
   return useMutation({

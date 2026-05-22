@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { APP_CONSTANT } from "../../utils/constant";
+import { APP_NAME } from "../../constants/app";
 
-const useDocumentTitle = (title: string, appName = APP_CONSTANT.NAME) => {
+const useDocumentTitle = (title: string, appName = APP_NAME) => {
   useEffect(() => {
     document.title = `${title} — ${appName}`;
   }, [title, appName]);

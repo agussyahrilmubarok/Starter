@@ -7,12 +7,13 @@ import Dashboard from "../views/dashboard/Index";
 import Profile from "../views/dashboard/profile/Index";
 import UsersIndex from "../views/dashboard/users/Index";
 import UserCreate from "../views/dashboard/users/Create";
+import UserEdit from "../views/dashboard/users/Edit";
 
 export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      
+
       <Route element={<PublicRoute />}>
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/sign-in" element={<SignIn />} />
@@ -23,6 +24,7 @@ export default function AppRoutes() {
         <Route path="/dashboard/profile" element={<Profile />} />
         <Route path="/dashboard/users" element={<UsersIndex />} />
         <Route path="/dashboard/users/create" element={<UserCreate />} />
+        <Route path="/dashboard/users/edit/:id" element={<UserEdit />} />
       </Route>
     </Routes>
   );

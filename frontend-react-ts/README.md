@@ -71,3 +71,11 @@ export default defineConfig([
   },
 ])
 ```
+
+## References
+
+- React
+- TypeScript 
+- Context / Zustand
+- Custom Hooks
+- Tanstack Query

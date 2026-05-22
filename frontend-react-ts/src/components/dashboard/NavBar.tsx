@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { Link } from "react-router";
-import { APP_CONSTANT } from "../../utils/constant";
+import { APP_NAME } from "../../constants/app";
 
 type NavBarProps = {
   userEmail?: string;
@@ -10,7 +10,7 @@ type NavBarProps = {
 const NavBar: FC<NavBarProps> = ({ userEmail = "John Doe", onSignOut }) => (
   <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3 shadow-sm">
     <Link className="navbar-brand fw-bold fs-5" to="/dashboard">
-      ⚡ { APP_CONSTANT.NAME }
+      ⚡ { APP_NAME }
     </Link>
 
     <button

@@ -1,6 +1,6 @@
 import { type FC } from "react";
-import DashboardLayout from "../../layouts/DashboardLayout";
 import { useAuthStore } from "../../stores/auth";
+import DashboardLayout from "../../layouts/DashboardLayout";
 import useDocumentTitle from "../../hooks/common/useDocumentTitle";
 
 const Dashboard: FC = () => {

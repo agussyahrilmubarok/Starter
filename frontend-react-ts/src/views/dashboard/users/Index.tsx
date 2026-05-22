@@ -1,14 +1,30 @@
 import { type FC } from "react";
 import { Link } from "react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { useUsers } from "../../../hooks/user/useUsers";
-import DashboardLayout from "../../../layouts/DashboardLayout";
+import { useUserDelete } from "../../../hooks/user/useUserDelete";
 import { type User } from "../../../types/user";
+import DashboardLayout from "../../../layouts/DashboardLayout";
 import useDocumentTitle from "../../../hooks/common/useDocumentTitle";
 
 const UsersIndex: FC = () => {
   useDocumentTitle("Users");
 
   const { data: users, isLoading, isError, error } = useUsers();
+
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useUserDelete();
+
+  const handleDelete = (id: string) => {
+    if (confirm("Are you sure you want to delete this user?")) {
+      mutate(id, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["users"] });
+        },
+      });
+    }
+  };
 
   return (
     <DashboardLayout>
@@ -35,36 +51,43 @@ const UsersIndex: FC = () => {
             </div>
           )}
 
-          <table className="table table-bordered">
-            <thead className="bg-dark text-white">
-              <tr>
-                <th scope="col">Full Name</th>
-                <th scope="col">Email Address</th>
-                <th scope="col" style={{ width: "20%" }}>
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {users?.map((user: User) => (
-                <tr key={user.id}>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td className="text-center">
-                    <Link
-                      to={`/dashboard/users/edit/${user.id}`}
-                      className="btn btn-sm btn-primary rounded-4 shadow-sm border-0 me-2"
-                    >
-                      EDIT
-                    </Link>
-                    <button className="btn btn-sm btn-danger rounded-4 shadow-sm border-0">
-                      DELETE
-                    </button>
-                  </td>
+          <div className="table-responsive">
+            <table className="table table-bordered">
+              <thead className="bg-dark text-white">
+                <tr>
+                  <th scope="col">Full Name</th>
+                  <th scope="col">Email Address</th>
+                  <th scope="col" style={{ width: "20%" }}>
+                    Actions
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {users?.map((user: User) => (
+                  <tr key={user.id}>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td className="text-center">
+                      <Link
+                        to={`/dashboard/users/edit/${user.id}`}
+                        className="btn btn-sm btn-primary rounded-4 shadow-sm border-0 me-2"
+                      >
+                        EDIT
+                      </Link>
+
+                      <button
+                        onClick={() => handleDelete(user.id)}
+                        disabled={isPending}
+                        className="btn btn-sm btn-danger rounded-4 shadow-sm border-0"
+                      >
+                        {isPending ? "DELETING..." : "DELETE"}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </DashboardLayout>

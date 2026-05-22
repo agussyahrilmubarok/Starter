@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { PrivateApi } from "../../services/api";
 import { type User } from "../../types/user";
 
-export const useUserById = (id: number) => {
+export const useUserById = (id: string) => {
   return useQuery<User, Error>({
     queryKey: ["user", id],
     queryFn: async () => {
