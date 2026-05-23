@@ -7,6 +7,6 @@ export const ProtectedRoute = () => {
 };
 
 export const PublicRoute = () => {
-  const { token } = useAuthStore();
-  return !token ? <Outlet /> : <Navigate to="/dashboard" replace />;
+  const isAuthenticated = useAuthStore((state) => !!state.token);
+  return isAuthenticated ? <Outlet /> : <Navigate to="/sign-in" replace />;
 };

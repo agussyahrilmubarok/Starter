@@ -7,8 +7,9 @@ import { useUserCreate } from "../../../composables/user/useUserCreate";
 import { type ValidationErrors } from "../../../types/common";
 import { type UserResponse } from "../../../types/user";
 import DashboardLayout from "../../../layouts/DashboardLayout.vue";
+import useDocumentTitle from "../../../composables/common/useDocumentTitle";
 
-document.title = "Create User";
+useDocumentTitle("Create User");
 
 const router = useRouter();
 const { mutate, isPending } = useUserCreate();

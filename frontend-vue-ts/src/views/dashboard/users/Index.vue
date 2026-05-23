@@ -4,8 +4,9 @@ import { useUsers } from "../../../composables/user/useUsers";
 import { useUserDelete } from "../../../composables/user/useUserDelete";
 import { type User } from "../../../types/user";
 import DashboardLayout from "../../../layouts/DashboardLayout.vue";
+import useDocumentTitle from "../../../composables/common/useDocumentTitle";
 
-document.title = "Users";
+useDocumentTitle("Users");
 
 const { data: users, isLoading, isError, error } = useUsers();
 const queryClient = useQueryClient();

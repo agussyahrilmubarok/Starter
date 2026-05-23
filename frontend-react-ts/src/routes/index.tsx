@@ -8,6 +8,7 @@ import Profile from "../views/dashboard/profile/Index";
 import UsersIndex from "../views/dashboard/users/Index";
 import UserCreate from "../views/dashboard/users/Create";
 import UserEdit from "../views/dashboard/users/Edit";
+import NotFound from "../views/common/NotFound";
 
 export default function AppRoutes() {
   return (
@@ -26,6 +27,8 @@ export default function AppRoutes() {
         <Route path="/dashboard/users/create" element={<UserCreate />} />
         <Route path="/dashboard/users/edit/:id" element={<UserEdit />} />
       </Route>
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

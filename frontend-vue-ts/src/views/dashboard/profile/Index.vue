@@ -2,8 +2,9 @@
 import { computed } from "vue";
 import { useAuthStore } from "../../../stores/auth";
 import DashboardLayout from "../../../layouts/DashboardLayout.vue";
+import useDocumentTitle from "../../../composables/common/useDocumentTitle";
 
-document.title = "Profile";
+useDocumentTitle("Profile");
 
 const authStore = useAuthStore();
 

@@ -8,8 +8,9 @@ import { useUserUpdate } from "../../../composables/user/useUserUpdate";
 import { type ValidationErrors } from "../../../types/common";
 import { type UserResponse } from "../../../types/user";
 import DashboardLayout from "../../../layouts/DashboardLayout.vue";
+import useDocumentTitle from "../../../composables/common/useDocumentTitle";
 
-document.title = "Edit User";
+useDocumentTitle("Edit User");
 
 const route = useRoute();
 const router = useRouter();

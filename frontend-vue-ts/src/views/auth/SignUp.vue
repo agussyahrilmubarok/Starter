@@ -5,8 +5,9 @@ import { type AxiosError } from "axios";
 import { toast } from "vue-sonner";
 import { useSignUp } from "../../composables/auth/useSignUp";
 import { type ValidationErrors } from "../../types/common";
+import useDocumentTitle from "../../composables/common/useDocumentTitle";
 
-document.title = "Sign Up";
+useDocumentTitle("Sign Up");
 
 const router = useRouter();
 const { mutate, isPending } = useSignUp();

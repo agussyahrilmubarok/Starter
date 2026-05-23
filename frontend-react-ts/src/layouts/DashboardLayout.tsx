@@ -1,4 +1,5 @@
 import type React from "react";
+import { useNavigate } from "react-router";
 import SideBar from "../components/dashboard/SideBar";
 import NavBar from "../components/dashboard/NavBar";
 import { useAuthStore } from "../stores/auth";
@@ -8,13 +9,19 @@ type DashboardLayoutProps = {
 };
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
+  const navigate = useNavigate();
   const { user, signOut } = useAuthStore();
 
+  const handleSignOut = () => {
+    signOut();
+    navigate("/sign-in");
+  };
+  
   return (
     <div>
       <NavBar 
         userEmail={ user?.email || "User" }
-        onSignOut={ signOut }
+        onSignOut={ handleSignOut }
       />
       <div className="container mt-4 mb-5">
         <div className="row g-4">

@@ -42,7 +42,7 @@ const NavBar: FC<NavBarProps> = ({ userEmail = "John Doe", onSignOut }) => (
             {" "}
             <li>
               <Link className="dropdown-item" to="/dashboard/profile">
-                Profil Saya
+                My Profile
               </Link>
             </li>
             <li>

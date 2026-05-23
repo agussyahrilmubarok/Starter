@@ -7,8 +7,9 @@ import { useSignIn } from "../../composables/auth/useSignIn";
 import { useAuthStore } from "../../stores/auth";
 import { type ValidationErrors } from "../../types/common";
 import { type AuthUser, type SignInResponse } from "../../types/auth";
+import useDocumentTitle from "../../composables/common/useDocumentTitle";
 
-document.title = "Sign In";
+useDocumentTitle("Sign In");
 
 const router = useRouter();
 const { mutate, isPending } = useSignIn();
