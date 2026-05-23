@@ -3,10 +3,10 @@ package main
 import (
 	"log"
 
-	"agussyahrilmubarok.github.io/backend/internal/app"
-	"agussyahrilmubarok.github.io/backend/internal/config"
-	"agussyahrilmubarok.github.io/backend/pkg/database"
-	"agussyahrilmubarok.github.io/backend/pkg/logger"
+	"agussyahrilmubarok.github.io/web/internal/app"
+	"agussyahrilmubarok.github.io/web/internal/config"
+	"agussyahrilmubarok.github.io/web/pkg/database"
+	"agussyahrilmubarok.github.io/web/pkg/logger"
 )
 
 func main() {

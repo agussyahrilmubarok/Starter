@@ -1,5 +1,5 @@
 app:
-  name: backend-go
+  name: web-go
   port: 8080
   timezone: Asia/Jakarta
 

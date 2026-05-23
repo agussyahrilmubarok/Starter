@@ -1,0 +1,37 @@
+{"level":"INFO","timestamp":"2026-05-23T16:27:13.319+0700","caller":"app/app.go:44","msg":"Monolith server started","port":"8080","url":"http://localhost:8080"}
+{"level":"INFO","timestamp":"2026-05-23T16:29:35.705+0700","caller":"app/app.go:57","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T16:29:35.705+0700","caller":"app/app.go:66","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T16:29:42.102+0700","caller":"app/app.go:44","msg":"Monolith server started","port":"8080","url":"http://localhost:8080"}
+{"level":"INFO","timestamp":"2026-05-23T16:31:07.507+0700","caller":"app/app.go:57","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T16:31:07.508+0700","caller":"app/app.go:66","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T16:31:13.705+0700","caller":"app/app.go:44","msg":"Monolith server started","port":"8080","url":"http://localhost:8080"}
+{"level":"INFO","timestamp":"2026-05-23T16:31:29.232+0700","caller":"app/app.go:57","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T16:31:29.233+0700","caller":"app/app.go:66","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T16:36:04.628+0700","caller":"app/app.go:44","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T16:38:37.996+0700","caller":"app/app.go:54","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T16:38:37.997+0700","caller":"app/app.go:64","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T16:56:33.585+0700","caller":"app/app.go:44","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T16:58:37.506+0700","caller":"app/app.go:54","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T16:58:37.507+0700","caller":"app/app.go:64","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T16:58:39.207+0700","caller":"app/app.go:44","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T16:59:50.086+0700","caller":"app/app.go:54","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T16:59:50.087+0700","caller":"app/app.go:64","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T16:59:55.242+0700","caller":"app/app.go:44","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T17:00:21.950+0700","caller":"app/app.go:54","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T17:00:21.951+0700","caller":"app/app.go:64","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T17:00:23.227+0700","caller":"app/app.go:44","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T17:04:46.768+0700","caller":"app/app.go:54","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T17:04:46.769+0700","caller":"app/app.go:64","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T17:04:53.064+0700","caller":"app/app.go:44","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T17:05:33.864+0700","caller":"app/app.go:54","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T17:05:33.865+0700","caller":"app/app.go:64","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T17:05:39.743+0700","caller":"app/app.go:44","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T17:06:07.100+0700","caller":"app/app.go:54","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T17:06:07.100+0700","caller":"app/app.go:64","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T17:06:08.622+0700","caller":"app/app.go:44","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T17:11:11.519+0700","caller":"app/app.go:54","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T17:11:11.520+0700","caller":"app/app.go:64","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T17:11:12.697+0700","caller":"app/app.go:44","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T17:15:15.537+0700","caller":"app/app.go:54","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T17:15:15.538+0700","caller":"app/app.go:64","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T17:15:23.968+0700","caller":"app/app.go:44","msg":"Server started","port":"8080"}

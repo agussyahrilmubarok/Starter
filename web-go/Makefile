@@ -1,6 +1,6 @@
-# Run API development server
-dev/api:
-	go run cmd/api/main.go
+# Run Web development server
+dev/web:
+	go run cmd/web/main.go
 
 # Clean and verify Go modules
 tidy:
