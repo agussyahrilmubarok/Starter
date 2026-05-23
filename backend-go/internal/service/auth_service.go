@@ -60,7 +60,9 @@ func (s *authService) SignUp(ctx context.Context, param model.SignUpRequest) (*m
 	tokenString, err := s.jwtService.Generate(ctx, user.ID)
 	if err != nil {
 		log.Error("sign-up: failed to generate token, rolling back user", zap.String("user_id", user.ID), zap.Error(err))
-		s.userRepository.DeleteByID(ctx, user.ID)
+		if err := s.userRepository.DeleteByID(ctx, user.ID); err != nil {
+			log.Error("sign-up: failed to rollback user creation", zap.Error(err))
+		}
 		return nil, err
 	}
 

@@ -119,8 +119,15 @@ func (s *userService) UpdateByID(ctx context.Context, ID string, param model.Upd
 	if param.Name != "" {
 		user.Name = param.Name
 	}
-	if param.Email != "" {
-		user.Email = param.Email
+	if param.Email != "" && param.Email != user.Email {
+		exist, _ := s.userRepository.FindByEmail(ctx, param.Email)
+		if err != nil {
+			return nil, err
+		}
+		if exist != nil {
+			return nil, domain.ErrUserEmailExists
+		}
+		user.Email = strings.ToLower(param.Email)
 	}
 	if param.Password != "" {
 		hashPassword, err := helper.PasswordHash(param.Password)
@@ -144,16 +151,6 @@ func (s *userService) UpdateByID(ctx context.Context, ID string, param model.Upd
 // DeleteByID implements [IUserService].
 func (s *userService) DeleteByID(ctx context.Context, ID string) error {
 	log := logger.FromCtx(ctx).With(zap.String("user_id", ID))
-
-	user, err := s.userRepository.FindByID(ctx, ID)
-	if err != nil {
-		log.Error("user: failed to find user for delete", zap.Error(err))
-		return err
-	}
-	if user == nil {
-		log.Warn("user: user not found for delete")
-		return domain.ErrUserNotFound
-	}
 
 	if err := s.userRepository.DeleteByID(ctx, ID); err != nil {
 		log.Error("user: failed to delete user", zap.Error(err))
