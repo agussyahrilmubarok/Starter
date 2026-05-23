@@ -2,11 +2,9 @@
 
 ---
 
-# AUTH
+## AUTH
 
-## Sign Up
-
-Create new user account.
+### SIGN UP
 
 ```bash
 curl -X POST http://localhost:8080/api/v1/auth/sign-up \
@@ -18,9 +16,7 @@ curl -X POST http://localhost:8080/api/v1/auth/sign-up \
   }'
 ```
 
-## Sign In
-
-Authenticate user account.
+### SIGN IN
 
 ```bash
 curl -X POST http://localhost:8080/api/v1/auth/sign-in \
@@ -29,4 +25,56 @@ curl -X POST http://localhost:8080/api/v1/auth/sign-in \
     "email": "john@example.com",
     "password": "P@ssw0rd"
   }'
+```
+
+---
+
+## USERS
+
+### GET ALL USERS
+
+```bash
+curl -X GET http://localhost:8080/api/v1/users \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json"
+```
+
+### GET USER BY ID
+
+```bash
+curl -X GET http://localhost:8080/api/v1/users/{id} \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json"
+```
+
+### CREATE USER
+
+```bash
+curl -X POST http://localhost:8080/api/v1/users \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "P@ssw0rd"
+  }'
+```
+
+### UPDATE USER BY ID
+
+```bash
+curl -X PUT http://localhost:8080/api/v1/users/{id} \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Doe Updated"
+  }'
+```
+
+### DELETE USER BY ID
+
+```bash
+curl -X DELETE http://localhost:8080/api/v1/users/{id} \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json"
 ```

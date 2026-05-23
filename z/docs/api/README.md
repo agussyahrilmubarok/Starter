@@ -1,15 +1,48 @@
-# API
+# API Documentation
 
-Base URL
+## Base URL
 
 ```txt
-/api/v1
-````
+http://localhost:8080/api/v1
+```
 
-Content-Type
+## Content Type
 
 ```http
 Content-Type: application/json
+```
+
+## Authorization
+
+Use Bearer Token authentication for protected endpoints.
+
+```http
+Authorization: Bearer <token>
+```
+
+---
+
+# Response Format
+
+## Success Response
+
+```json
+{
+  "message": "success message",
+  "data": {}
+}
+```
+
+## Error Response
+
+```json
+{
+  "success": false,
+  "message": "invalid request",
+  "errors": {
+    "error": "error"
+  }
+}
 ```
 
 ---
@@ -18,12 +51,12 @@ Content-Type: application/json
 
 ## Sign Up
 
-Create new user account.
+Create a new user account.
 
 ### Endpoint
 
 ```http
-POST /auth/signup
+POST /auth/sign-up
 ```
 
 ### Request Body
@@ -32,7 +65,7 @@ POST /auth/signup
 {
   "name": "John Doe",
   "email": "john@example.com",
-  "password": "secret123"
+  "password": "P@ssw0rd"
 }
 ```
 
@@ -46,14 +79,11 @@ POST /auth/signup
 {
   "message": "signup success",
   "data": {
-    "token": "token",
-    "user": {
-      "id": "usr_xxx",
-      "name": "John Doe",
-      "email": "john@example.com",
-      "created_at": "2026-05-21T10:00:00Z",
-      "updated_at": "2026-05-21T10:00:00Z"
-    }
+    "id": "usr_xxx",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "created_at": "2026-05-21T10:00:00Z",
+    "updated_at": "2026-05-21T10:00:00Z"
   }
 }
 ```
@@ -69,7 +99,7 @@ POST /auth/signup
   "success": false,
   "message": "invalid request",
   "errors": {
-    "error": "error"
+    "email": "email already exists"
   }
 }
 ```
@@ -83,7 +113,7 @@ Authenticate user and return access token.
 ### Endpoint
 
 ```http
-POST /auth/signin
+POST /auth/sign-in
 ```
 
 ### Request Body
@@ -91,7 +121,7 @@ POST /auth/signin
 ```json
 {
   "email": "john@example.com",
-  "password": "secret123"
+  "password": "P@ssw0rd"
 }
 ```
 
@@ -105,7 +135,7 @@ POST /auth/signin
 {
   "message": "signin success",
   "data": {
-    "token": "token",
+    "access_token": "your-jwt-token",
     "user": {
       "id": "usr_xxx",
       "name": "John Doe",
@@ -125,13 +155,21 @@ POST /auth/signin
 
 ```json
 {
-  "message": "invalid credentials"
+  "success": false,
+  "message": "invalid credentials",
+  "errors": {
+    "email": "email or password is incorrect"
+  }
 }
 ```
 
 ---
 
 # USERS
+
+> All Users endpoints require Bearer Token authentication.
+
+---
 
 ## Get All Users
 
@@ -157,6 +195,7 @@ Authorization: Bearer <token>
 
 ```json
 {
+  "message": "get users success",
   "data": [
     {
       "id": "usr_1",
@@ -169,11 +208,27 @@ Authorization: Bearer <token>
 }
 ```
 
+### Error Response
+
+```http
+401 Unauthorized
+```
+
+```json
+{
+  "success": false,
+  "message": "unauthorized",
+  "errors": {
+    "token": "invalid token"
+  }
+}
+```
+
 ---
 
 ## Get User By ID
 
-Retrieve single user by id.
+Retrieve a user by ID.
 
 ### Endpoint
 
@@ -187,6 +242,12 @@ GET /users/{id}
 GET /users/usr_1
 ```
 
+### Headers
+
+```http
+Authorization: Bearer <token>
+```
+
 ### Success Response
 
 ```http
@@ -195,6 +256,7 @@ GET /users/usr_1
 
 ```json
 {
+  "message": "get user success",
   "data": {
     "id": "usr_1",
     "name": "John Doe",
@@ -213,7 +275,11 @@ GET /users/usr_1
 
 ```json
 {
-  "message": "user not found"
+  "success": false,
+  "message": "user not found",
+  "errors": {
+    "id": "user does not exist"
+  }
 }
 ```
 
@@ -221,12 +287,18 @@ GET /users/usr_1
 
 ## Create User
 
-Create new user.
+Create a new user.
 
 ### Endpoint
 
 ```http
 POST /users
+```
+
+### Headers
+
+```http
+Authorization: Bearer <token>
 ```
 
 ### Request Body
@@ -235,7 +307,7 @@ POST /users
 {
   "name": "Jane Doe",
   "email": "jane@example.com",
-  "password": "secret123"
+  "password": "P@ssw0rd"
 }
 ```
 
@@ -247,20 +319,38 @@ POST /users
 
 ```json
 {
-  "message": "user created",
+  "message": "create user success",
   "data": {
     "id": "usr_2",
     "name": "Jane Doe",
-    "email": "jane@example.com"
+    "email": "jane@example.com",
+    "created_at": "2026-05-21T10:00:00Z",
+    "updated_at": "2026-05-21T10:00:00Z"
+  }
+}
+```
+
+### Error Response
+
+```http
+400 Bad Request
+```
+
+```json
+{
+  "success": false,
+  "message": "invalid request",
+  "errors": {
+    "email": "email already exists"
   }
 }
 ```
 
 ---
 
-## Update User
+## Update User By ID
 
-Update existing user.
+Update a user by ID.
 
 ### Endpoint
 
@@ -268,12 +358,17 @@ Update existing user.
 PUT /users/{id}
 ```
 
+### Headers
+
+```http
+Authorization: Bearer <token>
+```
+
 ### Request Body
 
 ```json
 {
-  "name": "Jane Updated",
-  "email": "janeupdated@example.com"
+  "name": "John Doe Updated"
 }
 ```
 
@@ -285,15 +380,38 @@ PUT /users/{id}
 
 ```json
 {
-  "message": "user updated"
+  "message": "update user success",
+  "data": {
+    "id": "usr_1",
+    "name": "John Doe Updated",
+    "email": "john@example.com",
+    "created_at": "2026-05-21T10:00:00Z",
+    "updated_at": "2026-05-21T11:00:00Z"
+  }
+}
+```
+
+### Error Response
+
+```http
+404 Not Found
+```
+
+```json
+{
+  "success": false,
+  "message": "user not found",
+  "errors": {
+    "id": "user does not exist"
+  }
 }
 ```
 
 ---
 
-## Delete User
+## Delete User By ID
 
-Delete user by id.
+Delete a user by ID.
 
 ### Endpoint
 
@@ -301,10 +419,39 @@ Delete user by id.
 DELETE /users/{id}
 ```
 
+### Headers
+
+```http
+Authorization: Bearer <token>
+```
+
 ### Success Response
 
 ```http
-204 No Content
+200 OK
+```
+
+```json
+{
+  "message": "delete user success",
+  "data": null
+}
+```
+
+### Error Response
+
+```http
+404 Not Found
+```
+
+```json
+{
+  "success": false,
+  "message": "user not found",
+  "errors": {
+    "id": "user does not exist"
+  }
+}
 ```
 
 ---
@@ -318,7 +465,6 @@ DELETE /users/{id}
   "id": "string",
   "name": "string",
   "email": "string",
-  "password": "string",
   "created_at": "datetime",
   "updated_at": "datetime"
 }
@@ -330,17 +476,7 @@ DELETE /users/{id}
 | ---- | --------------------- |
 | 200  | OK                    |
 | 201  | Created               |
-| 204  | No Content            |
 | 400  | Bad Request           |
 | 401  | Unauthorized          |
 | 404  | Not Found             |
 | 500  | Internal Server Error |
-
-## Authorization
-
-Use Bearer Token authentication.
-
-```http
-Authorization: Bearer <token>
-```
-
