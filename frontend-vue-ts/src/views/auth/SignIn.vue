@@ -3,16 +3,16 @@ import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { type AxiosError } from "axios";
 import { toast } from "vue-sonner";
-import Cookies from "js-cookie";
 import { useSignIn } from "../../composables/auth/useSignIn";
-import type { ValidationErrors } from "../../types/common";
-import type { SignInResponse } from "../../types/auth";
-import { COOKIE_KEYS } from "../../constants/cookie";
+import { useAuthStore } from "../../stores/auth";
+import { type ValidationErrors } from "../../types/common";
+import { type AuthUser, type SignInResponse } from "../../types/auth";
 
 document.title = "Sign In";
 
 const router = useRouter();
 const { mutate, isPending } = useSignIn();
+const authStore = useAuthStore();
 
 const email = ref<string>("");
 const password = ref<string>("");
@@ -29,17 +29,15 @@ const handleSignIn = () => {
         toast.success(data?.message || "Sign in successfully");
 
         const d = data.data;
-        Cookies.set(COOKIE_KEYS.TOKEN, data.data.token);
-        Cookies.set(
-          COOKIE_KEYS.USER_DATA,
-          JSON.stringify({
-            id: d.user.id,
-            name: d.user.name,
-            email: d.user.email,
-            created_at: d.user.created_at,
-            updated_at: d.user.updated_at,
-          }),
-        );
+        const token = d.token;
+        const user: AuthUser = {
+          id: d.user.id,
+          name: d.user.name,
+          email: d.user.email,
+          created_at: d.user.created_at,
+          updated_at: d.user.updated_at,
+        };
+        authStore.setAuth(token, user);
 
         router.push("/dashboard");
       },
@@ -49,7 +47,7 @@ const handleSignIn = () => {
         }>;
         const validationErrors = axiosError.response?.data?.errors;
         if (validationErrors) {
-          Object.assign(errors, validationErrors)
+          Object.assign(errors, validationErrors);
         } else {
           toast.error("Something went wrong");
         }
