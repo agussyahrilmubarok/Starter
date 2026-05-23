@@ -1,0 +1,17 @@
+app:
+  name: backend-go
+  port: 8080
+  timezone: Asia/Jakarta
+
+database:
+  host: localhost
+  port: 5432
+  user: sandbox
+  password: sandbox
+  dbname: sandbox_db
+  sslmode: disable
+  timezone: Asia/Jakarta
+
+jwt:
+  secret_key: your-super-secret-key
+  exp_time: 24h
