@@ -5,7 +5,9 @@ import App from "./App.vue";
 import routes from "./routes";
 
 const app = createApp(App);
+
 app.use(VueQueryPlugin);
 app.use(createPinia());
 app.use(routes);
+
 app.mount("#app");

@@ -50,7 +50,6 @@ const props = withDefaults(
             </li>
             <li><hr class="dropdown-divider" /></li>
             <li>
-              <!-- [CONVERT] onClick={onSignOut} → @click="props.onSignOut?.()" -->
               <button
                 class="dropdown-item text-danger"
                 @click="props.onSignOut?.()"

@@ -3,12 +3,11 @@ import { computed } from "vue";
 import { useAuthStore } from "../../../stores/auth";
 import DashboardLayout from "../../../layouts/DashboardLayout.vue";
 
-document.title = "Profile"
+document.title = "Profile";
 
 const authStore = useAuthStore();
 
 const user = computed(() => authStore.user);
-
 </script>
 
 <template>

@@ -36,6 +36,24 @@ const routes: RouteRecordRaw[] = [
     component: () => import("../views/dashboard/profile/Index.vue"),
   },
   {
+    path: "/dashboard/users",
+    name: "users",
+    meta: { requiresAuth: true },
+    component: () => import("../views/dashboard/users/Index.vue"),
+  },
+  {
+    path: "/dashboard/users/create",
+    name: "users.create",
+    meta: { requiresAuth: true },
+    component: () => import("../views/dashboard/users/Create.vue"),
+  },
+  {
+    path: "/dashboard/users/edit/:id",
+    name: "users.edit",
+    meta: { requiresAuth: true },
+    component: () => import("../views/dashboard/users/Edit.vue"),
+  },
+  {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
     component: () => import("../views/common/NotFound.vue"),

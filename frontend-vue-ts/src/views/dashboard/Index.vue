@@ -5,7 +5,6 @@ import DashboardLayout from "../../layouts/DashboardLayout.vue";
 document.title = "Dashboard";
 
 const authStore = useAuthStore();
-
 </script>
 
 <template>
