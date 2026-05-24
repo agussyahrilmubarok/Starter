@@ -1,0 +1,5 @@
+* [ ] `services/api.ts` still hardcodes `http://localhost:8080/api/v1` instead of using env variables or `constants/api.ts`, which may cause issues in production.
+* [ ] Auth store still saves the entire user object in cookies as JSON, which is less secure and may hit cookie size limits.
+* [ ] No response interceptor to handle `401/token expired`, so users are not automatically logged out when the token expires.
+* [ ] TanStack Query error handling is still managed separately in each view instead of using a global handler.
+* [ ] `useUsers` directly returns `response.data.data` without strong type validation or type assertions.
