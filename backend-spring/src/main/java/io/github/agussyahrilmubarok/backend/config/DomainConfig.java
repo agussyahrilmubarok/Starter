@@ -10,10 +10,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-
 @Configuration
 @EntityScan("io.github.agussyahrilmubarok.backend.domain")
-@EnableJpaRepositories("io.github.agussyahrilmubarok.backend.repos")
+@EnableJpaRepositories("io.github.agussyahrilmubarok.backend.repository")
 @EnableTransactionManagement
 @EnableJpaAuditing(dateTimeProviderRef = "auditingDateTimeProvider")
 public class DomainConfig {

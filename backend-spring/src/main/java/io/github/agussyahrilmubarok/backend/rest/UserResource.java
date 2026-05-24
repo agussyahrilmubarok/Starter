@@ -1,63 +1,57 @@
 package io.github.agussyahrilmubarok.backend.rest;
 
-import io.github.agussyahrilmubarok.backend.model.UserDTO;
-import io.github.agussyahrilmubarok.backend.service.UserService;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.github.agussyahrilmubarok.backend.model.ApiResponse;
+import io.github.agussyahrilmubarok.backend.model.user.CreateUserRequest;
+import io.github.agussyahrilmubarok.backend.model.user.UpdateUserRequest;
+import io.github.agussyahrilmubarok.backend.model.user.UserResponse;
+import io.github.agussyahrilmubarok.backend.service.IUserService;
 import jakarta.validation.Valid;
-import java.util.List;
-import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/users", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequiredArgsConstructor
 public class UserResource {
 
-    private final UserService userService;
-
-    public UserResource(final UserService userService) {
-        this.userService = userService;
-    }
+    private final IUserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        return ResponseEntity.ok(userService.findAll());
+    public ResponseEntity<ApiResponse<List<UserResponse>>> findAll() {
+        List<UserResponse> response = userService.findAll();
+        return ResponseEntity.ok(new ApiResponse<>("Users retrieved successfully", response));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable(name = "id") final UUID id) {
-        return ResponseEntity.ok(userService.get(id));
+    @GetMapping("/{userId}")
+    public ResponseEntity<ApiResponse<UserResponse>> findById(@PathVariable String userId) {
+        UserResponse response = userService.findById(userId);
+        return ResponseEntity.ok(new ApiResponse<>("User retrieved successfully", response));
     }
 
     @PostMapping
-    @ApiResponse(responseCode = "201")
-    public ResponseEntity<UUID> createUser(@RequestBody @Valid final UserDTO userDTO) {
-        final UUID createdId = userService.create(userDTO);
-        return new ResponseEntity<>(createdId, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse<UserResponse>> create(
+            @Valid @RequestBody CreateUserRequest request) {
+        UserResponse response = userService.create(request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>("User created successfully", response));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UUID> updateUser(@PathVariable(name = "id") final UUID id,
-            @RequestBody @Valid final UserDTO userDTO) {
-        userService.update(id, userDTO);
-        return ResponseEntity.ok(id);
+    @PutMapping("/{userId}")
+    public ResponseEntity<ApiResponse<UserResponse>> updateById(
+            @PathVariable String userId,
+            @Valid @RequestBody UpdateUserRequest request) {
+        UserResponse response = userService.updateById(userId, request);
+        return ResponseEntity.ok(new ApiResponse<>("User updated successfully", response));
     }
 
-    @DeleteMapping("/{id}")
-    @ApiResponse(responseCode = "204")
-    public ResponseEntity<Void> deleteUser(@PathVariable(name = "id") final UUID id) {
-        userService.delete(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<ApiResponse<Void>> deleteById(@PathVariable String userId) {
+        userService.deleteById(userId);
+        return ResponseEntity.ok(new ApiResponse<>("User deleted successfully", null));
     }
-
 }

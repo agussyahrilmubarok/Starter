@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.MapperFeature;
 
-
 @Configuration
 public class JacksonConfig {
 
