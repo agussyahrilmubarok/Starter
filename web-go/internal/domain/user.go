@@ -3,15 +3,18 @@ package domain
 import (
 	"errors"
 	"time"
+
+	"github.com/google/uuid"
 )
 
+// User represents the user entity within the system.
 type User struct {
-	ID        string    `gorm:"primaryKey;type:varchar(36)"`
-	Name      string    `gorm:"type:varchar(100);not null"`
-	Email     string    `gorm:"type:varchar(100);unique;not null"`
-	Password  string    `gorm:"type:varchar(255);not null"`
-	CreatedAt time.Time `gorm:"autoCreateTime"`
-	UpdatedAt time.Time `gorm:"autoUpdateTime"`
+	ID        uuid.UUID `json:"id"         gorm:"type:uuid;primaryKey;default:gen_random_uuid()"`
+	Name      string    `json:"name"        gorm:"type:varchar(100);not null"`
+	Email     string    `json:"email"       gorm:"type:varchar(150);uniqueIndex;not null"`
+	Password  string    `json:"password,omitempty" gorm:"type:varchar(255);not null"`
+	CreatedAt time.Time `json:"created_at"  gorm:"autoCreateTime"`
+	UpdatedAt time.Time `json:"updated_at"  gorm:"autoUpdateTime"`
 }
 
 var (

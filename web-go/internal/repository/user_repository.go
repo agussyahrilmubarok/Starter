@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"agussyahrilmubarok.github.io/web/internal/domain"
+	"github.com/google/uuid"
 
 	"gorm.io/gorm"
 )
@@ -16,7 +17,7 @@ type IUserRepository interface {
 	FindByEmail(ctx context.Context, email string) (*domain.User, error)
 	Create(ctx context.Context, user *domain.User) error
 	Save(ctx context.Context, user *domain.User) error
-	DeleteByID(ctx context.Context, ID string) error
+	DeleteByID(ctx context.Context, ID uuid.UUID) error
 }
 
 type userRepository struct {
@@ -81,7 +82,7 @@ func (r *userRepository) Save(ctx context.Context, user *domain.User) error {
 }
 
 // DeleteByID implements [IUserRepository].
-func (r *userRepository) DeleteByID(ctx context.Context, ID string) error {
+func (r *userRepository) DeleteByID(ctx context.Context, ID uuid.UUID) error {
 	result := r.db.WithContext(ctx).Delete(&domain.User{}, "id = ?", ID)
 
 	if result.Error != nil {

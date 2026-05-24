@@ -45,7 +45,7 @@ func (s *authService) SignUp(ctx context.Context, param model.SignUpRequest) (*m
 	}
 
 	user := &domain.User{
-		ID:       uuid.New().String(),
+		ID:       uuid.New(),
 		Name:     param.Name,
 		Email:    strings.ToLower(param.Email),
 		Password: hashPassword,
@@ -56,7 +56,7 @@ func (s *authService) SignUp(ctx context.Context, param model.SignUpRequest) (*m
 		return nil, err
 	}
 
-	log.Info("sign-up: user created successfully", zap.String("user_id", user.ID))
+	log.Info("sign-up: user created successfully", zap.String("user_id", user.ID.String()))
 	userResponse := model.ToUserResponse(user)
 	return &userResponse, nil
 }
@@ -76,11 +76,11 @@ func (s *authService) SignIn(ctx context.Context, param model.SignInRequest) (*m
 	}
 
 	if ok := helper.PasswordCheck(param.Password, user.Password); !ok {
-		log.Warn("sign-in: password not match", zap.String("user_id", user.ID))
+		log.Warn("sign-in: password not match", zap.String("user_id", user.ID.String()))
 		return nil, domain.ErrUserPasswordNotMatch
 	}
 
-	log.Info("sign-in: success", zap.String("user_id", user.ID))
+	log.Info("sign-in: success", zap.String("user_id", user.ID.String()))
 	userResponse := model.ToUserResponse(user)
 	return &userResponse, nil
 }

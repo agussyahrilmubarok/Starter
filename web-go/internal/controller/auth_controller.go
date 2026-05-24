@@ -56,6 +56,8 @@ func (h *authController) SignUp(c *gin.Context) {
 
 	data["MsgInfo"] = "Sign up successfully"
 	render(c, http.StatusBadRequest, "sign_up_index.html", data)
+
+	c.Redirect(http.StatusOK, "/")
 }
 
 func NewAuthController(

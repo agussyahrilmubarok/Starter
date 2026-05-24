@@ -86,7 +86,7 @@ func (s *userService) Create(ctx context.Context, param model.CreateUserRequest)
 	}
 
 	user := &domain.User{
-		ID:       uuid.New().String(),
+		ID:       uuid.New(),
 		Name:     param.Name,
 		Email:    strings.ToLower(param.Email),
 		Password: hashPassword,
@@ -97,7 +97,7 @@ func (s *userService) Create(ctx context.Context, param model.CreateUserRequest)
 		return nil, err
 	}
 
-	log.Info("user: created successfully", zap.String("user_id", user.ID))
+	log.Info("user: created successfully", zap.String("user_id", user.ID.String()))
 	res := model.ToUserResponse(user)
 	return &res, nil
 }
@@ -152,7 +152,13 @@ func (s *userService) UpdateByID(ctx context.Context, ID string, param model.Upd
 func (s *userService) DeleteByID(ctx context.Context, ID string) error {
 	log := logger.FromCtx(ctx).With(zap.String("user_id", ID))
 
-	if err := s.userRepository.DeleteByID(ctx, ID); err != nil {
+	id, err := uuid.Parse(ID)
+	if err != nil {
+		log.Error("user: failed to delete user", zap.Error(err))
+		return err
+	}
+
+	if err := s.userRepository.DeleteByID(ctx, id); err != nil {
 		log.Error("user: failed to delete user", zap.Error(err))
 		return err
 	}
