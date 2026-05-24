@@ -1,0 +1,22 @@
+<script setup lang="ts">
+import useDocumentTitle from '../../composables/common/useDocumentTitle';
+
+useDocumentTitle("404");
+</script>
+
+<template>
+  <div
+    class="container vh-100 d-flex align-items-center justify-content-center"
+  >
+    <div class="text-center">
+      <h1 class="display-1 fw-bold text-danger">404</h1>
+      <h2 class="mb-3">Page Not Found</h2>
+      <p class="text-muted mb-4">
+        The page you are looking for does not exist.
+      </p>
+      <router-link to="/" class="btn btn-primary px-4">
+        Back to Home
+      </router-link>
+    </div>
+  </div>
+</template>
