@@ -1,2 +1,0 @@
-- [ ] backend-spring RESTful API for user domain.
-- [ ] frontend-react-ts Not found page.
