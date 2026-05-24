@@ -16,7 +16,7 @@ type UserResponse struct {
 
 func ToUserResponse(user *domain.User) UserResponse {
 	return UserResponse{
-		ID:        user.ID,
+		ID:        user.ID.String(),
 		Name:      user.Name,
 		Email:     user.Email,
 		CreatedAt: user.CreatedAt,

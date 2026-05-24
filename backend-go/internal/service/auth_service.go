@@ -46,7 +46,7 @@ func (s *authService) SignUp(ctx context.Context, param model.SignUpRequest) (*m
 	}
 
 	user := &domain.User{
-		ID:       uuid.New().String(),
+		ID:       uuid.New(),
 		Name:     param.Name,
 		Email:    strings.ToLower(param.Email),
 		Password: hashPassword,
@@ -57,16 +57,16 @@ func (s *authService) SignUp(ctx context.Context, param model.SignUpRequest) (*m
 		return nil, err
 	}
 
-	tokenString, err := s.jwtService.Generate(ctx, user.ID)
+	tokenString, err := s.jwtService.Generate(ctx, user.ID.String())
 	if err != nil {
-		log.Error("sign-up: failed to generate token, rolling back user", zap.String("user_id", user.ID), zap.Error(err))
+		log.Error("sign-up: failed to generate token, rolling back user", zap.String("user_id", user.ID.String()), zap.Error(err))
 		if err := s.userRepository.DeleteByID(ctx, user.ID); err != nil {
 			log.Error("sign-up: failed to rollback user creation", zap.Error(err))
 		}
 		return nil, err
 	}
 
-	log.Info("sign-up: user created successfully", zap.String("user_id", user.ID))
+	log.Info("sign-up: user created successfully", zap.String("user_id", user.ID.String()))
 	return &model.AuthResponse{
 		Token: tokenString,
 		User:  model.ToUserResponse(user),
@@ -88,17 +88,17 @@ func (s *authService) SignIn(ctx context.Context, param model.SignInRequest) (*m
 	}
 
 	if ok := helper.PasswordCheck(param.Password, user.Password); !ok {
-		log.Warn("sign-in: password not match", zap.String("user_id", user.ID))
+		log.Warn("sign-in: password not match", zap.String("user_id", user.ID.String()))
 		return nil, domain.ErrUserPasswordNotMatch
 	}
 
-	tokenString, err := s.jwtService.Generate(ctx, user.ID)
+	tokenString, err := s.jwtService.Generate(ctx, user.ID.String())
 	if err != nil {
-		log.Error("sign-in: failed to generate token", zap.String("user_id", user.ID), zap.Error(err))
+		log.Error("sign-in: failed to generate token", zap.String("user_id", user.ID.String()), zap.Error(err))
 		return nil, err
 	}
 
-	log.Info("sign-in: success", zap.String("user_id", user.ID))
+	log.Info("sign-in: success", zap.String("user_id", user.ID.String()))
 	return &model.AuthResponse{
 		Token: tokenString,
 		User:  model.ToUserResponse(user),

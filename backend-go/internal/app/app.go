@@ -31,7 +31,7 @@ type App struct {
 }
 
 func (app *App) Run() error {
-	app.autoMigrate()
+	app.autoMigrate(false)
 
 	handler := app.setGinRouter()
 
@@ -65,8 +65,10 @@ func (app *App) Run() error {
 	return nil
 }
 
-func (app *App) autoMigrate() {
-	app.db.AutoMigrate(&domain.User{})
+func (app *App) autoMigrate(p bool) {
+	if p {
+		app.db.AutoMigrate(&domain.User{})
+	}
 }
 
 func NewApp(

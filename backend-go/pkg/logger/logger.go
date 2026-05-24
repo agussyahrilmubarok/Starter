@@ -113,7 +113,7 @@ func Get() *zap.Logger {
 func Sync() {
 	mu.Lock()
 	defer mu.Unlock()
-	
+
 	if logger != nil {
 		_ = logger.Sync()
 	}
