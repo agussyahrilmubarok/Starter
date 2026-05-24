@@ -35,3 +35,54 @@
 {"level":"INFO","timestamp":"2026-05-23T17:15:15.537+0700","caller":"app/app.go:54","msg":"Shutting down server..."}
 {"level":"INFO","timestamp":"2026-05-23T17:15:15.538+0700","caller":"app/app.go:64","msg":"Server exited"}
 {"level":"INFO","timestamp":"2026-05-23T17:15:23.968+0700","caller":"app/app.go:44","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T21:48:40.671+0700","caller":"app/app.go:54","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T21:48:40.672+0700","caller":"app/app.go:64","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T21:49:03.511+0700","caller":"app/app.go:43","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T21:49:40.550+0700","caller":"app/app.go:53","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T21:49:40.551+0700","caller":"app/app.go:63","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T21:49:46.400+0700","caller":"app/app.go:43","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T21:50:21.528+0700","caller":"app/app.go:53","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T21:50:21.529+0700","caller":"app/app.go:63","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T21:50:23.001+0700","caller":"app/app.go:43","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T21:50:59.583+0700","caller":"app/app.go:53","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T21:50:59.584+0700","caller":"app/app.go:63","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T21:55:46.098+0700","caller":"app/app.go:43","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T21:56:02.837+0700","caller":"app/app.go:53","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T21:56:02.838+0700","caller":"app/app.go:63","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T21:56:09.567+0700","caller":"app/app.go:43","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T21:59:04.783+0700","caller":"app/app.go:53","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T21:59:04.783+0700","caller":"app/app.go:63","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T21:59:11.615+0700","caller":"app/app.go:43","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T22:00:07.740+0700","caller":"app/app.go:53","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T22:00:07.741+0700","caller":"app/app.go:63","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T22:00:14.452+0700","caller":"app/app.go:43","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T22:01:20.095+0700","caller":"app/app.go:53","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T22:01:20.095+0700","caller":"app/app.go:63","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T22:01:26.732+0700","caller":"app/app.go:43","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T22:01:31.272+0700","caller":"service/auth_service.go:59","msg":"sign-up: user created successfully","request_id":"1c035e4d-dd0a-4d37-aad8-abff98699052","user_email":"johndoe@mail.com","user_id":"741a96cb-2b3d-44a4-b746-4229f2122eef"}
+{"level":"INFO","timestamp":"2026-05-23T22:02:02.007+0700","caller":"app/app.go:53","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T22:02:02.008+0700","caller":"app/app.go:63","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T22:02:10.616+0700","caller":"app/app.go:43","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T22:02:15.345+0700","caller":"service/auth_service.go:59","msg":"sign-up: user created successfully","request_id":"8be4ee81-5a6e-4d1b-9e4b-5cd2a8316e2a","user_email":"","user_id":"d26f2b6b-d7f6-42ec-9077-2d02b3b1d2a2"}
+{"level":"INFO","timestamp":"2026-05-23T22:04:52.842+0700","caller":"app/app.go:53","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T22:04:52.843+0700","caller":"app/app.go:63","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T22:05:17.752+0700","caller":"app/app.go:43","msg":"Server started","port":"8080"}
+{"level":"WARN","timestamp":"2026-05-23T22:05:33.740+0700","caller":"service/auth_service.go:37","msg":"sign-up: email already exists","request_id":"d8567a25-603f-4799-85b3-1f804f5bfffb","user_email":"johndoe@mail.com"}
+{"level":"INFO","timestamp":"2026-05-23T22:05:43.827+0700","caller":"service/auth_service.go:59","msg":"sign-up: user created successfully","request_id":"991c415d-e4b6-47db-9b42-c74c8e5009a4","user_email":"janesmith@mail.com","user_id":"e637556d-f58a-45d4-be69-656df66457ab"}
+{"level":"INFO","timestamp":"2026-05-23T22:13:16.883+0700","caller":"app/app.go:53","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T22:13:16.885+0700","caller":"app/app.go:63","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T22:13:24.334+0700","caller":"app/app.go:43","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T22:13:41.243+0700","caller":"service/auth_service.go:59","msg":"sign-up: user created successfully","request_id":"a14e508b-9b36-4f61-89c4-16e8addfadbe","user_email":"sdasdas@masdsa.com","user_id":"dc084c8e-03f5-4fa2-a243-169f40dbfa38"}
+{"level":"INFO","timestamp":"2026-05-23T22:13:51.603+0700","caller":"app/app.go:53","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T22:13:51.603+0700","caller":"app/app.go:63","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T22:14:24.456+0700","caller":"app/app.go:43","msg":"Server started","port":"8080"}
+{"level":"WARN","timestamp":"2026-05-23T22:14:53.564+0700","caller":"service/auth_service.go:37","msg":"sign-up: email already exists","request_id":"d5a8311c-dc0b-424f-b6a8-77514c96755a","user_email":"sdasdas@masdsa.com"}
+{"level":"INFO","timestamp":"2026-05-23T22:14:57.244+0700","caller":"service/auth_service.go:59","msg":"sign-up: user created successfully","request_id":"44ce9adc-3eca-4bb8-a267-10f557868df0","user_email":"sdssesasdas@masdsa.com","user_id":"df08667c-687b-4857-a503-465170340076"}
+{"level":"INFO","timestamp":"2026-05-23T22:15:53.968+0700","caller":"app/app.go:53","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T22:15:53.968+0700","caller":"app/app.go:63","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T22:15:55.305+0700","caller":"app/app.go:43","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T22:16:12.388+0700","caller":"service/auth_service.go:59","msg":"sign-up: user created successfully","request_id":"3841714d-10f8-470c-9c3c-689d11e7efed","user_email":"sdasdasdasdas@nasdas.com","user_id":"6067d13c-8573-4947-a0fa-ef05b5b75227"}
+{"level":"INFO","timestamp":"2026-05-23T22:16:43.379+0700","caller":"app/app.go:53","msg":"Shutting down server..."}
+{"level":"INFO","timestamp":"2026-05-23T22:16:43.380+0700","caller":"app/app.go:63","msg":"Server exited"}
+{"level":"INFO","timestamp":"2026-05-23T22:16:49.081+0700","caller":"app/app.go:43","msg":"Server started","port":"8080"}
+{"level":"INFO","timestamp":"2026-05-23T22:16:59.143+0700","caller":"service/auth_service.go:59","msg":"sign-up: user created successfully","request_id":"6a2b303a-2340-4be2-a022-8e916722ea96","user_email":"sdasdasdasdasdas@msdasd.com","user_id":"5cb205b9-80e1-4c0f-b626-0dfe77100f20"}

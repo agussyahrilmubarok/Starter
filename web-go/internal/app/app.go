@@ -25,7 +25,6 @@ type App struct {
 
 	userRepository repository.IUserRepository
 
-	jwtService  service.IJWTService
 	authService service.IAuthService
 	userService service.IUserService
 }
@@ -72,8 +71,7 @@ func (app *App) autoMigrate() {
 func NewApp(cfg *config.Config, db *gorm.DB) *App {
 	userRepository := repository.NewUserRepository(db)
 
-	jwtService := service.NewJWTService(&cfg.JWT)
-	authService := service.NewAuthService(userRepository, jwtService)
+	authService := service.NewAuthService(userRepository)
 	userService := service.NewUserService(userRepository)
 
 	return &App{
@@ -83,7 +81,6 @@ func NewApp(cfg *config.Config, db *gorm.DB) *App {
 
 		userRepository: userRepository,
 
-		jwtService:  jwtService,
 		authService: authService,
 		userService: userService,
 	}

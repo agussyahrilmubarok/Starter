@@ -10,8 +10,8 @@ type homeController struct {
 }
 
 func (h *homeController) Index(c *gin.Context) {
-	data := templateData{
-		Title: "Home",
+	data := gin.H{
+		"Title": "Home",
 	}
 
 	render(c, http.StatusOK, "home_index.html", data)

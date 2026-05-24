@@ -21,11 +21,11 @@ func (app *App) setGinRouter() http.Handler {
 	router.StaticFile("/favicon.ico", "./public/static/favicon.ico")
 
 	homeController := controller.NewHomeController()
-	authController := controller.NewAuthController()
+	authController := controller.NewAuthController(app.authService)
 
 	router.GET("/", homeController.Index)
 
-	router.GET("/sign-up", authController.SignUpPage)
+	router.GET("/sign-up", authController.SignUp)
 	router.POST("/sign-up", authController.SignUp)
 
 	return router

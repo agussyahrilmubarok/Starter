@@ -16,17 +16,16 @@ import (
 
 //go:generate mockery --name=IAuthService
 type IAuthService interface {
-	SignUp(ctx context.Context, param model.SignUpRequest) (*model.AuthResponse, error)
-	SignIn(ctx context.Context, param model.SignInRequest) (*model.AuthResponse, error)
+	SignUp(ctx context.Context, param model.SignUpRequest) (*model.UserResponse, error)
+	SignIn(ctx context.Context, param model.SignInRequest) (*model.UserResponse, error)
 }
 
 type authService struct {
 	userRepository repository.IUserRepository
-	jwtService     IJWTService
 }
 
 // SignUp implements [IAuthService].
-func (s *authService) SignUp(ctx context.Context, param model.SignUpRequest) (*model.AuthResponse, error) {
+func (s *authService) SignUp(ctx context.Context, param model.SignUpRequest) (*model.UserResponse, error) {
 	log := logger.FromCtx(ctx).With(zap.String("user_email", param.Email))
 
 	exist, err := s.userRepository.FindByEmail(ctx, param.Email)
@@ -57,24 +56,13 @@ func (s *authService) SignUp(ctx context.Context, param model.SignUpRequest) (*m
 		return nil, err
 	}
 
-	tokenString, err := s.jwtService.Generate(ctx, user.ID)
-	if err != nil {
-		log.Error("sign-up: failed to generate token, rolling back user", zap.String("user_id", user.ID), zap.Error(err))
-		if err := s.userRepository.DeleteByID(ctx, user.ID); err != nil {
-			log.Error("sign-up: failed to rollback user creation", zap.Error(err))
-		}
-		return nil, err
-	}
-
 	log.Info("sign-up: user created successfully", zap.String("user_id", user.ID))
-	return &model.AuthResponse{
-		Token: tokenString,
-		User:  model.ToUserResponse(user),
-	}, nil
+	userResponse := model.ToUserResponse(user)
+	return &userResponse, nil
 }
 
 // SignIn implements [IAuthService].
-func (s *authService) SignIn(ctx context.Context, param model.SignInRequest) (*model.AuthResponse, error) {
+func (s *authService) SignIn(ctx context.Context, param model.SignInRequest) (*model.UserResponse, error) {
 	log := logger.FromCtx(ctx).With(zap.String("user_email", param.Email))
 
 	user, err := s.userRepository.FindByEmail(ctx, strings.ToLower(param.Email))
@@ -92,25 +80,15 @@ func (s *authService) SignIn(ctx context.Context, param model.SignInRequest) (*m
 		return nil, domain.ErrUserPasswordNotMatch
 	}
 
-	tokenString, err := s.jwtService.Generate(ctx, user.ID)
-	if err != nil {
-		log.Error("sign-in: failed to generate token", zap.String("user_id", user.ID), zap.Error(err))
-		return nil, err
-	}
-
 	log.Info("sign-in: success", zap.String("user_id", user.ID))
-	return &model.AuthResponse{
-		Token: tokenString,
-		User:  model.ToUserResponse(user),
-	}, nil
+	userResponse := model.ToUserResponse(user)
+	return &userResponse, nil
 }
 
 func NewAuthService(
 	userRepository repository.IUserRepository,
-	jwtService IJWTService,
 ) IAuthService {
 	return &authService{
 		userRepository: userRepository,
-		jwtService:     jwtService,
 	}
 }

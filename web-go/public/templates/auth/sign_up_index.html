@@ -13,7 +13,7 @@
             <input
               type="text"
               name="name"
-              value="{{ .Form.Name }}"
+              value="{{ .Values.Name }}"
               class="form-control rounded-3 {{if .Errors.Name}}is-invalid{{end}}"
               placeholder="Enter your full name"
             />
@@ -27,7 +27,7 @@
             <input
               type="email"
               name="email"
-              value="{{ .Form.Email }}"
+              value="{{ .Values.Email }}"
               class="form-control rounded-3 {{if .Errors.Email}}is-invalid{{end}}"
               placeholder="Enter your email"
             />
@@ -41,7 +41,7 @@
             <input
               type="password"
               name="password"
-              value="{{ .Form.Password }}"
+              value="{{ .Values.Password }}"
               class="form-control rounded-3 {{if .Errors.Password}}is-invalid{{end}}"
               placeholder="Enter your password"
             />
@@ -49,10 +49,6 @@
             <div class="invalid-feedback">{{.Errors.Password}}</div>
             {{end}}
           </div>
-
-          {{if .Errors.Error}}
-          <div class="alert alert-danger py-2">{{.Errors.Error}}</div>
-          {{end}}
 
           <button type="submit" class="btn btn-primary w-100 rounded-4 mt-2">
             Sign Up
