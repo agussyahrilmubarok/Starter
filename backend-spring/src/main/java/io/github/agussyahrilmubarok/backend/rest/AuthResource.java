@@ -6,6 +6,7 @@ import io.github.agussyahrilmubarok.backend.model.auth.SignInResponse;
 import io.github.agussyahrilmubarok.backend.model.auth.SignUpRequest;
 import io.github.agussyahrilmubarok.backend.model.auth.SignUpResponse;
 import io.github.agussyahrilmubarok.backend.service.IAuthService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,6 +27,7 @@ public class AuthResource {
     }
 
     @PostMapping("/sign-up")
+     @SecurityRequirements
     public ResponseEntity<ApiResponse<SignUpResponse>> signUp(
             @Valid @RequestBody SignUpRequest request) {
         SignUpResponse response = authService.signUp(request);
@@ -34,6 +36,7 @@ public class AuthResource {
     }
 
     @PostMapping("/sign-in")
+     @SecurityRequirements
     public ResponseEntity<ApiResponse<SignInResponse>> signIn(
             @Valid @RequestBody SignInRequest request) {
         SignInResponse response = authService.signIn(request);

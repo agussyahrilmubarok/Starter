@@ -1,5 +1,6 @@
 package io.github.agussyahrilmubarok.backend.security;
 
+import io.github.agussyahrilmubarok.backend.exception.UnauthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -49,7 +50,7 @@ public class JwtProvider {
 
             return claims.get(CLAIM_USER_ID, String.class);
         } catch (JwtException | IllegalArgumentException e) {
-            throw new RuntimeException("Invalid or expired token", e);
+            throw new UnauthorizedException("Invalid or expired token");
         }
     }
 }
