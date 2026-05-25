@@ -27,7 +27,7 @@ public class AuthResource {
     }
 
     @PostMapping("/sign-up")
-     @SecurityRequirements
+    @SecurityRequirements
     public ResponseEntity<ApiResponse<SignUpResponse>> signUp(
             @Valid @RequestBody SignUpRequest request) {
         SignUpResponse response = authService.signUp(request);
@@ -36,7 +36,7 @@ public class AuthResource {
     }
 
     @PostMapping("/sign-in")
-     @SecurityRequirements
+    @SecurityRequirements
     public ResponseEntity<ApiResponse<SignInResponse>> signIn(
             @Valid @RequestBody SignInRequest request) {
         SignInResponse response = authService.signIn(request);

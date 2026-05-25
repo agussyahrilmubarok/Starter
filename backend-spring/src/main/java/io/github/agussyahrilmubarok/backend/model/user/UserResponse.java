@@ -1,8 +1,8 @@
 package io.github.agussyahrilmubarok.backend.model.user;
 
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.LocalDateTime;
 
 public record UserResponse(
         @JsonProperty("id") String id,

@@ -17,134 +17,134 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-        private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-        @ExceptionHandler(MethodArgumentNotValidException.class)
-        public ResponseEntity<ApiResponse<Void>> handleValidationException(
-                        MethodArgumentNotValidException ex) {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResponse<Void>> handleValidationException(
+            MethodArgumentNotValidException ex) {
 
-                Map<String, String> errors = new HashMap<>();
-                ex.getBindingResult().getFieldErrors().forEach(fieldError -> {
-                        String field = fieldError.getField();
-                        String message = switch (fieldError.getCode()) {
-                                case "NotBlank", "NotNull", "NotEmpty" -> field + " is required";
-                                case "Email" -> "Invalid email format";
-                                case "Size" -> {
-                                        Object[] args = fieldError.getArguments();
-                                        int max = (int) args[1];
-                                        int min = (int) args[2];
-                                        if (min > 0 && max < Integer.MAX_VALUE)
-                                                yield field + " must be between " + min + " and " + max + " characters";
-                                        else if (min > 0)
-                                                yield field + " must be at least " + min + " characters";
-                                        else
-                                                yield field + " must be at most " + max + " characters";
-                                }
-                                case "Min" -> field + " must be at least " + fieldError.getArguments()[1];
-                                case "Max" -> field + " must be at most " + fieldError.getArguments()[1];
-                                case "Pattern" -> "Invalid " + field + " format";
-                                default -> "Invalid value";
-                        };
-                        errors.put(field, message);
-                });
-
-                log.warn("exception: validation failed errors={}", errors);
-
-                return ResponseEntity
-                                .status(HttpStatus.UNPROCESSABLE_ENTITY)
-                                .body(new ApiResponse<>("Validation error", errors));
-        }
-
-        @ExceptionHandler(NotFoundException.class)
-        public ResponseEntity<ApiResponse<Void>> handleNotFoundException(
-                        NotFoundException ex,
-                        HttpServletRequest request) {
-
-                log.warn("exception: {} {} message={}",
-                                request.getMethod(), request.getRequestURI(), ex.getMessage());
-
-                Map<String, String> errors = new HashMap<>();
-
-                if (ex.getField() != null) {
-                        errors.put(ex.getField(), ex.getMessage());
-                } else {
-                        errors.put("error", ex.getMessage());
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(fieldError -> {
+            String field = fieldError.getField();
+            String message = switch (fieldError.getCode()) {
+                case "NotBlank", "NotNull", "NotEmpty" -> field + " is required";
+                case "Email" -> "Invalid email format";
+                case "Size" -> {
+                    Object[] args = fieldError.getArguments();
+                    int max = (int) args[1];
+                    int min = (int) args[2];
+                    if (min > 0 && max < Integer.MAX_VALUE)
+                        yield field + " must be between " + min + " and " + max + " characters";
+                    else if (min > 0)
+                        yield field + " must be at least " + min + " characters";
+                    else
+                        yield field + " must be at most " + max + " characters";
                 }
+                case "Min" -> field + " must be at least " + fieldError.getArguments()[1];
+                case "Max" -> field + " must be at most " + fieldError.getArguments()[1];
+                case "Pattern" -> "Invalid " + field + " format";
+                default -> "Invalid value";
+            };
+            errors.put(field, message);
+        });
 
-                return ResponseEntity
-                                .status(HttpStatus.NOT_FOUND)
-                                .body(new ApiResponse<>("Not found error", errors));
+        log.warn("exception: validation failed errors={}", errors);
+
+        return ResponseEntity
+                .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .body(new ApiResponse<>("Validation error", errors));
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleNotFoundException(
+            NotFoundException ex,
+            HttpServletRequest request) {
+
+        log.warn("exception: {} {} message={}",
+                request.getMethod(), request.getRequestURI(), ex.getMessage());
+
+        Map<String, String> errors = new HashMap<>();
+
+        if (ex.getField() != null) {
+            errors.put(ex.getField(), ex.getMessage());
+        } else {
+            errors.put("error", ex.getMessage());
         }
 
-        @ExceptionHandler(ConflictException.class)
-        public ResponseEntity<ApiResponse<Void>> handleConflictException(
-                        ConflictException ex,
-                        HttpServletRequest request) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ApiResponse<>("Not found error", errors));
+    }
 
-                log.warn("exception: {} {} message={}",
-                                request.getMethod(), request.getRequestURI(), ex.getMessage());
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ApiResponse<Void>> handleConflictException(
+            ConflictException ex,
+            HttpServletRequest request) {
 
-                Map<String, String> errors = new HashMap<>();
+        log.warn("exception: {} {} message={}",
+                request.getMethod(), request.getRequestURI(), ex.getMessage());
 
-                if (ex.getField() != null) {
-                        errors.put(ex.getField(), ex.getMessage());
-                } else {
-                        errors.put("error", ex.getMessage());
-                }
+        Map<String, String> errors = new HashMap<>();
 
-                return ResponseEntity
-                                .status(HttpStatus.CONFLICT)
-                                .body(new ApiResponse<>("Conflict error", errors));
+        if (ex.getField() != null) {
+            errors.put(ex.getField(), ex.getMessage());
+        } else {
+            errors.put("error", ex.getMessage());
         }
 
-        @ExceptionHandler(UnauthorizedException.class)
-        public ResponseEntity<ApiResponse<Void>> handleUnauthorizedException(
-                        UnauthorizedException ex,
-                        HttpServletRequest request) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new ApiResponse<>("Conflict error", errors));
+    }
 
-                log.warn("exception: {} {} message={}",
-                                request.getMethod(), request.getRequestURI(), ex.getMessage());
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleUnauthorizedException(
+            UnauthorizedException ex,
+            HttpServletRequest request) {
 
-                Map<String, String> errors = new HashMap<>();
+        log.warn("exception: {} {} message={}",
+                request.getMethod(), request.getRequestURI(), ex.getMessage());
 
-                if (ex.getField() != null) {
-                        errors.put(ex.getField(), ex.getMessage());
-                } else {
-                        errors.put("error", ex.getMessage());
-                }
+        Map<String, String> errors = new HashMap<>();
 
-                return ResponseEntity
-                                .status(HttpStatus.UNAUTHORIZED)
-                                .body(new ApiResponse<>("Unauthorized error", errors));
+        if (ex.getField() != null) {
+            errors.put(ex.getField(), ex.getMessage());
+        } else {
+            errors.put("error", ex.getMessage());
         }
 
-        @ExceptionHandler(HttpMessageNotReadableException.class)
-        public ResponseEntity<ApiResponse<Void>> handleNotReadableException(
-                        HttpMessageNotReadableException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ApiResponse<>("Unauthorized error", errors));
+    }
 
-                log.warn("exception: malformed JSON body message={}", ex.getMessage());
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiResponse<Void>> handleNotReadableException(
+            HttpMessageNotReadableException ex) {
 
-                Map<String, String> errors = new HashMap<>();
-                errors.put("error", "Malformed JSON request body");
+        log.warn("exception: malformed JSON body message={}", ex.getMessage());
 
-                return ResponseEntity
-                                .status(HttpStatus.BAD_REQUEST)
-                                .body(new ApiResponse<>("Bad request error", errors));
-        }
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", "Malformed JSON request body");
 
-        @ExceptionHandler(Exception.class)
-        public ResponseEntity<ApiResponse<Void>> handleGenericException(
-                        Exception ex,
-                        HttpServletRequest request) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse<>("Bad request error", errors));
+    }
 
-                log.error("exception: unhandled {} {} message={}",
-                                request.getMethod(), request.getRequestURI(), ex.getMessage(), ex);
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse<Void>> handleGenericException(
+            Exception ex,
+            HttpServletRequest request) {
 
-                Map<String, String> errors = new HashMap<>();
-                errors.put("error", "Internal server error");
+        log.error("exception: unhandled {} {} message={}",
+                request.getMethod(), request.getRequestURI(), ex.getMessage(), ex);
 
-                return ResponseEntity
-                                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                .body(new ApiResponse<>("Internal server error", errors));
-        }
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", "Internal server error");
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse<>("Internal server error", errors));
+    }
 }

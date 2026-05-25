@@ -95,7 +95,7 @@ public class UserServiceImpl implements IUserService {
             user.setName(request.name().trim());
         }
 
-        if (request.email() != null) {
+        if (request.email() != null && !request.email().equals(user.getEmail())) {
             boolean emailTaken = userRepository.existsByEmailIgnoreCase(request.email());
             if (emailTaken) {
                 log.warn("user: email already registered on update email={} userId={}", request.email(), userId);

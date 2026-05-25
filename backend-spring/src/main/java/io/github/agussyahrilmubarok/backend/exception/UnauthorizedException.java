@@ -21,7 +21,7 @@ public class UnauthorizedException extends RuntimeException {
         this.field = field;
     }
 
-     public String getField() {
+    public String getField() {
         return field;
     }
 }
