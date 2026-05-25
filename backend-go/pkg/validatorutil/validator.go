@@ -16,29 +16,29 @@ func ValidatorError(err error) map[string]string {
 	// Handler error from validator.v10
 	if validationErrors, ok := err.(validator.ValidationErrors); ok {
 		for _, fieldError := range validationErrors {
-			field := capitalize(fieldError.Field())
+			field := strings.ToLower(fieldError.Field())
 
 			switch fieldError.Tag() {
 			case "required":
-				errorsMap[field] = fmt.Sprintf("%s is required", field)
+				errorsMap[field] = fmt.Sprintf("%s is required", capitalize(field))
 			case "email":
 				errorsMap[field] = "Invalid email format"
 			case "unique":
-				errorsMap[field] = fmt.Sprintf("%s already exists", field)
+				errorsMap[field] = fmt.Sprintf("%s already exists", capitalize(field))
 			case "min":
 				errorsMap[field] = fmt.Sprintf(
 					"%s must be at least %s characters",
-					field,
+					capitalize(field),
 					fieldError.Param(),
 				)
 			case "max":
 				errorsMap[field] = fmt.Sprintf(
 					"%s must be at most %s characters",
-					field,
+					capitalize(field),
 					fieldError.Param(),
 				)
 			case "numeric":
-				errorsMap[field] = fmt.Sprintf("%s must be a number", field)
+				errorsMap[field] = fmt.Sprintf("%s must be a number", capitalize(field))
 			default:
 				errorsMap[field] = "Invalid value"
 			}

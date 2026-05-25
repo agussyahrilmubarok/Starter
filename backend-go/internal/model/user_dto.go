@@ -25,13 +25,13 @@ func ToUserResponse(user *domain.User) UserResponse {
 }
 
 type CreateUserRequest struct {
-	Name     string `json:"name" validate:"required,min=2,max=100"`
-	Email    string `json:"email" validate:"required,email,max=100"`
-	Password string `json:"password" validate:"required,min=8,max=255"`
+	Name     string `json:"name" binding:"required,min=2,max=100"`
+	Email    string `json:"email" binding:"required,email,max=100"`
+	Password string `json:"password" binding:"required,min=8,max=255"`
 }
 
 type UpdateUserRequest struct {
-	Name     string `json:"name" validate:"omitempty,min=2,max=100"`
-	Email    string `json:"email" validate:"omitempty,email,max=100"`
-	Password string `json:"password" validate:"omitempty,min=8,max=255"`
+	Name     string `json:"name" binding:"omitempty,min=2,max=100"`
+	Email    string `json:"email" binding:"omitempty,email,max=100"`
+	Password string `json:"password" binding:"omitempty,min=8,max=255"`
 }

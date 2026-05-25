@@ -57,7 +57,7 @@ func (h *authHandler) SignUp(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, model.SuccessResponse{
-		Message: "Sign in successfully",
+		Message: "Sign up successfully",
 		Data:    result,
 	})
 }
