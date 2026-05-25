@@ -7,11 +7,11 @@ import (
 )
 
 type UserResponse struct {
-	ID        string    `json:"id"`
-	Name      string    `json:"name"`
-	Email     string    `json:"email"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        string
+	Name      string
+	Email     string
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 func ToUserResponse(user *domain.User) UserResponse {
@@ -25,13 +25,13 @@ func ToUserResponse(user *domain.User) UserResponse {
 }
 
 type CreateUserRequest struct {
-	Name     string `json:"name" validate:"required,min=2,max=100"`
-	Email    string `json:"email" validate:"required,email,max=100"`
-	Password string `json:"password" validate:"required,min=8,max=255"`
+	Name     string `form:"name"     validate:"required,min=2,max=100"`
+	Email    string `form:"email"    validate:"required,email,max=100"`
+	Password string `form:"password" validate:"required,min=8,max=255"`
 }
 
 type UpdateUserRequest struct {
-	Name     string `json:"name" validate:"omitempty,min=2,max=100"`
-	Email    string `json:"email" validate:"omitempty,email,max=100"`
-	Password string `json:"password" validate:"omitempty,min=8,max=255"`
+	Name     string `form:"name"     validate:"omitempty,min=2,max=100"`
+	Email    string `form:"email"    validate:"omitempty,email,max=100"`
+	Password string `form:"password" validate:"omitempty,min=8,max=255"`
 }

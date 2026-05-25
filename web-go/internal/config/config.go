@@ -9,7 +9,7 @@ import (
 type Config struct {
 	App      AppConfig
 	Database DatabaseConfig
-	JWT      JWTConfig
+	Session  SessionConfig
 }
 
 type AppConfig struct {
@@ -28,9 +28,9 @@ type DatabaseConfig struct {
 	TimeZone string
 }
 
-type JWTConfig struct {
+type SessionConfig struct {
 	SecretKey string
-	ExpTime   string
+	MaxAge    int
 }
 
 // Load config file, filepath = "configs/config.yml"
@@ -65,9 +65,9 @@ func Load(filepath string) (*Config, error) {
 			SSLMode:  viper.GetString("database.sslmode"),
 			TimeZone: viper.GetString("database.timezone"),
 		},
-		JWT: JWTConfig{
-			SecretKey: viper.GetString("jwt.secret_key"),
-			ExpTime:   viper.GetString("jwt.exp_time"),
+		Session: SessionConfig{
+			SecretKey: viper.GetString("session.secret_key"),
+			MaxAge:    viper.GetInt("session.max_age"),
 		},
 	}, nil
 }

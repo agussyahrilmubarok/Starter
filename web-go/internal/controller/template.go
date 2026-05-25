@@ -1,13 +1,14 @@
-package app
+package controller
 
 import (
 	"os"
 	"path/filepath"
 
 	"github.com/gin-contrib/multitemplate"
+	"github.com/gin-gonic/gin"
 )
 
-func loadTemplate(templateDir string) multitemplate.Renderer {
+func LoadTemplate(templateDir string) multitemplate.Renderer {
 	renderer := multitemplate.NewRenderer()
 
 	commons, err := filepath.Glob(templateDir + "/common/*.html")
@@ -41,5 +42,23 @@ func loadTemplate(templateDir string) multitemplate.Renderer {
 		}
 	}
 
+	dashboardPages, err := filepath.Glob(templateDir + "/dashboard/**/*.html")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	for _, page := range dashboardPages {
+		if fileInfo, err := os.Stat(page); err == nil && !fileInfo.IsDir() {
+			files := append([]string{filepath.Join(templateDir, "layouts", "dashboard_layout.html")}, page)
+			files = append(files, commons...)
+			templateName := filepath.Base(page)
+			renderer.AddFromFiles(templateName, files...)
+		}
+	}
+
 	return renderer
+}
+
+func render(c *gin.Context, code int, tmpl string, data gin.H) {
+	c.HTML(code, tmpl, data)
 }

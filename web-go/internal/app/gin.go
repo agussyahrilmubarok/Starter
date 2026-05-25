@@ -14,19 +14,59 @@ func (app *App) setGinRouter() http.Handler {
 
 	router := gin.Default()
 	router.Use(app.requestIDMiddleware())
-	router.Use(sessions.Sessions(app.cfg.App.Name, cookie.NewStore([]byte(app.cfg.App.Name))))
 
-	router.HTMLRender = loadTemplate("./public/templates")
+	store := cookie.NewStore([]byte(app.cfg.Session.SecretKey))
+	store.Options(sessions.Options{
+		Path:     "/",
+		MaxAge:   app.cfg.Session.MaxAge,
+		HttpOnly: true,
+		// Secure: true, // (HTTPS)
+	})
+	router.Use(sessions.Sessions(app.cfg.App.Name, store))
+
+	router.NoRoute(func(c *gin.Context) {
+		c.HTML(http.StatusNotFound, "not_found.html", nil)
+	})
+
+	router.HTMLRender = controller.LoadTemplate("./public/templates")
 	router.Static("/static", "./public/static")
 	router.StaticFile("/favicon.ico", "./public/static/favicon.ico")
 
 	homeController := controller.NewHomeController()
 	authController := controller.NewAuthController(app.authService)
+	dashboardController := controller.NewDashboardController()
+	userController := controller.NewUserController(app.userService)
 
-	router.GET("/", homeController.Index)
+	public := router.Group("/")
+	{
+		public.GET("/", homeController.Index)
+	}
 
-	router.GET("/sign-up", authController.SignUp)
-	router.POST("/sign-up", authController.SignUp)
+	guest := router.Group("/")
+	guest.Use(app.guestMiddleware())
+	{
+		guest.GET("/sign-up", authController.SignUp)
+		guest.POST("/sign-up", authController.SignUp)
+		guest.GET("/sign-in", authController.SignIn)
+		guest.POST("/sign-in", authController.SignIn)
+	}
+
+	private := router.Group("/")
+	private.Use(app.authMiddleware())
+	{
+		private.GET("/dashboard", dashboardController.Dashboard)
+		private.POST("/sign-out", authController.SignOut)
+
+		users := private.Group("/dashboard/users")
+		{
+			users.GET("", userController.Index)
+			// users.GET("/create", userController.Create)
+			// users.POST("/create", userController.Store)
+			// users.GET("/:id/edit", userController.Edit)
+			// users.POST("/:id/edit", userController.Update)
+			// users.POST("/:id/delete", userController.Delete)
+		}
+	}
 
 	return router
 }

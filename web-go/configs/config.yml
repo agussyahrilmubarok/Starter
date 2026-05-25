@@ -12,6 +12,6 @@ database:
   sslmode: disable
   timezone: Asia/Jakarta
 
-jwt:
-  secret_key: your-super-secret-key
-  exp_time: 24h
+session:
+  secret_key: "bXlfc3VwZXJfc2VjcmV0X2tleV8zMmJ5dGVz"  
+  max_age: 604800  # 7 day in ms
