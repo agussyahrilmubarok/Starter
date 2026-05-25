@@ -3,34 +3,14 @@ package config
 import (
 	"strings"
 
+	"agussyahrilmubarok.github.io/backend/pkg/database"
 	"github.com/spf13/viper"
 )
 
 type Config struct {
 	App      AppConfig
-	Database DatabaseConfig
+	Database database.PostgresConfig
 	JWT      JWTConfig
-}
-
-type AppConfig struct {
-	Name     string
-	Port     string
-	TimeZone string
-}
-
-type DatabaseConfig struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
-	DBName   string
-	SSLMode  string
-	TimeZone string
-}
-
-type JWTConfig struct {
-	SecretKey string
-	ExpTime   string
 }
 
 // Load config file, filepath = "configs/config.yml"
@@ -56,7 +36,7 @@ func Load(filepath string) (*Config, error) {
 			Port:     viper.GetString("app.port"),
 			TimeZone: viper.GetString("app.timezone"),
 		},
-		Database: DatabaseConfig{
+		Database: database.PostgresConfig{
 			Host:     viper.GetString("database.host"),
 			Port:     viper.GetString("database.port"),
 			User:     viper.GetString("database.user"),

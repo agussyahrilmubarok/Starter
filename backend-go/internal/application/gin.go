@@ -1,47 +1,33 @@
-package app
+package application
 
 import (
 	"net/http"
 
 	"agussyahrilmubarok.github.io/backend/internal/handler"
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
-	_ "agussyahrilmubarok.github.io/backend/api/gin/docs"
+	_ "agussyahrilmubarok.github.io/backend/api/docs"
 )
 
-// @title Backend API
-// @version 1.0
-// @description Backend API
-// @BasePath /api
+// @title           Backend REST API
+// @version         1.0.0
+// @description     RESTful API documentation for backend services.
+// @BasePath        /api
 
 // @securityDefinitions.apikey BearerAuth
-// @in header
-// @name Authorization
-// @description Input your Bearer token in this format: Bearer <token>
-func (app *App) setGinRouter() http.Handler {
+// @in                         header
+// @name                       Authorization
+// @description                Enter JWT Bearer token in the format: Bearer <token>
+func (app *App) newGinRouter() http.Handler {
 	gin.SetMode(gin.ReleaseMode)
 
 	router := gin.Default()
-	router.Use(app.requestIDMiddleware())
-	router.Use(cors.New(cors.Config{
-		AllowOrigins:  []string{"*"},
-		AllowMethods:  []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders:  []string{"Origin", "Content-Type", "Authorization"},
-		ExposeHeaders: []string{"Content-Length"},
-	}))
 
 	authHandler := handler.NewAuthHandler(app.authService)
 	userHandler := handler.NewUserHandler(app.userService)
-
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello World!",
-		})
-	})
 
 	v1 := router.Group("/api/v1")
 	{
@@ -62,10 +48,10 @@ func (app *App) setGinRouter() http.Handler {
 		}
 	}
 
-	router.GET("/api/swagger/*any", ginSwagger.WrapHandler(
+	router.GET("/swagger-ui/*any", ginSwagger.WrapHandler(
 		swaggerFiles.Handler,
-		ginSwagger.InstanceName(app.config.App.Name),
-		ginSwagger.URL("/api/swagger/doc.json"),
+		ginSwagger.InstanceName(app.cfg.App.Name),
+		ginSwagger.URL("/swagger-ui/doc.json"),
 	))
 
 	return router

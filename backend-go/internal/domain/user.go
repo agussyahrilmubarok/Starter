@@ -7,7 +7,13 @@ import (
 	"github.com/google/uuid"
 )
 
-// User represents the user entity within the system.
+var (
+	ErrUserNotFound         = errors.New("user not found")
+	ErrUserEmailExists      = errors.New("user email exists")
+	ErrUserEmailNotFound    = errors.New("user email not found")
+	ErrUserPasswordNotMatch = errors.New("user password not match")
+)
+
 type User struct {
 	ID        uuid.UUID `json:"id"         gorm:"type:uuid;primaryKey;default:gen_random_uuid()"`
 	Name      string    `json:"name"        gorm:"type:varchar(100);not null"`
@@ -16,10 +22,3 @@ type User struct {
 	CreatedAt time.Time `json:"created_at"  gorm:"autoCreateTime"`
 	UpdatedAt time.Time `json:"updated_at"  gorm:"autoUpdateTime"`
 }
-
-var (
-	ErrUserNotFound         = errors.New("user not found")
-	ErrUserEmailExists      = errors.New("user email exists")
-	ErrUserEmailNotFound    = errors.New("user email not found")
-	ErrUserPasswordNotMatch = errors.New("user password not match")
-)

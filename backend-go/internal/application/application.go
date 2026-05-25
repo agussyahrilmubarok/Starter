@@ -1,4 +1,4 @@
-package app
+package application
 
 import (
 	"context"
@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"agussyahrilmubarok.github.io/backend/internal/config"
-	"agussyahrilmubarok.github.io/backend/internal/domain"
 	"agussyahrilmubarok.github.io/backend/internal/repository"
 	"agussyahrilmubarok.github.io/backend/internal/service"
 	"agussyahrilmubarok.github.io/backend/pkg/logger"
@@ -19,9 +18,9 @@ import (
 )
 
 type App struct {
-	config *config.Config
-	db     *gorm.DB
-	log    *zap.Logger
+	cfg *config.Config
+	db  *gorm.DB
+	log *zap.Logger
 
 	userRepository repository.IUserRepository
 
@@ -31,19 +30,17 @@ type App struct {
 }
 
 func (app *App) Run() error {
-	app.autoMigrate(false)
-
-	handler := app.setGinRouter()
+	handler := app.newGinRouter()
 
 	server := &http.Server{
-		Addr:    fmt.Sprintf(":%s", app.config.App.Port),
+		Addr:    fmt.Sprintf(":%s", app.cfg.App.Port),
 		Handler: handler,
 	}
 
 	go func() {
-		app.log.Info("Server started", zap.String("port", app.config.App.Port))
+		app.log.Info("starting http server", zap.String("port", app.cfg.App.Port))
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			app.log.Fatal("Failed to start server", zap.Error(err))
+			app.log.Fatal("failed to start http server", zap.Error(err))
 		}
 	}()
 
@@ -51,40 +48,34 @@ func (app *App) Run() error {
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 
-	app.log.Info("Shutting down server...")
+	app.log.Info("shutdown signal received...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	if err := server.Shutdown(ctx); err != nil {
-		app.log.Error("Server forced to shutdown", zap.Error(err))
+		app.log.Error("failed to gracefully shutdown http server", zap.Error(err))
 		return err
 	}
 
-	app.log.Info("Server exited")
+	app.log.Info("http server stopped successfully")
 	return nil
 }
 
-func (app *App) autoMigrate(p bool) {
-	if p {
-		app.db.AutoMigrate(&domain.User{})
-	}
-}
-
-func NewApp(
-	config *config.Config,
+func New(
+	cfg *config.Config,
 	db *gorm.DB,
 ) *App {
 	userRepository := repository.NewUserRepository(db)
 
-	jwtService := service.NewJWTService(&config.JWT)
+	jwtService := service.NewJWTService(&cfg.JWT)
 	authService := service.NewAuthService(userRepository, jwtService)
 	userService := service.NewUserService(userRepository)
 
 	return &App{
-		config: config,
-		db:     db,
-		log:    logger.Get(),
+		cfg: cfg,
+		db:  db,
+		log: logger.Get(),
 
 		userRepository: userRepository,
 

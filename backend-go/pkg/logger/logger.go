@@ -13,7 +13,7 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-type ctxKey struct{}
+type loggerCtxKey struct{}
 
 var (
 	mu     sync.Mutex
@@ -122,7 +122,7 @@ func Sync() {
 // FromCtx returns the Logger associated with the ctx.
 // Falls back to the global logger, or a no-op if not initialized.
 func FromCtx(ctx context.Context) *zap.Logger {
-	if l, ok := ctx.Value(ctxKey{}).(*zap.Logger); ok {
+	if l, ok := ctx.Value(loggerCtxKey{}).(*zap.Logger); ok {
 		return l
 	}
 	return Get()
@@ -130,10 +130,10 @@ func FromCtx(ctx context.Context) *zap.Logger {
 
 // WithCtx returns a copy of ctx with the Logger attached.
 func WithCtx(ctx context.Context, l *zap.Logger) context.Context {
-	if lp, ok := ctx.Value(ctxKey{}).(*zap.Logger); ok {
+	if lp, ok := ctx.Value(loggerCtxKey{}).(*zap.Logger); ok {
 		if lp == l {
 			return ctx
 		}
 	}
-	return context.WithValue(ctx, ctxKey{}, l)
+	return context.WithValue(ctx, loggerCtxKey{}, l)
 }

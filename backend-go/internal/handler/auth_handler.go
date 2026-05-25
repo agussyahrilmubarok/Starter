@@ -6,7 +6,7 @@ import (
 	"agussyahrilmubarok.github.io/backend/internal/domain"
 	"agussyahrilmubarok.github.io/backend/internal/model"
 	"agussyahrilmubarok.github.io/backend/internal/service"
-	"agussyahrilmubarok.github.io/backend/pkg/helper"
+	"agussyahrilmubarok.github.io/backend/pkg/validatorutil"
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,8 +30,8 @@ func (h *authHandler) SignUp(c *gin.Context) {
 	var req model.SignUpRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, model.ErrorResponse{
-			Message: "Validation error",
-			Errors:  helper.ValidatorError(err),
+			Message: "Validation Failed",
+			Errors:  validatorutil.ValidatorError(err),
 		})
 		return
 	}
@@ -43,13 +43,13 @@ func (h *authHandler) SignUp(c *gin.Context) {
 		case domain.ErrUserEmailExists:
 			errorsMap["email"] = "Email already exists"
 			c.JSON(http.StatusConflict, model.ErrorResponse{
-				Message: "Conflict error",
+				Message: "User Email Already Exists",
 				Errors:  errorsMap,
 			})
 		default:
 			errorsMap["error"] = "Failed to sign up"
 			c.JSON(http.StatusInternalServerError, model.ErrorResponse{
-				Message: "Internal server error",
+				Message: "Internal Server Error",
 				Errors:  errorsMap,
 			})
 		}
@@ -57,7 +57,7 @@ func (h *authHandler) SignUp(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, model.SuccessResponse{
-		Message: "Sign up successfully",
+		Message: "Sign Up Successfully",
 		Data:    result,
 	})
 }
@@ -79,8 +79,8 @@ func (h *authHandler) SignIn(c *gin.Context) {
 	var req model.SignInRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, model.ErrorResponse{
-			Message: "Validation error",
-			Errors:  helper.ValidatorError(err),
+			Message: "Validation Failed",
+			Errors:  validatorutil.ValidatorError(err),
 		})
 		return
 	}
@@ -92,19 +92,19 @@ func (h *authHandler) SignIn(c *gin.Context) {
 		case domain.ErrUserEmailNotFound:
 			errorsMap["email"] = "Email not found"
 			c.JSON(http.StatusNotFound, model.ErrorResponse{
-				Message: "Not found error",
+				Message: "User Email Not Found",
 				Errors:  errorsMap,
 			})
 		case domain.ErrUserPasswordNotMatch:
-			errorsMap["password"] = "Password not match"
+			errorsMap["password"] = "Password does not match"
 			c.JSON(http.StatusUnauthorized, model.ErrorResponse{
-				Message: "Unauthorized error",
+				Message: "Invalid User Password",
 				Errors:  errorsMap,
 			})
 		default:
 			errorsMap["error"] = "Failed to sign in"
 			c.JSON(http.StatusInternalServerError, model.ErrorResponse{
-				Message: "Internal server error",
+				Message: "Internal Server Error",
 				Errors:  errorsMap,
 			})
 		}
@@ -112,7 +112,7 @@ func (h *authHandler) SignIn(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, model.SuccessResponse{
-		Message: "Sign in successfully",
+		Message: "Sign In Successfully",
 		Data:    result,
 	})
 }

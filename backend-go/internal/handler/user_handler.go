@@ -6,7 +6,7 @@ import (
 	"agussyahrilmubarok.github.io/backend/internal/domain"
 	"agussyahrilmubarok.github.io/backend/internal/model"
 	"agussyahrilmubarok.github.io/backend/internal/service"
-	"agussyahrilmubarok.github.io/backend/pkg/helper"
+	"agussyahrilmubarok.github.io/backend/pkg/validatorutil"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,16 +26,17 @@ type userHandler struct {
 func (h *userHandler) GetAll(c *gin.Context) {
 	result, err := h.userService.GetAll(c.Request.Context())
 	if err != nil {
-		errorsMap := map[string]string{"error": "Failed to get users"}
 		c.JSON(http.StatusInternalServerError, model.ErrorResponse{
-			Message: "Internal server error",
-			Errors:  errorsMap,
+			Message: "Internal Server Error",
+			Errors: map[string]string{
+				"error": "Failed to get users",
+			},
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, model.SuccessResponse{
-		Message: "Get all users successfully",
+		Message: "Get All Users Successfully",
 		Data:    result,
 	})
 }
@@ -61,13 +62,13 @@ func (h *userHandler) GetByID(c *gin.Context) {
 		case domain.ErrUserNotFound:
 			errorsMap["id"] = "User not found"
 			c.JSON(http.StatusNotFound, model.ErrorResponse{
-				Message: "Not found error",
+				Message: "User Not Found",
 				Errors:  errorsMap,
 			})
 		default:
 			errorsMap["error"] = "Failed to get user"
 			c.JSON(http.StatusInternalServerError, model.ErrorResponse{
-				Message: "Internal server error",
+				Message: "Internal Server Error",
 				Errors:  errorsMap,
 			})
 		}
@@ -75,7 +76,7 @@ func (h *userHandler) GetByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, model.SuccessResponse{
-		Message: "Get user successfully",
+		Message: "Get User Successfully",
 		Data:    result,
 	})
 }
@@ -95,11 +96,10 @@ func (h *userHandler) GetByID(c *gin.Context) {
 // @Router       /v1/users [post]
 func (h *userHandler) Create(c *gin.Context) {
 	var req model.CreateUserRequest
-
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, model.ErrorResponse{
-			Message: "Validation error",
-			Errors:  helper.ValidatorError(err),
+			Message: "Validation Failed",
+			Errors:  validatorutil.ValidatorError(err),
 		})
 		return
 	}
@@ -111,13 +111,13 @@ func (h *userHandler) Create(c *gin.Context) {
 		case domain.ErrUserEmailExists:
 			errorsMap["email"] = "Email already exists"
 			c.JSON(http.StatusConflict, model.ErrorResponse{
-				Message: "Conflict error",
+				Message: "User Email Already Exists",
 				Errors:  errorsMap,
 			})
 		default:
 			errorsMap["error"] = "Failed to create user"
 			c.JSON(http.StatusInternalServerError, model.ErrorResponse{
-				Message: "Internal server error",
+				Message: "Internal Server Error",
 				Errors:  errorsMap,
 			})
 		}
@@ -125,7 +125,7 @@ func (h *userHandler) Create(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, model.SuccessResponse{
-		Message: "Create user successfully",
+		Message: "Create User Successfully",
 		Data:    result,
 	})
 }
@@ -148,11 +148,10 @@ func (h *userHandler) UpdateByID(c *gin.Context) {
 	id := c.Param("id")
 
 	var req model.UpdateUserRequest
-
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, model.ErrorResponse{
-			Message: "Validation error",
-			Errors:  helper.ValidatorError(err),
+			Message: "Validation Failed",
+			Errors:  validatorutil.ValidatorError(err),
 		})
 		return
 	}
@@ -164,13 +163,19 @@ func (h *userHandler) UpdateByID(c *gin.Context) {
 		case domain.ErrUserNotFound:
 			errorsMap["id"] = "User not found"
 			c.JSON(http.StatusNotFound, model.ErrorResponse{
-				Message: "Not found error",
+				Message: "User Not Found",
+				Errors:  errorsMap,
+			})
+		case domain.ErrUserEmailExists:
+			errorsMap["email"] = "Email already exists"
+			c.JSON(http.StatusConflict, model.ErrorResponse{
+				Message: "User Email Already Exists",
 				Errors:  errorsMap,
 			})
 		default:
 			errorsMap["error"] = "Failed to update user"
 			c.JSON(http.StatusInternalServerError, model.ErrorResponse{
-				Message: "Internal server error",
+				Message: "Internal Server Error",
 				Errors:  errorsMap,
 			})
 		}
@@ -178,7 +183,7 @@ func (h *userHandler) UpdateByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, model.SuccessResponse{
-		Message: "Update user successfully",
+		Message: "Update User Successfully",
 		Data:    result,
 	})
 }
@@ -203,13 +208,13 @@ func (h *userHandler) DeleteByID(c *gin.Context) {
 		case domain.ErrUserNotFound:
 			errorsMap["id"] = "User not found"
 			c.JSON(http.StatusNotFound, model.ErrorResponse{
-				Message: "Not found error",
+				Message: "User Not Found",
 				Errors:  errorsMap,
 			})
 		default:
 			errorsMap["error"] = "Failed to delete user"
 			c.JSON(http.StatusInternalServerError, model.ErrorResponse{
-				Message: "Internal server error",
+				Message: "Internal Server Error",
 				Errors:  errorsMap,
 			})
 		}
@@ -217,7 +222,7 @@ func (h *userHandler) DeleteByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, model.SuccessResponse{
-		Message: "Delete user successfully",
+		Message: "Delete User Successfully",
 	})
 }
 

@@ -29,8 +29,8 @@ swagger/install:
 	go mod tidy
 
 # Generate Swagger documentation for Gin application
-swagger/gin/generate:
-	swag init -g internal/app/gin.go -o api/gin/docs
+swagger/generate:
+	swag init -g internal/application/gin.go -o api/docs
 
 # comments
 ## Add Go binary path to PATH environment variable

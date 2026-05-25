@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"agussyahrilmubarok.github.io/backend/internal/app"
+	"agussyahrilmubarok.github.io/backend/internal/application"
 	"agussyahrilmubarok.github.io/backend/internal/config"
 	"agussyahrilmubarok.github.io/backend/pkg/database"
 	"agussyahrilmubarok.github.io/backend/pkg/logger"
@@ -12,16 +12,16 @@ import (
 func main() {
 	cfg, err := config.Load("configs/config.yml")
 	if err != nil {
-		log.Fatalf("Failed to load config: %v", err)
+		log.Fatalf("failed to load config: %v", err)
 	}
 
 	err = logger.Init(logger.DefaultOptions())
 	if err != nil {
-		log.Fatalf("Failed to init logger: %v", err)
+		log.Fatalf("failed to init logger: %v", err)
 	}
 	defer logger.Sync()
 
-	db, err := database.NewPostgres(&database.PostgresConfig{
+	db, err := database.NewPostgres(database.PostgresConfig{
 		Host:     cfg.Database.Host,
 		User:     cfg.Database.User,
 		Password: cfg.Database.Password,
@@ -31,11 +31,11 @@ func main() {
 		TimeZone: cfg.Database.TimeZone,
 	})
 	if err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
+		log.Fatalf("failed to connect to database: %v", err)
 	}
 
-	application := app.NewApp(cfg, db)
-	if err := application.Run(); err != nil {
-		log.Fatalf("Failed to run application: %v", err)
+	app := application.New(cfg, db)
+	if err := app.Run(); err != nil {
+		log.Fatalf("failed to run application: %v", err)
 	}
 }

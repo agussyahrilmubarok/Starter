@@ -7,7 +7,7 @@ import (
 	"agussyahrilmubarok.github.io/backend/internal/domain"
 	"agussyahrilmubarok.github.io/backend/internal/model"
 	"agussyahrilmubarok.github.io/backend/internal/repository"
-	"agussyahrilmubarok.github.io/backend/pkg/helper"
+	"agussyahrilmubarok.github.io/backend/pkg/cryptoutil"
 	"agussyahrilmubarok.github.io/backend/pkg/logger"
 
 	"github.com/google/uuid"
@@ -33,11 +33,11 @@ func (s *userService) GetAll(ctx context.Context) ([]model.UserResponse, error) 
 
 	users, err := s.userRepository.FindAll(ctx)
 	if err != nil {
-		log.Error("user: failed to get all users", zap.Error(err))
+		log.Error("failed to get all users", zap.Error(err))
 		return nil, err
 	}
 
-	log.Debug("user: get all users", zap.Int("count", len(users)))
+	log.Debug("get all users completed successfully", zap.Int("total_users", len(users)))
 
 	responses := make([]model.UserResponse, len(users))
 	for i, user := range users {
@@ -52,15 +52,15 @@ func (s *userService) GetByID(ctx context.Context, ID string) (*model.UserRespon
 
 	user, err := s.userRepository.FindByID(ctx, ID)
 	if err != nil {
-		log.Error("user: failed to find user by id", zap.Error(err))
+		log.Error("failed to find user by id", zap.Error(err))
 		return nil, err
 	}
 	if user == nil {
-		log.Warn("user: user not found")
+		log.Warn("user not found")
 		return nil, domain.ErrUserNotFound
 	}
 
-	log.Debug("user: get by id success")
+	log.Debug("get user by id completed successfully")
 	res := model.ToUserResponse(user)
 	return &res, nil
 }
@@ -69,19 +69,19 @@ func (s *userService) GetByID(ctx context.Context, ID string) (*model.UserRespon
 func (s *userService) Create(ctx context.Context, param model.CreateUserRequest) (*model.UserResponse, error) {
 	log := logger.FromCtx(ctx).With(zap.String("user_email", param.Email))
 
-	exist, err := s.userRepository.FindByEmail(ctx, param.Email)
+	existingUser, err := s.userRepository.FindByEmail(ctx, param.Email)
 	if err != nil {
-		log.Error("user: failed to check existing email", zap.Error(err))
+		log.Error("failed to check existing user email", zap.Error(err))
 		return nil, err
 	}
-	if exist != nil {
-		log.Warn("user: email already exists")
+	if existingUser != nil {
+		log.Warn("user email already exists")
 		return nil, domain.ErrUserEmailExists
 	}
 
-	hashPassword, err := helper.PasswordHash(param.Password)
+	hashPassword, err := cryptoutil.PasswordHash(param.Password)
 	if err != nil {
-		log.Error("user: failed to hash password", zap.Error(err))
+		log.Error("failed to hash user password", zap.Error(err))
 		return nil, err
 	}
 
@@ -93,11 +93,11 @@ func (s *userService) Create(ctx context.Context, param model.CreateUserRequest)
 	}
 
 	if err := s.userRepository.Create(ctx, user); err != nil {
-		log.Error("user: failed to create user", zap.Error(err))
+		log.Error("failed to create user", zap.Error(err))
 		return nil, err
 	}
 
-	log.Info("user: created successfully", zap.String("user_id", user.ID.String()))
+	log.Info("user created successfully", zap.String("user_id", user.ID.String()))
 	res := model.ToUserResponse(user)
 	return &res, nil
 }
@@ -108,11 +108,11 @@ func (s *userService) UpdateByID(ctx context.Context, ID string, param model.Upd
 
 	user, err := s.userRepository.FindByID(ctx, ID)
 	if err != nil {
-		log.Error("user: failed to find user for update", zap.Error(err))
+		log.Error("failed to find user by id", zap.Error(err))
 		return nil, err
 	}
 	if user == nil {
-		log.Warn("user: user not found for update")
+		log.Warn("user not found")
 		return nil, domain.ErrUserNotFound
 	}
 
@@ -120,30 +120,32 @@ func (s *userService) UpdateByID(ctx context.Context, ID string, param model.Upd
 		user.Name = param.Name
 	}
 	if param.Email != "" && param.Email != user.Email {
-		exist, _ := s.userRepository.FindByEmail(ctx, param.Email)
+		exist, err := s.userRepository.FindByEmail(ctx, param.Email)
 		if err != nil {
+			log.Error("failed to check existing user email", zap.Error(err))
 			return nil, err
 		}
 		if exist != nil {
+			log.Warn("user email already exists")
 			return nil, domain.ErrUserEmailExists
 		}
 		user.Email = strings.ToLower(param.Email)
 	}
 	if param.Password != "" {
-		hashPassword, err := helper.PasswordHash(param.Password)
+		hashPassword, err := cryptoutil.PasswordHash(param.Password)
 		if err != nil {
-			log.Error("user: failed to hash password for update", zap.Error(err))
+			log.Error("failed to hash user password", zap.Error(err))
 			return nil, err
 		}
 		user.Password = hashPassword
 	}
 
 	if err := s.userRepository.Save(ctx, user); err != nil {
-		log.Error("user: failed to save updated user", zap.Error(err))
+		log.Error("failed to save updated user", zap.Error(err))
 		return nil, err
 	}
 
-	log.Info("user: updated successfully")
+	log.Info("user updated successfully")
 	res := model.ToUserResponse(user)
 	return &res, nil
 }
@@ -154,16 +156,16 @@ func (s *userService) DeleteByID(ctx context.Context, ID string) error {
 
 	id, err := uuid.Parse(ID)
 	if err != nil {
-		log.Error("user: failed to delete user", zap.Error(err))
+		log.Error("failed to parse user id", zap.Error(err))
 		return err
 	}
 
 	if err := s.userRepository.DeleteByID(ctx, id); err != nil {
-		log.Error("user: failed to delete user", zap.Error(err))
+		log.Error("failed to delete user", zap.Error(err))
 		return err
 	}
 
-	log.Info("user: deleted successfully")
+	log.Info("user deleted successfully")
 	return nil
 }
 

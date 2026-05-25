@@ -77,9 +77,9 @@ definitions:
     type: object
 info:
   contact: {}
-  description: Backend API
-  title: Backend API
-  version: "1.0"
+  description: RESTful API documentation for backend services.
+  title: Backend REST API
+  version: 1.0.0
 paths:
   /v1/auth/sign-in:
     post:
@@ -306,7 +306,7 @@ paths:
       - Users
 securityDefinitions:
   BearerAuth:
-    description: 'Input your Bearer token in this format: Bearer <token>'
+    description: 'Enter JWT Bearer token in the format: Bearer <token>'
     in: header
     name: Authorization
     type: apiKey

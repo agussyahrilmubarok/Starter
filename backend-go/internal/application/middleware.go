@@ -1,9 +1,10 @@
-package app
+package application
 
 import (
 	"net/http"
 	"strings"
 
+	"agussyahrilmubarok.github.io/backend/internal/model"
 	"agussyahrilmubarok.github.io/backend/pkg/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -15,33 +16,39 @@ func (app *App) requireAuthMiddleware() gin.HandlerFunc {
 		authHeader := c.GetHeader("Authorization")
 
 		if authHeader == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-				"message": "Missing authorization header",
+			c.AbortWithStatusJSON(http.StatusUnauthorized, model.ErrorResponse{
+				Message: "Unauthorized",
+				Errors: map[string]string{
+					"error": "Authorization header is required",
+				},
 			})
 			return
 		}
 
 		splitToken := strings.Split(authHeader, "Bearer ")
-
 		if len(splitToken) != 2 {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-				"message": "Invalid authorization format",
+			c.AbortWithStatusJSON(http.StatusUnauthorized, model.ErrorResponse{
+				Message: "Invalid Authorization Format",
+				Errors: map[string]string{
+					"error": "Authorization header must use Bearer token",
+				},
 			})
 			return
 		}
 
-		tokenString := splitToken[1]
-
-		userID, err := app.jwtService.Validate(c.Request.Context(), tokenString)
+		token := splitToken[1]
+		userID, err := app.jwtService.Validate(c.Request.Context(), token)
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-				"message": "Invalid token",
+			c.AbortWithStatusJSON(http.StatusUnauthorized, model.ErrorResponse{
+				Message: "Invalid Token",
+				Errors: map[string]string{
+					"error": "Token is invalid or expired",
+				},
 			})
 			return
 		}
 
 		c.Set("user_id", userID)
-
 		c.Next()
 	}
 }
