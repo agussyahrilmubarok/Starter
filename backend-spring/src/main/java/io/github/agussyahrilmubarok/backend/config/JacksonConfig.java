@@ -16,5 +16,4 @@ public class JacksonConfig {
                 .disable(DeserializationFeature.ACCEPT_FLOAT_AS_INT)
                 .disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
     }
-
 }

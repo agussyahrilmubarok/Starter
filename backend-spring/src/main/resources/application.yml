@@ -35,3 +35,4 @@ springdoc:
 jwt:
   secret-key: ${JWT_SECRET_KEY:48616e7961547568616e44616e5361796159616e67546168754b}
   exp-time-ms: ${JWT_EXP_TIME_MS:86400000}  # 24 hours
+  

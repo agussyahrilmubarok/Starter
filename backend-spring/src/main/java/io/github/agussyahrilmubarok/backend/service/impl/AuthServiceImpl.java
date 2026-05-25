@@ -32,10 +32,8 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     @Transactional
     public SignUpResponse signUp(SignUpRequest request) {
-        log.info("sign-up: attempt email={}", request.email());
-
         if (userRepository.existsByEmailIgnoreCase(request.email())) {
-            log.warn("sign-up: email already registered email={}", request.email());
+            log.warn("Email already registered email={}", request.email());
             throw new ConflictException("email", "Email already registered");
         }
 
@@ -45,7 +43,7 @@ public class AuthServiceImpl implements IAuthService {
         user.setPassword(passwordEncoder.encode(request.password()));
 
         User saved = userRepository.save(user);
-        log.info("sign-up: user created successfully userId={}", saved.getId());
+        log.info("Sign up successfully userId={}", saved.getId());
 
         String token = jwtProvider.generateToken(saved.getId().toString());
         return new SignUpResponse(token, userMapper.toResponse(saved));
@@ -54,21 +52,19 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     @Transactional(readOnly = true)
     public SignInResponse signIn(SignInRequest request) {
-        log.info("sign-in: attempt email={}", request.email());
-
         User user = userRepository.findByEmailIgnoreCase(request.email())
                 .orElseThrow(() -> {
-                    log.warn("sign-in: email not found email={}", request.email());
+                    log.warn("Email not found email={}", request.email());
                     return new UnauthorizedException("email", "Email not found");
                 });
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-            log.warn("sign-in: password not match userId={}", user.getId());
-            throw new UnauthorizedException("password", "Password does not match");
+            log.warn("Password not match userId={}", user.getId());
+            throw new UnauthorizedException("password", "Incorrect password");
         }
 
         String token = jwtProvider.generateToken(user.getId().toString());
-        log.info("sign-in: success userId={}", user.getId());
+        log.info("Sign in successfully userId={}", user.getId());
         return new SignInResponse(token, userMapper.toResponse(user));
     }
 }

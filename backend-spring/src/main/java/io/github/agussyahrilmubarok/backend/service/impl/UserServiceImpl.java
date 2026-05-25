@@ -34,39 +34,33 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional(readOnly = true)
     public List<UserResponse> findAll() {
-        log.debug("user: fetching all users");
-
         List<UserResponse> result = userRepository.findAll()
                 .stream()
                 .map(userMapper::toResponse)
                 .toList();
 
-        log.debug("user: fetched all users count={}", result.size());
+        log.debug("Fetched all users count={}", result.size());
         return result;
     }
 
     @Override
     @Transactional(readOnly = true)
     public UserResponse findById(String userId) {
-        log.debug("user: fetching userId={}", userId);
-
         User user = userRepository.findById(parseUUID(userId))
                 .orElseThrow(() -> {
-                    log.warn("user: not found userId={}", userId);
+                    log.warn("User not found userId={}", userId);
                     return new NotFoundException("User not found");
                 });
 
-        log.debug("user: fetched successfully userId={}", userId);
+        log.debug("Fetched successfully userId={}", userId);
         return userMapper.toResponse(user);
     }
 
     @Override
     @Transactional
     public UserResponse create(CreateUserRequest request) {
-        log.info("user: creating email={}", request.email());
-
         if (userRepository.existsByEmailIgnoreCase(request.email())) {
-            log.warn("user: email already registered email={}", request.email());
+            log.warn("Email already registered email={}", request.email());
             throw new ConflictException("email", "Email already registered");
         }
 
@@ -76,18 +70,16 @@ public class UserServiceImpl implements IUserService {
         user.setPassword(passwordEncoder.encode(request.password()));
 
         User saved = userRepository.save(user);
-        log.info("user: created successfully userId={}", saved.getId());
+        log.info("Created successfully userId={}", saved.getId());
         return userMapper.toResponse(saved);
     }
 
     @Override
     @Transactional
     public UserResponse updateById(String userId, UpdateUserRequest request) {
-        log.info("user: updating userId={}", userId);
-
         User user = userRepository.findById(parseUUID(userId))
                 .orElseThrow(() -> {
-                    log.warn("user: not found for update userId={}", userId);
+                    log.warn("Not found for update userId={}", userId);
                     return new NotFoundException("User not found");
                 });
 
@@ -98,7 +90,7 @@ public class UserServiceImpl implements IUserService {
         if (request.email() != null && !request.email().equals(user.getEmail())) {
             boolean emailTaken = userRepository.existsByEmailIgnoreCase(request.email());
             if (emailTaken) {
-                log.warn("user: email already registered on update email={} userId={}", request.email(), userId);
+                log.warn("Email already registered on update email={} userId={}", request.email(), userId);
                 throw new ConflictException("email", "Email already registered");
             }
             user.setEmail(request.email().toLowerCase());
@@ -109,29 +101,27 @@ public class UserServiceImpl implements IUserService {
         }
 
         User saved = userRepository.save(user);
-        log.info("user: updated successfully userId={}", saved.getId());
+        log.info("Updated successfully userId={}", saved.getId());
         return userMapper.toResponse(saved);
     }
 
     @Override
     @Transactional
     public void deleteById(String userId) {
-        log.info("user: deleting userId={}", userId);
-
         if (!userRepository.existsById(parseUUID(userId))) {
-            log.warn("user: not found for delete userId={}", userId);
+            log.warn("Not found for delete userId={}", userId);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
 
         userRepository.deleteById(parseUUID(userId));
-        log.info("user: deleted successfully userId={}", userId);
+        log.info("Deleted successfully userId={}", userId);
     }
 
     private UUID parseUUID(String userId) {
         try {
             return UUID.fromString(userId);
         } catch (IllegalArgumentException e) {
-            log.warn("user: invalid UUID format userId={}", userId);
+            log.warn("Invalid UUID format userId={}", userId);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user id format");
         }
     }

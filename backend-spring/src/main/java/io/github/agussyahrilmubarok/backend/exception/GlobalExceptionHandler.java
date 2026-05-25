@@ -2,8 +2,6 @@ package io.github.agussyahrilmubarok.backend.exception;
 
 import io.github.agussyahrilmubarok.backend.model.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -17,15 +15,13 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Void>> handleValidationException(
             MethodArgumentNotValidException ex) {
 
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(fieldError -> {
-            String field = fieldError.getField();
+            String field = capitalize(fieldError.getField());
             String message = switch (fieldError.getCode()) {
                 case "NotBlank", "NotNull", "NotEmpty" -> field + " is required";
                 case "Email" -> "Invalid email format";
@@ -48,20 +44,15 @@ public class GlobalExceptionHandler {
             errors.put(field, message);
         });
 
-        log.warn("exception: validation failed errors={}", errors);
-
         return ResponseEntity
-                .status(HttpStatus.UNPROCESSABLE_ENTITY)
-                .body(new ApiResponse<>("Validation error", errors));
+                .status(HttpStatus.UNPROCESSABLE_CONTENT)
+                .body(new ApiResponse<>("Validation Failed", errors));
     }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleNotFoundException(
             NotFoundException ex,
             HttpServletRequest request) {
-
-        log.warn("exception: {} {} message={}",
-                request.getMethod(), request.getRequestURI(), ex.getMessage());
 
         Map<String, String> errors = new HashMap<>();
 
@@ -73,16 +64,13 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(new ApiResponse<>("Not found error", errors));
+                .body(new ApiResponse<>("Not Found Error", errors));
     }
 
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ApiResponse<Void>> handleConflictException(
             ConflictException ex,
             HttpServletRequest request) {
-
-        log.warn("exception: {} {} message={}",
-                request.getMethod(), request.getRequestURI(), ex.getMessage());
 
         Map<String, String> errors = new HashMap<>();
 
@@ -94,16 +82,13 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(new ApiResponse<>("Conflict error", errors));
+                .body(new ApiResponse<>("Conflict Error", errors));
     }
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ApiResponse<Void>> handleUnauthorizedException(
             UnauthorizedException ex,
             HttpServletRequest request) {
-
-        log.warn("exception: {} {} message={}",
-                request.getMethod(), request.getRequestURI(), ex.getMessage());
 
         Map<String, String> errors = new HashMap<>();
 
@@ -115,21 +100,19 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(new ApiResponse<>("Unauthorized error", errors));
+                .body(new ApiResponse<>("Unauthorized Error", errors));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiResponse<Void>> handleNotReadableException(
             HttpMessageNotReadableException ex) {
 
-        log.warn("exception: malformed JSON body message={}", ex.getMessage());
-
         Map<String, String> errors = new HashMap<>();
         errors.put("error", "Malformed JSON request body");
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new ApiResponse<>("Bad request error", errors));
+                .body(new ApiResponse<>("Bad Request Error", errors));
     }
 
     @ExceptionHandler(Exception.class)
@@ -137,14 +120,19 @@ public class GlobalExceptionHandler {
             Exception ex,
             HttpServletRequest request) {
 
-        log.error("exception: unhandled {} {} message={}",
-                request.getMethod(), request.getRequestURI(), ex.getMessage(), ex);
-
         Map<String, String> errors = new HashMap<>();
         errors.put("error", "Internal server error");
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiResponse<>("Internal server error", errors));
+                .body(new ApiResponse<>("Internal Server Error", errors));
     }
+
+    private String capitalize(String value) {
+    if (value == null || value.isEmpty()) {
+        return value;
+    }
+
+    return value.substring(0, 1).toUpperCase() + value.substring(1);
+}
 }
