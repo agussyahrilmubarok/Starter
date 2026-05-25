@@ -43,7 +43,7 @@ func (h *authHandler) SignUp(c *gin.Context) {
 		case domain.ErrUserEmailExists:
 			errorsMap["email"] = "Email already exists"
 			c.JSON(http.StatusConflict, model.ErrorResponse{
-				Message: "User Email Already Exists",
+				Message: "Email Already Exists",
 				Errors:  errorsMap,
 			})
 		default:
@@ -57,7 +57,7 @@ func (h *authHandler) SignUp(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, model.SuccessResponse{
-		Message: "Sign Up Successfully",
+		Message: "Sign in successfully",
 		Data:    result,
 	})
 }
@@ -92,7 +92,7 @@ func (h *authHandler) SignIn(c *gin.Context) {
 		case domain.ErrUserEmailNotFound:
 			errorsMap["email"] = "Email not found"
 			c.JSON(http.StatusNotFound, model.ErrorResponse{
-				Message: "User Email Not Found",
+				Message: "Email Not Found",
 				Errors:  errorsMap,
 			})
 		case domain.ErrUserPasswordNotMatch:
@@ -112,7 +112,7 @@ func (h *authHandler) SignIn(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, model.SuccessResponse{
-		Message: "Sign In Successfully",
+		Message: "Sign in successfully",
 		Data:    result,
 	})
 }

@@ -33,7 +33,7 @@ func (s *jwtService) Generate(ctx context.Context, userID string) (string, error
 
 	expTime, err := time.ParseDuration(s.config.ExpTime)
 	if err != nil {
-		log.Error("jwt: failed to parse exp time", zap.Error(err))
+		log.Error("failed to parse exp time", zap.Error(err))
 		return "", err
 	}
 
@@ -48,11 +48,11 @@ func (s *jwtService) Generate(ctx context.Context, userID string) (string, error
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signed, err := token.SignedString([]byte(s.config.SecretKey))
 	if err != nil {
-		log.Error("jwt: failed to sign token", zap.Error(err))
+		log.Error("failed to sign token", zap.Error(err))
 		return "", err
 	}
 
-	log.Debug("jwt: token generated", zap.Time("expires_at", claims.ExpiresAt.Time))
+	log.Debug("token generated", zap.Time("expires_at", claims.ExpiresAt.Time))
 	return signed, nil
 }
 
@@ -67,17 +67,17 @@ func (s *jwtService) Validate(ctx context.Context, tokenString string) (string, 
 		return []byte(s.config.SecretKey), nil
 	})
 	if err != nil {
-		log.Warn("jwt: failed to parse token", zap.Error(err))
+		log.Warn("failed to parse token", zap.Error(err))
 		return "", err
 	}
 
 	claims, ok := token.Claims.(*jwtClaims)
 	if !ok || !token.Valid {
-		log.Warn("jwt: invalid token claims")
+		log.Warn("invalid token claims")
 		return "", errors.New("invalid token")
 	}
 
-	log.Debug("jwt: token valid", zap.String("user_id", claims.UserID))
+	log.Debug("token valid", zap.String("user_id", claims.UserID))
 	return claims.UserID, nil
 }
 

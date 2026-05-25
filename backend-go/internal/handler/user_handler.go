@@ -125,7 +125,7 @@ func (h *userHandler) Create(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, model.SuccessResponse{
-		Message: "Create User Successfully",
+		Message: "Create sser successfully",
 		Data:    result,
 	})
 }
@@ -169,7 +169,7 @@ func (h *userHandler) UpdateByID(c *gin.Context) {
 		case domain.ErrUserEmailExists:
 			errorsMap["email"] = "Email already exists"
 			c.JSON(http.StatusConflict, model.ErrorResponse{
-				Message: "User Email Already Exists",
+				Message: "Email Already Exists",
 				Errors:  errorsMap,
 			})
 		default:
@@ -183,7 +183,7 @@ func (h *userHandler) UpdateByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, model.SuccessResponse{
-		Message: "Update User Successfully",
+		Message: "Update user successfully",
 		Data:    result,
 	})
 }
@@ -222,7 +222,7 @@ func (h *userHandler) DeleteByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, model.SuccessResponse{
-		Message: "Delete User Successfully",
+		Message: "Delete user successfully",
 	})
 }
 
