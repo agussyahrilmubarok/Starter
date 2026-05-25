@@ -19,7 +19,7 @@ const UserCreate: FC = () => {
   const [password, setPassword] = useState<string>("");
   const [errors, setErrors] = useState<ValidationErrors>({});
 
-  const createUser = async (e: FormEvent) => {
+  const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
     mutate(
       {
@@ -52,36 +52,32 @@ const UserCreate: FC = () => {
       <div className="card border-0 rounded-4 shadow-sm">
         <div className="card-header">ADD USER</div>
         <div className="card-body">
-          <form onSubmit={createUser}>
+          <form onSubmit={handleCreate}>
             <div className="form-group mb-3">
               <label className="mb-1 fw-bold">Full Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="form-control"
+                className={`form-control ${errors.name ? "is-invalid" : ""}`}
                 placeholder="Full Name"
               />
               {errors.name && (
-                <div className="alert alert-danger mt-2 rounded-4">
-                  {errors.name}
-                </div>
+                <div className="invalid-feedback">{errors.name}</div>
               )}
             </div>
 
             <div className="form-group mb-3">
-              <label className="mb-1 fw-bold">Email address</label>
+              <label className="mb-1 fw-bold">Email Address</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="form-control"
+                className={`form-control ${errors.email ? "is-invalid" : ""}`}
                 placeholder="Email Address"
               />
               {errors.email && (
-                <div className="alert alert-danger mt-2 rounded-4">
-                  {errors.email}
-                </div>
+                <div className="invalid-feedback">{errors.email}</div>
               )}
             </div>
 
@@ -91,13 +87,11 @@ const UserCreate: FC = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="form-control"
+                className={`form-control ${errors.password ? "is-invalid" : ""}`}
                 placeholder="Password"
               />
               {errors.password && (
-                <div className="alert alert-danger mt-2 rounded-4">
-                  {errors.password}
-                </div>
+                <div className="invalid-feedback">{errors.password}</div>
               )}
             </div>
 

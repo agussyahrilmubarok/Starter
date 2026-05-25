@@ -8,13 +8,7 @@ export interface SignUpResponse {
   message: string;
   data: {
     token: string;
-    user: {
-      id: string;
-      name: string;
-      email: string;
-      created_at: string;
-      updated_at: string;
-    };
+    user: AuthUser;
   };
 }
 
@@ -27,13 +21,7 @@ export interface SignInResponse {
   message: string;
   data: {
     token: string;
-    user: {
-      id: string;
-      name: string;
-      email: string;
-      created_at: string;
-      updated_at: string;
-    };
+    user: AuthUser;
   };
 }
 

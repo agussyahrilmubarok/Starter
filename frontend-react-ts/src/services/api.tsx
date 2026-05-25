@@ -1,8 +1,9 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { COOKIE_KEYS } from "../constants/cookie";
+import { API_BASE_URL } from "../constants/api";
 
-const baseURL = "http://localhost:8080/api/v1";
+const baseURL = API_BASE_URL;
 
 export const PublicApi = axios.create({
   baseURL,

@@ -1,25 +1,23 @@
 import type { FC } from "react";
-import { Link } from "react-router";
+import { NavLink } from "react-router";
 
 const SideBar: FC = () => {
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    `list-group-item list-group-item-action${isActive ? " active" : ""}`;
+
   return (
     <div className="card border-0 rounded-4 shadow-sm">
       <div className="card-header">MAIN MENU</div>
+
       <div className="card-body">
         <div className="list-group">
-          <Link
-            to="/dashboard"
-            className="list-group-item list-group-item-action"
-          >
+          <NavLink to="/dashboard" end className={navLinkClass}>
             Dashboard
-          </Link>
+          </NavLink>
 
-          <Link
-            to="/dashboard/users"
-            className="list-group-item list-group-item-action"
-          >
+          <NavLink to="/dashboard/users" className={navLinkClass}>
             Users
-          </Link>
+          </NavLink>
         </div>
       </div>
     </div>

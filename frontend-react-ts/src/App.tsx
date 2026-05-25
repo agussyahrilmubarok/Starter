@@ -4,9 +4,7 @@ import AppRoutes from "./routes";
 function App() {
   return (
     <>
-      <div>
-        <AppRoutes />
-      </div>
+      <AppRoutes />
       <Toaster position="top-right" />
     </>
   );

@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { useState, type FC } from "react";
 import { Link } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useUsers } from "../../../hooks/user/useUsers";
@@ -14,14 +14,18 @@ const UsersIndex: FC = () => {
 
   const queryClient = useQueryClient();
 
-  const { mutate, isPending } = useUserDelete();
+  const { mutate } = useUserDelete();
+
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const handleDelete = (id: string) => {
     if (confirm("Are you sure you want to delete this user?")) {
+      setDeletingId(id);
       mutate(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ["users"] });
         },
+        onSettled: () => setDeletingId(null),
       });
     }
   };
@@ -77,10 +81,10 @@ const UsersIndex: FC = () => {
 
                       <button
                         onClick={() => handleDelete(user.id)}
-                        disabled={isPending}
+                        disabled={deletingId === user.id}
                         className="btn btn-sm btn-danger rounded-4 shadow-sm border-0"
                       >
-                        {isPending ? "DELETING..." : "DELETE"}
+                        {deletingId === user.id ? "DELETING..." : "DELETE"}{" "}
                       </button>
                     </td>
                   </tr>

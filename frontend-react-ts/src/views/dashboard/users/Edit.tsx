@@ -18,7 +18,7 @@ const UserEditForm: FC<{ user: User }> = ({ user }) => {
   const [password, setPassword] = useState<string>("");
   const [errors, setErrors] = useState<ValidationErrors>({});
 
-  const updateUser = async (e: FormEvent) => {
+  const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
 
     mutate(
@@ -47,35 +47,29 @@ const UserEditForm: FC<{ user: User }> = ({ user }) => {
   };
 
   return (
-    <form onSubmit={updateUser}>
+    <form onSubmit={handleUpdate}>
       <div className="form-group mb-3">
         <label className="mb-1 fw-bold">Full Name</label>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="form-control"
+          className={`form-control ${errors.name ? "is-invalid" : ""}`}
           placeholder="Full Name"
         />
-        {errors.name && (
-          <div className="alert alert-danger mt-2 rounded-4">{errors.name}</div>
-        )}
+        {errors.name && <div className="invalid-feedback">{errors.name}</div>}
       </div>
 
       <div className="form-group mb-3">
-        <label className="mb-1 fw-bold">Email address</label>
+        <label className="mb-1 fw-bold">Email Address</label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="form-control"
+          className={`form-control ${errors.email ? "is-invalid" : ""}`}
           placeholder="Email Address"
         />
-        {errors.email && (
-          <div className="alert alert-danger mt-2 rounded-4">
-            {errors.email}
-          </div>
-        )}
+        {errors.email && <div className="invalid-feedback">{errors.email}</div>}
       </div>
 
       <div className="form-group mb-3">
@@ -84,13 +78,11 @@ const UserEditForm: FC<{ user: User }> = ({ user }) => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="form-control"
-          placeholder="Password"
+          className={`form-control ${errors.password ? "is-invalid" : ""}`}
+          placeholder="Leave blank to keep current password"
         />
         {errors.password && (
-          <div className="alert alert-danger mt-2 rounded-4">
-            {errors.password}
-          </div>
+          <div className="invalid-feedback">{errors.password}</div>
         )}
       </div>
 
