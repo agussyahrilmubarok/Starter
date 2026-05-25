@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"agussyahrilmubarok.github.io/backend/internal/handler"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
 	swaggerFiles "github.com/swaggo/files"
@@ -25,6 +26,14 @@ func (app *App) newGinRouter() http.Handler {
 	gin.SetMode(gin.ReleaseMode)
 
 	router := gin.Default()
+
+	router.Use(app.requestIDMiddleware())
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:  []string{"*"},
+		AllowMethods:  []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:  []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders: []string{"Content-Length"},
+	}))
 
 	authHandler := handler.NewAuthHandler(app.authService)
 	userHandler := handler.NewUserHandler(app.userService)
