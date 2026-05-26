@@ -1,0 +1,49 @@
+{{ define "content" }}
+
+<div class="card border-0 rounded-4 shadow-sm">
+    <div class="card-header">EDIT USER</div>
+    <div class="card-body">
+        <form method="POST" action="/dashboard/users/{{ .Data.ID }}/edit">
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Full Name</label>
+                <input type="text" name="name" value="{{ .Data.Name }}"
+                    class="form-control rounded-3 {{if .Errors.Name}}is-invalid{{end}}"
+                    placeholder="Full Name" />
+                {{if .Errors.Name}}
+                <div class="invalid-feedback">{{.Errors.Name}}</div>
+                {{end}}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Email Address</label>
+                <input type="email" name="email" value="{{ .Data.Email }}"
+                    class="form-control rounded-3 {{if .Errors.Email}}is-invalid{{end}}"
+                    placeholder="Enter your email" />
+                {{if .Errors.Email}}
+                <div class="invalid-feedback">{{.Errors.Email}}</div>
+                {{end}}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Password</label>
+                <input type="password" name="password"
+                    class="form-control rounded-3 {{if .Errors.Password}}is-invalid{{end}}"
+                    placeholder="Kosongkan jika tidak ingin mengubah password" />
+                {{if .Errors.Password}}
+                <div class="invalid-feedback">{{.Errors.Password}}</div>
+                {{end}}
+            </div>
+
+            {{if .Errors.Error}}
+            <div class="alert alert-danger rounded-3">{{.Errors.Error}}</div>
+            {{end}}
+
+            <button type="submit" class="btn btn-md btn-primary rounded-4 shadow-sm border-0">Update</button>
+            <a href="/dashboard/users" class="btn btn-md btn-secondary rounded-4 shadow-sm border-0 ms-2">Cancel</a>
+
+        </form>
+    </div>
+</div>
+
+{{ end }}

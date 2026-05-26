@@ -1,4 +1,4 @@
-package app
+package application
 
 import (
 	"net/http"
@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (app *App) setGinRouter() http.Handler {
+func (app *App) newGinRouter() http.Handler {
 	gin.SetMode(gin.ReleaseMode)
 
 	router := gin.Default()
@@ -60,11 +60,11 @@ func (app *App) setGinRouter() http.Handler {
 		users := private.Group("/dashboard/users")
 		{
 			users.GET("", userController.Index)
-			// users.GET("/create", userController.Create)
-			// users.POST("/create", userController.Store)
-			// users.GET("/:id/edit", userController.Edit)
-			// users.POST("/:id/edit", userController.Update)
-			// users.POST("/:id/delete", userController.Delete)
+			users.GET("/create", userController.Create)
+			users.POST("/create", userController.Store)
+			users.GET("/:id/edit", userController.Edit)
+			users.POST("/:id/edit", userController.Update)
+			users.POST("/:id/delete", userController.Delete)
 		}
 	}
 

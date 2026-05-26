@@ -1,4 +1,3 @@
-// internal/controller/user_controller.go
 package controller
 
 import (
@@ -7,7 +6,7 @@ import (
 	"agussyahrilmubarok.github.io/web/internal/domain"
 	"agussyahrilmubarok.github.io/web/internal/model"
 	"agussyahrilmubarok.github.io/web/internal/service"
-	"agussyahrilmubarok.github.io/web/pkg/helper"
+	"agussyahrilmubarok.github.io/web/pkg/validatorutil"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
@@ -16,6 +15,7 @@ type userController struct {
 	userService service.IUserService
 }
 
+// Index — GET /dashboard/users
 func (h *userController) Index(c *gin.Context) {
 	userProfile, ok := mustGetUserFromContext(c)
 	if !ok {
@@ -31,6 +31,9 @@ func (h *userController) Index(c *gin.Context) {
 	if flashes := session.Flashes("success"); len(flashes) > 0 {
 		data["MsgInfo"] = flashes[0]
 	}
+	if flashes := session.Flashes("error"); len(flashes) > 0 {
+		data["MsgError"] = flashes[0]
+	}
 	session.Save()
 
 	users, err := h.userService.GetAll(c.Request.Context())
@@ -44,6 +47,7 @@ func (h *userController) Index(c *gin.Context) {
 	render(c, http.StatusOK, "users_index.html", data)
 }
 
+// Create — GET /dashboard/users/create
 func (h *userController) Create(c *gin.Context) {
 	userProfile, ok := mustGetUserFromContext(c)
 	if !ok {
@@ -53,14 +57,13 @@ func (h *userController) Create(c *gin.Context) {
 	data := gin.H{
 		"Title":       "Create User",
 		"UserProfile": userProfile,
+		"Values":      model.CreateUserRequest{},
 	}
-
-	var req model.CreateUserRequest
-	data["Values"] = req
 
 	render(c, http.StatusOK, "users_create.html", data)
 }
 
+// Store — POST /dashboard/users/create
 func (h *userController) Store(c *gin.Context) {
 	userProfile, ok := mustGetUserFromContext(c)
 	if !ok {
@@ -75,7 +78,7 @@ func (h *userController) Store(c *gin.Context) {
 	var req model.CreateUserRequest
 	if err := c.ShouldBind(&req); err != nil {
 		data["Values"] = req
-		data["Errors"] = helper.ValidatorError(err)
+		data["Errors"] = validatorutil.ValidatorError(err)
 		render(c, http.StatusBadRequest, "users_create.html", data)
 		return
 	}
@@ -124,6 +127,7 @@ func (h *userController) Edit(c *gin.Context) {
 		"UserProfile": userProfile,
 		"Data":        user,
 	}
+
 	render(c, http.StatusOK, "users_edit.html", data)
 }
 
@@ -143,7 +147,7 @@ func (h *userController) Update(c *gin.Context) {
 			"Title":       "Edit User",
 			"UserProfile": userProfile,
 			"Data":        user,
-			"Errors":      helper.ValidatorError(err),
+			"Errors":      validatorutil.ValidatorError(err),
 		}
 		render(c, http.StatusBadRequest, "users_edit.html", data)
 		return

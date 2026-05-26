@@ -1,4 +1,4 @@
-package app
+package application
 
 import (
 	"context"
@@ -32,7 +32,7 @@ type App struct {
 func (app *App) Run() error {
 	app.autoMigrate(false)
 
-	handler := app.setGinRouter()
+	handler := app.newGinRouter()
 
 	server := &http.Server{
 		Addr:    fmt.Sprintf(":%s", app.cfg.App.Port),
@@ -70,7 +70,7 @@ func (app *App) autoMigrate(param bool) {
 	}
 }
 
-func NewApp(cfg *config.Config, db *gorm.DB) *App {
+func New(cfg *config.Config, db *gorm.DB) *App {
 	userRepository := repository.NewUserRepository(db)
 
 	authService := service.NewAuthService(userRepository)

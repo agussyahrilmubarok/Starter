@@ -7,9 +7,8 @@ import (
 	"agussyahrilmubarok.github.io/web/internal/domain"
 	"agussyahrilmubarok.github.io/web/internal/model"
 	"agussyahrilmubarok.github.io/web/internal/repository"
-	"agussyahrilmubarok.github.io/web/pkg/helper"
+	"agussyahrilmubarok.github.io/web/pkg/cryptoutil"
 	"agussyahrilmubarok.github.io/web/pkg/logger"
-
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
@@ -28,19 +27,20 @@ type authService struct {
 func (s *authService) SignUp(ctx context.Context, param model.SignUpRequest) (*model.UserResponse, error) {
 	log := logger.FromCtx(ctx).With(zap.String("user_email", param.Email))
 
-	exist, err := s.userRepository.FindByEmail(ctx, param.Email)
+	exist, err := s.userRepository.ExistsByEmailIgnorecase(ctx, param.Email)
 	if err != nil {
-		log.Error("sign-up: failed to find user by email", zap.Error(err))
+		log.Error("failed to check existing user email", zap.Error(err))
 		return nil, err
 	}
-	if exist != nil {
-		log.Warn("sign-up: email already exists")
+
+	if exist {
+		log.Warn("user email already exists")
 		return nil, domain.ErrUserEmailExists
 	}
 
-	hashPassword, err := helper.PasswordHash(param.Password)
+	hashPassword, err := cryptoutil.PasswordHash(param.Password)
 	if err != nil {
-		log.Error("sign-up: failed to hash password", zap.Error(err))
+		log.Error("failed to hash user password", zap.Error(err))
 		return nil, err
 	}
 
@@ -52,11 +52,11 @@ func (s *authService) SignUp(ctx context.Context, param model.SignUpRequest) (*m
 	}
 
 	if err := s.userRepository.Create(ctx, user); err != nil {
-		log.Error("sign-up: failed to create user", zap.Error(err))
+		log.Error("failed to create user", zap.Error(err))
 		return nil, err
 	}
 
-	log.Info("sign-up: user created successfully", zap.String("user_id", user.ID.String()))
+	log.Info("user signup completed successfully", zap.String("user_id", user.ID.String()))
 	userResponse := model.ToUserResponse(user)
 	return &userResponse, nil
 }
@@ -67,20 +67,20 @@ func (s *authService) SignIn(ctx context.Context, param model.SignInRequest) (*m
 
 	user, err := s.userRepository.FindByEmail(ctx, strings.ToLower(param.Email))
 	if err != nil {
-		log.Error("sign-in: failed to find user by email", zap.Error(err))
+		log.Error("failed to find user by email", zap.Error(err))
 		return nil, err
 	}
 	if user == nil {
-		log.Warn("sign-in: email not found")
+		log.Warn("user email not found")
 		return nil, domain.ErrUserEmailNotFound
 	}
 
-	if ok := helper.PasswordCheck(param.Password, user.Password); !ok {
-		log.Warn("sign-in: password not match", zap.String("user_id", user.ID.String()))
+	if err := cryptoutil.PasswordCheck(param.Password, user.Password); err != nil {
+		log.Warn("invalid user password", zap.String("user_id", user.ID.String()))
 		return nil, domain.ErrUserPasswordNotMatch
 	}
 
-	log.Info("sign-in: success", zap.String("user_id", user.ID.String()))
+	log.Info("user signin completed successfully", zap.String("user_id", user.ID.String()))
 	userResponse := model.ToUserResponse(user)
 	return &userResponse, nil
 }

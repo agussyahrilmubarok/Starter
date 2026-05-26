@@ -6,7 +6,7 @@ import (
 	"agussyahrilmubarok.github.io/web/internal/domain"
 	"agussyahrilmubarok.github.io/web/internal/model"
 	"agussyahrilmubarok.github.io/web/internal/service"
-	"agussyahrilmubarok.github.io/web/pkg/helper"
+	"agussyahrilmubarok.github.io/web/pkg/validatorutil"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
@@ -15,6 +15,7 @@ type authController struct {
 	authService service.IAuthService
 }
 
+// Index — GET/POST /sign-up
 func (h *authController) SignUp(c *gin.Context) {
 	session := sessions.Default(c)
 
@@ -37,7 +38,7 @@ func (h *authController) SignUp(c *gin.Context) {
 	if err := c.ShouldBind(&req); err != nil {
 		data["Values"] = req
 		data["Message"] = "Validation error"
-		data["Errors"] = helper.ValidatorError(err)
+		data["Errors"] = validatorutil.ValidatorError(err)
 		render(c, http.StatusBadRequest, "sign_up_index.html", data)
 		return
 	}
@@ -68,6 +69,7 @@ func (h *authController) SignUp(c *gin.Context) {
 	c.Redirect(http.StatusFound, "/sign-in")
 }
 
+// Index — GET/POST /sign-in
 func (h *authController) SignIn(c *gin.Context) {
 	session := sessions.Default(c)
 
@@ -90,7 +92,7 @@ func (h *authController) SignIn(c *gin.Context) {
 	if err := c.ShouldBind(&req); err != nil {
 		data["Values"] = req
 		data["Message"] = "Validation error"
-		data["Errors"] = helper.ValidatorError(err)
+		data["Errors"] = validatorutil.ValidatorError(err)
 		render(c, http.StatusBadRequest, "sign_in_index.html", data)
 		return
 	}

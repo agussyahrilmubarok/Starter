@@ -18,6 +18,7 @@ type IUserRepository interface {
 	Create(ctx context.Context, user *domain.User) error
 	Save(ctx context.Context, user *domain.User) error
 	DeleteByID(ctx context.Context, ID uuid.UUID) error
+	ExistsByEmailIgnorecase(ctx context.Context, email string) (bool, error)
 }
 
 type userRepository struct {
@@ -53,7 +54,7 @@ func (r *userRepository) FindByID(ctx context.Context, ID string) (*domain.User,
 func (r *userRepository) FindByEmail(ctx context.Context, email string) (*domain.User, error) {
 	var user domain.User
 
-	if err := r.db.WithContext(ctx).Where("email = ?", email).First(&user).Error; err != nil {
+	if err := r.db.WithContext(ctx).Where("email = ?", email).Take(&user).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
@@ -94,6 +95,18 @@ func (r *userRepository) DeleteByID(ctx context.Context, ID uuid.UUID) error {
 	}
 
 	return nil
+}
+
+// ExistsByEmailIgnorecase implements [IUserRepository].
+func (r *userRepository) ExistsByEmailIgnorecase(ctx context.Context, email string) (bool, error) {
+	var count int64
+
+	err := r.db.WithContext(ctx).Model(&domain.User{}).Where("LOWER(email) = LOWER(?)", email).Count(&count).Error
+	if err != nil {
+		return false, err
+	}
+
+	return count > 0, nil
 }
 
 func NewUserRepository(
