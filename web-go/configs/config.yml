@@ -13,5 +13,5 @@ database:
   timezone: Asia/Jakarta
 
 session:
-  secret_key: "737461727465722f7765622d676f737461727465722f7765622d676f"  
+  secret_key: "SecretKeySecretKeySecretKeySecretKeySecretKeySecretKeySecretKeySecretKey"  
   max_age: 604800  # 7 day in ms
