@@ -1,4 +1,4 @@
-package io.github.agussyahrilmubarok.web.repos;
+package io.github.agussyahrilmubarok.web.repository;
 
 import io.github.agussyahrilmubarok.web.domain.User;
 import java.util.UUID;

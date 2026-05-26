@@ -2,7 +2,7 @@ package io.github.agussyahrilmubarok.web.service;
 
 import io.github.agussyahrilmubarok.web.domain.User;
 import io.github.agussyahrilmubarok.web.model.UserDTO;
-import io.github.agussyahrilmubarok.web.repos.UserRepository;
+import io.github.agussyahrilmubarok.web.repository.UserRepository;
 import io.github.agussyahrilmubarok.web.util.NotFoundException;
 import java.util.List;
 import java.util.UUID;

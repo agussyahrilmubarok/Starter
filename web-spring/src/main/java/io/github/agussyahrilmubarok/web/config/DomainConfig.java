@@ -1,7 +1,5 @@
 package io.github.agussyahrilmubarok.web.config;
 
-import java.time.OffsetDateTime;
-import java.util.Optional;
 import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,10 +8,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import java.time.OffsetDateTime;
+import java.util.Optional;
 
 @Configuration
 @EntityScan("io.github.agussyahrilmubarok.web.domain")
-@EnableJpaRepositories("io.github.agussyahrilmubarok.web.repos")
+@EnableJpaRepositories("io.github.agussyahrilmubarok.web.repository")
 @EnableTransactionManagement
 @EnableJpaAuditing(dateTimeProviderRef = "auditingDateTimeProvider")
 public class DomainConfig {
@@ -22,5 +22,4 @@ public class DomainConfig {
     public DateTimeProvider dateTimeProvider() {
         return () -> Optional.of(OffsetDateTime.now());
     }
-
 }
