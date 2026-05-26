@@ -83,20 +83,20 @@ public class UserServiceImpl implements IUserService {
                     return new NotFoundException("User not found");
                 });
 
-        if (request.name() != null) {
+        if (request.name() != null && !request.name().isBlank()) {
             user.setName(request.name().trim());
         }
 
-        if (request.email() != null && !request.email().equals(user.getEmail())) {
-            boolean emailTaken = userRepository.existsByEmailIgnoreCase(request.email());
+        if (request.email() != null && !request.email().isBlank() && !request.email().equalsIgnoreCase(user.getEmail())) {
+            boolean emailTaken = userRepository.existsByEmailIgnoreCase(request.email().trim());
             if (emailTaken) {
                 log.warn("Email already registered on update email={} userId={}", request.email(), userId);
                 throw new ConflictException("email", "Email already registered");
             }
-            user.setEmail(request.email().toLowerCase());
+            user.setEmail(request.email().trim().toLowerCase());
         }
 
-        if (request.password() != null) {
+        if (request.password() != null && !request.password().isBlank()) {
             user.setPassword(passwordEncoder.encode(request.password()));
         }
 
