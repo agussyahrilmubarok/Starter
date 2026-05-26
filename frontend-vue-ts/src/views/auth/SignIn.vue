@@ -69,6 +69,7 @@ const handleSignIn = () => {
           </p>
 
           <form @submit.prevent="handleSignIn">
+
             <div class="row">
               <div class="col-md-12 mb-3">
                 <div class="form-group">
@@ -118,7 +119,9 @@ const handleSignIn = () => {
                 Sign Up
               </RouterLink>
             </div>
+            
           </form>
+          
         </div>
       </div>
     </div>

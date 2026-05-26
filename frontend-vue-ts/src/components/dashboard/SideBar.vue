@@ -8,6 +8,7 @@
         <RouterLink
           to="/dashboard"
           class="list-group-item list-group-item-action"
+          exact-active-class="active"
         >
           Dashboard
         </RouterLink>
@@ -15,6 +16,7 @@
         <RouterLink
           to="/dashboard/users"
           class="list-group-item list-group-item-action"
+          active-class="active"
         >
           Users
         </RouterLink>

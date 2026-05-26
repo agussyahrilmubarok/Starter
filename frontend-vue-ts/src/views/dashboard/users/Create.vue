@@ -19,7 +19,7 @@ const email = ref<string>("");
 const password = ref<string>("");
 const errors = reactive<ValidationErrors>({});
 
-const createUser = () => {
+const handlerCreate = () => {
   mutate(
     { name: name.value, email: email.value, password: password.value },
     {
@@ -48,29 +48,31 @@ const createUser = () => {
     <div class="card border-0 rounded-4 shadow-sm">
       <div class="card-header">ADD USER</div>
       <div class="card-body">
-        <form @submit.prevent="createUser">
+
+        <form @submit.prevent="handlerCreate">
+
           <div class="form-group mb-3">
             <label class="mb-1 fw-bold">Full Name</label>
             <input
               v-model="name"
               type="text"
-              class="form-control"
+              :class="`form-control ${errors.name ? 'is-invalid' : ''}`"
               placeholder="Full Name"
             />
-            <div v-if="errors.name" class="alert alert-danger mt-2 rounded-4">
+            <div v-if="errors.name" class="invalid-feedback">
               {{ errors.name }}
             </div>
           </div>
 
           <div class="form-group mb-3">
-            <label class="mb-1 fw-bold">Email address</label>
+            <label class="mb-1 fw-bold">Email Address</label>
             <input
               v-model="email"
               type="email"
-              class="form-control"
+              :class="`form-control ${errors.email ? 'is-invalid' : ''}`"
               placeholder="Email Address"
             />
-            <div v-if="errors.email" class="alert alert-danger mt-2 rounded-4">
+            <div v-if="errors.email" class="invalid-feedback">
               {{ errors.email }}
             </div>
           </div>
@@ -80,13 +82,10 @@ const createUser = () => {
             <input
               v-model="password"
               type="password"
-              class="form-control"
+              :class="`form-control ${errors.password ? 'is-invalid' : ''}`"
               placeholder="Password"
             />
-            <div
-              v-if="errors.password"
-              class="alert alert-danger mt-2 rounded-4"
-            >
+            <div v-if="errors.password" class="invalid-feedback">
               {{ errors.password }}
             </div>
           </div>
@@ -105,7 +104,9 @@ const createUser = () => {
           >
             Cancel
           </RouterLink>
+          
         </form>
+        
       </div>
     </div>
   </DashboardLayout>

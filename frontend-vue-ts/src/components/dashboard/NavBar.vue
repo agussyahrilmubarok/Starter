@@ -1,15 +1,15 @@
 <script setup lang="ts">
+import { useRouter } from "vue-router";
 import { APP_NAME } from "../../constants/app";
+import { useAuthStore } from "../../stores/auth";
 
-const props = withDefaults(
-  defineProps<{
-    userEmail?: string;
-    onSignOut?: () => void;
-  }>(),
-  {
-    userEmail: "User",
-  },
-);
+const router = useRouter();
+const authStore = useAuthStore();
+
+const handleSignOut = () => {
+  authStore.signOut();
+  router.push({ name: "signin" });
+};
 </script>
 
 <template>
@@ -40,7 +40,7 @@ const props = withDefaults(
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            👤 {{ props.userEmail }}
+            👤 {{ authStore.user?.email }}
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
@@ -52,7 +52,7 @@ const props = withDefaults(
             <li>
               <button
                 class="dropdown-item text-danger"
-                @click="props.onSignOut?.()"
+                @click="handleSignOut"
               >
                 Sign Out
               </button>

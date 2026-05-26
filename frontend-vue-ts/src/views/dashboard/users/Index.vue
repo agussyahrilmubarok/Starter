@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useQueryClient } from "@tanstack/vue-query";
 import { useUsers } from "../../../composables/user/useUsers";
 import { useUserDelete } from "../../../composables/user/useUserDelete";
@@ -10,13 +11,18 @@ useDocumentTitle("Users");
 
 const { data: users, isLoading, isError, error } = useUsers();
 const queryClient = useQueryClient();
-const { mutate, isPending } = useUserDelete();
+const { mutate } = useUserDelete();
+const deletingId = ref<string | null>(null);
 
 const handleDelete = (id: string) => {
   if (confirm("Are you sure you want to delete this user?")) {
+    deletingId.value = id;
     mutate(id, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["users"] });
+      },
+      onSettled: () => {
+        deletingId.value = null;
       },
     });
   }
@@ -68,10 +74,10 @@ const handleDelete = (id: string) => {
                   </RouterLink>
                   <button
                     @click="handleDelete(user.id)"
-                    :disabled="isPending"
+                    :disabled="deletingId === user.id"
                     class="btn btn-sm btn-danger rounded-4 shadow-sm border-0"
                   >
-                    {{ isPending ? "DELETING..." : "DELETE" }}
+                    {{ deletingId === user.id ? "DELETING..." : "DELETE" }}
                   </button>
                 </td>
               </tr>

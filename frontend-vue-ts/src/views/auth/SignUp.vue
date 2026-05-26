@@ -54,6 +54,7 @@ const handleSignUp = () => {
           <p class="text-secondary text-center mb-4">Sign up to continue</p>
 
           <form @submit.prevent="handleSignUp">
+          
             <div class="row">
               <div class="col-md-12 mb-3">
                 <div class="form-group">
@@ -120,7 +121,9 @@ const handleSignUp = () => {
                 Sign In
               </RouterLink>
             </div>
+            
           </form>
+          
         </div>
       </div>
     </div>

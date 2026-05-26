@@ -36,7 +36,7 @@ watch(
   { immediate: true },
 );
 
-const updateUser = () => {
+const handleUpdate = () => {
   mutate(
     {
       id,
@@ -74,29 +74,30 @@ const updateUser = () => {
       <div class="card-body">
         <p v-if="!user">Loading...</p>
 
-        <form v-else @submit.prevent="updateUser">
+        <form v-else @submit.prevent="handleUpdate">
+
           <div class="form-group mb-3">
             <label class="mb-1 fw-bold">Full Name</label>
             <input
               v-model="name"
               type="text"
-              class="form-control"
+              :class="`form-control ${errors.name ? 'is-invalid' : ''}`"
               placeholder="Full Name"
             />
-            <div v-if="errors.name" class="alert alert-danger mt-2 rounded-4">
+            <div v-if="errors.name" class="invalid-feedback">
               {{ errors.name }}
             </div>
           </div>
 
           <div class="form-group mb-3">
-            <label class="mb-1 fw-bold">Email address</label>
+            <label class="mb-1 fw-bold">Email Address</label>
             <input
               v-model="email"
               type="email"
-              class="form-control"
+              :class="`form-control ${errors.email ? 'is-invalid' : ''}`"
               placeholder="Email Address"
             />
-            <div v-if="errors.email" class="alert alert-danger mt-2 rounded-4">
+            <div v-if="errors.email" class="invalid-feedback">
               {{ errors.email }}
             </div>
           </div>
@@ -106,13 +107,10 @@ const updateUser = () => {
             <input
               v-model="password"
               type="password"
-              class="form-control"
-              placeholder="Password"
+              :class="`form-control ${errors.password ? 'is-invalid' : ''}`"
+              placeholder="Leave blank to keep current password"
             />
-            <div
-              v-if="errors.password"
-              class="alert alert-danger mt-2 rounded-4"
-            >
+            <div v-if="errors.password" class="invalid-feedback">
               {{ errors.password }}
             </div>
           </div>
@@ -131,7 +129,9 @@ const updateUser = () => {
           >
             Cancel
           </RouterLink>
+
         </form>
+      
       </div>
     </div>
   </DashboardLayout>

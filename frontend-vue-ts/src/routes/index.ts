@@ -65,19 +65,17 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, _from, next) => {
+router.beforeEach((to, _from) => {
   const authStore = useAuthStore();
   const isAuthenticated = !!authStore.token;
 
   if (to.meta.requiresAuth && !isAuthenticated) {
-    return next({ name: "signin" });
+    return { name: "signin" };
   }
 
   if (to.meta.guest && isAuthenticated) {
-    return next({ name: "dashboard" });
+    return { name: "dashboard" };
   }
-
-  next();
 });
 
 export default router;
