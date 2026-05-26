@@ -1,26 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "/home/something/Workspaces/personal/Starter/backend-dotnet/Starter/backend-dotnet/BackendApi/BackendApi.csproj": {}
+    "/home/xCode666/backend-dotnet/Starter/backend-dotnet/BackendApi/BackendApi.csproj": {}
   },
   "projects": {
-    "/home/something/Workspaces/personal/Starter/backend-dotnet/Starter/backend-dotnet/BackendApi/BackendApi.csproj": {
+    "/home/xCode666/backend-dotnet/Starter/backend-dotnet/BackendApi/BackendApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/something/Workspaces/personal/Starter/backend-dotnet/Starter/backend-dotnet/BackendApi/BackendApi.csproj",
+        "projectUniqueName": "/home/xCode666/backend-dotnet/Starter/backend-dotnet/BackendApi/BackendApi.csproj",
         "projectName": "BackendApi",
-        "projectPath": "/home/something/Workspaces/personal/Starter/backend-dotnet/Starter/backend-dotnet/BackendApi/BackendApi.csproj",
-        "packagesPath": "/home/something/.nuget/packages/",
-        "outputPath": "/home/something/Workspaces/personal/Starter/backend-dotnet/Starter/backend-dotnet/BackendApi/obj/",
+        "projectPath": "/home/xCode666/backend-dotnet/Starter/backend-dotnet/BackendApi/BackendApi.csproj",
+        "packagesPath": "/home/xCode666/.nuget/packages/",
+        "outputPath": "/home/xCode666/backend-dotnet/Starter/backend-dotnet/BackendApi/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/something/.nuget/NuGet/NuGet.Config"
+          "/home/xCode666/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
-          "/usr/lib/dotnet/library-packs": {},
+          "/usr/lib64/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -48,6 +48,10 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[10.0.8, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[10.0.1, )"
             }
           },
           "imports": [
@@ -69,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/10.0.108/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
