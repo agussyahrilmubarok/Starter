@@ -5,13 +5,9 @@ TYPE ?= webapi
 .PHONY: setup create/sln create/project add/project run build clean
 
 setup:
-	@echo "==> Membuat Solution: $(SLN).sln..."
 	dotnet new sln -n $(SLN)
-	@echo "==> Membuat Project $(TYPE) di folder $(NAME)..."
 	dotnet new $(TYPE) -o $(NAME)
-	@echo "==> Menghubungkan Project ke Solution..."
 	dotnet sln $(NAME).slnx add $(NAME)/$(NAME).csproj
-	@echo "==> Setup selesai!"
 
 create/sln:
 	dotnet new sln -n $(SLN)
