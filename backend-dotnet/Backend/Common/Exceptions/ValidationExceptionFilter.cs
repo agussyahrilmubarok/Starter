@@ -24,12 +24,14 @@ public class ValidationExceptionFilter : IActionFilter
         };
     }
 
-    public void OnActionExecuted(ActionExecutedContext context) { }
+    public void OnActionExecuted(ActionExecutedContext context)
+    {
+    }
 
     private static string BuildMessage(string field, Microsoft.AspNetCore.Mvc.ModelBinding.ModelError error)
     {
         var name = Capitalize(field);
-        var msg  = error.ErrorMessage ?? string.Empty;
+        var msg = error.ErrorMessage ?? string.Empty;
 
         if (msg.Contains("required", StringComparison.OrdinalIgnoreCase) ||
             msg.Contains("must not be empty", StringComparison.OrdinalIgnoreCase))
@@ -86,9 +88,13 @@ public class ValidationExceptionFilter : IActionFilter
         return "Invalid value";
     }
 
-    private static string Camelize(string value) =>
-        string.IsNullOrEmpty(value) ? value : char.ToLower(value[0]) + value[1..];
+    private static string Camelize(string value)
+    {
+        return string.IsNullOrEmpty(value) ? value : char.ToLower(value[0]) + value[1..];
+    }
 
-    private static string Capitalize(string value) =>
-        string.IsNullOrEmpty(value) ? value : char.ToUpper(value[0]) + value[1..];
+    private static string Capitalize(string value)
+    {
+        return string.IsNullOrEmpty(value) ? value : char.ToUpper(value[0]) + value[1..];
+    }
 }

@@ -4,8 +4,7 @@ namespace Backend.Application.DTOs;
 
 public class ApiResponse<T>
 {
-    [JsonPropertyName("message")]
-    public string Message { get; set; }
+    [JsonPropertyName("message")] public string Message { get; set; }
 
     [JsonPropertyName("data")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

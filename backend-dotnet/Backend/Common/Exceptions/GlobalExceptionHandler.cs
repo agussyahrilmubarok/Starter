@@ -53,6 +53,8 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
         return true;
     }
 
-    private static Dictionary<string, string> BuildErrors(string? field, string message) =>
-        new() { [field ?? "error"] = message };
+    private static Dictionary<string, string> BuildErrors(string? field, string message)
+    {
+        return new Dictionary<string, string> { [field ?? "error"] = message };
+    }
 }
