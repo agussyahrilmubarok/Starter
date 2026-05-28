@@ -1,29 +1,16 @@
-SLN ?= BackendApi
-# TYPE choices: webapi (API), worker (Background), console (CLI), classlib (Library), xunit (Test)
-TYPE ?= webapi
+new:
+	dotnet new $(type) -o $(name)
 
-.PHONY: setup create/sln create/project add/project run build clean
-
-setup:
-	dotnet new sln -n $(SLN)
-	dotnet new $(TYPE) -o $(NAME)
-	dotnet sln $(NAME).slnx add $(NAME)/$(NAME).csproj
-
-create/sln:
-	dotnet new sln -n $(SLN)
-
-create/project:
-	dotnet new $(TYPE) -o $(NAME)
-
-add/project:
-	dotnet sln $(SLN).slnx add $(NAME)/$(NAME).csproj
+add:
+	dotnet sln $(sln).slnx add $(name)/$(name).csproj
 
 run:
-	dotnet run --project $(NAME)/$(NAME).csproj
+	dotnet run --project $(name)/$(name).csproj
 
 build:
-	dotnet build $(NAME).sln
+	dotnet build $(name).slnx
 
-clean:
-	dotnet clean $(NAME).sln
-	rm -rf $(NAME)/obj $(NAME)/bin
+sln:
+	dotnet new sln -n $(sln)
+
+# type choices: webapi (API), worker (Background), console (CLI), classlib (Library), xunit (Test)
