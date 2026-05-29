@@ -23,16 +23,10 @@ public sealed record CreateUserRequest(
 
 public sealed record UpdateUserRequest(
     [property: JsonPropertyName("name")]
-    [MinLength(2)]
-    [MaxLength(100)]
     string? Name,
     [property: JsonPropertyName("email")]
-    [EmailAddress]
-    [MaxLength(150)]
     string? Email,
     [property: JsonPropertyName("password")]
-    [MinLength(8)]
-    [MaxLength(72)]
     string? Password
 );
 

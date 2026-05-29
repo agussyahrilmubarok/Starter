@@ -46,23 +46,24 @@ public sealed class UserServiceImpl(IUserRepository userRepository) : IUserServi
         var user = await userRepository.GetByIdAsync(id, ct)
                    ?? throw new NotFoundException($"User with id '{id}' was not found.", "id");
 
-        if (request.Email is not null)
+        if (request.Name is not null && !string.IsNullOrWhiteSpace(request.Name))
+            user.Name = request.Name.Trim();
+        
+        if (request.Email is not null && !string.IsNullOrWhiteSpace(request.Email))
         {
-            var emailNormalized = request.Email.ToLowerInvariant();
-            if (emailNormalized != user.Email)
+            var emailNormalized = request.Email.Trim().ToLowerInvariant();
+            if (!emailNormalized.Equals(user.Email, StringComparison.OrdinalIgnoreCase))
             {
                 var exists = await userRepository.ExistsByEmailAsync(emailNormalized, ct);
                 if (exists)
-                    throw new ConflictException("Email already exists.", "email");
-
+                {
+                    throw new ConflictException("Email already registered.", "email");
+                }
                 user.Email = emailNormalized;
             }
         }
 
-        if (request.Name is not null)
-            user.Name = request.Name;
-
-        if (request.Password is not null)
+        if (request.Password is not null && !string.IsNullOrWhiteSpace(request.Password))
             user.Password = PasswordHelper.Hash(request.Password);
 
         var updated = await userRepository.UpdateAsync(user, ct);

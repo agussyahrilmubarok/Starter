@@ -24,6 +24,16 @@ builder.Services.AddControllers(options => { options.Filters.Add<ValidationExcep
 
 builder.Services.AddOpenApi();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -46,6 +56,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "Swagger"));
 }
 
+app.UseCors();
 app.UseExceptionHandler();
 app.UseHttpsRedirection();
 app.UseMiddleware<JwtMiddleware>();
