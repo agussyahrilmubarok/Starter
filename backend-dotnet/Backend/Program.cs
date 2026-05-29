@@ -1,6 +1,7 @@
 using Backend.Api.Exceptions;
 using Backend.Application.Services;
 using Backend.Common.Exceptions;
+using Backend.Common.Middleware;
 using Backend.Infrastructure.Persistence;
 using Backend.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUserRepository, UserRepositoryImpl>();
+builder.Services.AddScoped<IJwtService, JwtServiceImpl>();
 builder.Services.AddScoped<IAuthService, AuthServiceImpl>();
 builder.Services.AddScoped<IUserService, UserServiceImpl>();
 
@@ -46,6 +48,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseExceptionHandler();
 app.UseHttpsRedirection();
+app.UseMiddleware<JwtMiddleware>();
 app.MapControllers();
 
 app.Run();

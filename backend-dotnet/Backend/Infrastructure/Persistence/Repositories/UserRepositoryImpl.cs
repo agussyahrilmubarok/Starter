@@ -37,7 +37,7 @@ public sealed class UserRepositoryImpl(AppDbContext db) : IUserRepository
 
     public async Task<User> CreateAsync(User user, CancellationToken ct = default)
     {
-        user.Email = user.Email.ToLowerInvariant(); 
+        user.Email = user.Email.ToLowerInvariant();
 
         db.Users.Add(user);
         await db.SaveChangesAsync(ct);

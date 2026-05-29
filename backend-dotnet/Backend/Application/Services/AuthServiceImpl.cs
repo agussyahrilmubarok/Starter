@@ -6,7 +6,10 @@ using Backend.Infrastructure.Persistence.Repositories;
 
 namespace Backend.Application.Services;
 
-public sealed class AuthServiceImpl(IUserRepository userRepository) : IAuthService
+public sealed class AuthServiceImpl(
+    IUserRepository userRepository,
+    IJwtService jwtService
+) : IAuthService
 {
     public async Task<AuthResponse> SignUpAsync(SignUpRequest request, CancellationToken ct = default)
     {
@@ -24,7 +27,7 @@ public sealed class AuthServiceImpl(IUserRepository userRepository) : IAuthServi
         };
 
         var created = await userRepository.CreateAsync(user, ct);
-        var token = TokenHelper.Generate(created.Id.ToString(), created.Email);
+        var token = jwtService.GenerateToken(created.Id.ToString());
 
         return BuildResponse(token, created);
     }
@@ -40,7 +43,7 @@ public sealed class AuthServiceImpl(IUserRepository userRepository) : IAuthServi
         if (!valid)
             throw new UnauthorizedException("Wrong password.", "password");
 
-        var token = TokenHelper.Generate(user.Id.ToString(), user.Email);
+        var token = jwtService.GenerateToken(user.Id.ToString());
 
         return BuildResponse(token, user);
     }
