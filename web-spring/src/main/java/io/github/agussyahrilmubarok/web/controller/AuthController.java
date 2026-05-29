@@ -125,7 +125,7 @@ public class AuthController {
         return "redirect:/dashboard";
     }
 
-    @GetMapping("/sign-out")
+    @PostMapping("/sign-out")
     public String signOut(
             final HttpServletRequest request,
             final RedirectAttributes redirectAttributes

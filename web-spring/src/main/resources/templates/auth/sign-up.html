@@ -14,6 +14,10 @@
                     <h3 class="fw-bold text-center mb-2">Create Account</h3>
                     <p class="text-secondary text-center mb-4">Sign up to continue</p>
 
+                    <div class="alert alert-danger rounded-3" th:if="${MSG_ERROR}" th:text="${MSG_ERROR}"></div>
+
+                    <div class="alert alert-success rounded-3" th:if="${MSG_SUCCESS}" th:text="${MSG_SUCCESS}"></div>
+
                     <form method="post" novalidate th:action="@{/sign-up}" th:object="${signUp}">
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Full Name</label>

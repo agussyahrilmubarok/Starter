@@ -13,30 +13,31 @@
             <form method="post" novalidate th:action="@{/dashboard/users/create}" th:object="${createUser}">
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Full Name</label>
-                    <input type="text" class="form-control rounded-3"
-                           th:field="*{name}"
+                    <input class="form-control rounded-3" placeholder="Full Name"
                            th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
-                           placeholder="Full Name"/>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                           th:field="*{name}"
+                           type="text"/>
+                    <div class="invalid-feedback" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Email Address</label>
-                    <input type="email" class="form-control rounded-3"
-                           th:field="*{email}"
+                    <input class="form-control rounded-3" placeholder="Enter your email"
                            th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
-                           placeholder="Enter your email"/>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                           th:field="*{email}"
+                           type="email"/>
+                    <div class="invalid-feedback" th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Password</label>
-                    <input type="password" class="form-control rounded-3"
-                           th:field="*{password}"
+                    <input class="form-control rounded-3" placeholder="Enter your password"
                            th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
-                           placeholder="Enter your password"/>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                           th:field="*{password}"
+                           type="password"/>
+                    <div class="invalid-feedback" th:errors="*{password}"
+                         th:if="${#fields.hasErrors('password')}"></div>
                 </div>
-                <button type="submit" class="btn btn-md btn-primary rounded-4 shadow-sm border-0">Save</button>
-                <a th:href="@{/dashboard/users}" class="btn btn-md btn-secondary rounded-4 shadow-sm border-0 ms-2">Cancel</a>
+                <button class="btn btn-md btn-primary rounded-4 shadow-sm border-0" type="submit">Save</button>
+                <a class="btn btn-md btn-secondary rounded-4 shadow-sm border-0 ms-2" th:href="@{/dashboard/users}">Cancel</a>
             </form>
         </div>
     </div>

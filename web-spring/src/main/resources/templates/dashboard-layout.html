@@ -6,6 +6,7 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <link href="/favicon.ico" rel="icon" type="image/x-icon"/>
+
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/app.css}"/>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -54,12 +55,6 @@
     </div>
 </nav>
 
-<div class="container mt-3">
-    <p class="alert alert-success mb-0" role="alert" th:if="${MSG_SUCCESS}" th:text="${MSG_SUCCESS}"></p>
-    <p class="alert alert-info mb-0" role="alert" th:if="${MSG_INFO}" th:text="${MSG_INFO}"></p>
-    <p class="alert alert-danger mb-0" role="alert" th:if="${MSG_ERROR}" th:text="${MSG_ERROR}"></p>
-</div>
-
 <div class="container mt-4 mb-5">
     <div class="row g-4">
         <div class="col-12 col-md-3">
@@ -82,5 +77,13 @@
 </div>
 
 <script defer th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+<script th:inline="javascript">
+    var successMsg = /*[[${MSG_SUCCESS}]]*/ '';
+    var infoMsg = /*[[${MSG_INFO}]]*/ '';
+    var errorMsg = /*[[${MSG_ERROR}]]*/ '';
+    if (successMsg) toastr.success(successMsg);
+    if (infoMsg) toastr.info(infoMsg);
+    if (errorMsg) toastr.error(errorMsg);
+</script>
 </body>
 </html>
