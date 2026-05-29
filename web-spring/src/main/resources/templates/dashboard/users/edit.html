@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html layout:decorate="~{dashboard-layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit User</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <h4 class="fw-bold mb-0">Edit User</h4>
+        <a class="btn btn-outline-secondary btn-sm" th:href="@{/dashboard/users}">Back to List</a>
+    </div>
+
+    <div class="card border-0 rounded-4 shadow-sm">
+        <div class="card-body p-4">
+            <form method="post"
+                  novalidate
+                  th:action="@{/dashboard/users/edit/{id}(id=${editUser.id})}" th:object="${editUser}">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Full Name</label>
+                    <input class="form-control rounded-3" placeholder="Enter full name"
+                           th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
+                           th:field="*{name}"
+                           type="text"/>
+                    <div class="invalid-feedback" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Email Address</label>
+                    <input class="form-control rounded-3" placeholder="Enter email"
+                           th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
+                           th:field="*{email}"
+                           type="email"/>
+                    <div class="invalid-feedback" th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">New Password <span class="text-muted small">(leave blank to keep current)</span></label>
+                    <input class="form-control rounded-3" placeholder="Enter new password"
+                           th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
+                           th:field="*{password}"
+                           type="password"/>
+                    <div class="invalid-feedback" th:errors="*{password}"
+                         th:if="${#fields.hasErrors('password')}"></div>
+                </div>
+                <button class="btn btn-primary mt-2" type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

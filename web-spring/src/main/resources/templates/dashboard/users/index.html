@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html layout:decorate="~{dashboard-layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Users</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="card border-0 rounded-4 shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>USERS</span>
+            <a th:href="@{/dashboard/users/create}" class="btn btn-sm btn-success rounded-4 shadow-sm border-0">
+                ADD USER
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email Address</th>
+                        <th>Created At</th>
+                        <th style="width:20%">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="u : ${users}" th:if="${!users.empty}">
+                        <td th:text="${u.name}"></td>
+                        <td th:text="${u.email}"></td>
+                        <td th:text="${#temporals.format(u.createdAt, 'dd MMM yyyy')}"></td>
+                        <td class="text-center text-nowrap">
+                            <a th:href="@{/dashboard/users/edit/{id}(id=${u.id})}"
+                               class="btn btn-sm btn-primary rounded-4 shadow-sm border-0 me-1">
+                                EDIT
+                            </a>
+                            <form th:action="@{/dashboard/users/delete/{id}(id=${u.id})}"
+                                  method="post" class="d-inline"
+                                  onsubmit="return confirm('Are you sure you want to delete this user?')">
+                                <button type="submit" class="btn btn-sm btn-danger rounded-4 shadow-sm border-0">
+                                    DELETE
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${users.empty}">
+                        <td colspan="4" class="text-center text-muted py-4">No users found</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

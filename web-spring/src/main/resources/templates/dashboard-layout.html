@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">web-spring</title>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <link href="/favicon.ico" rel="icon" type="image/x-icon"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/app.css}"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="crossorigin" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            background-color: lightgray;
+            font-family: 'Quicksand', sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3 shadow-sm">
+    <a class="navbar-brand fw-bold fs-5" th:href="@{/dashboard}">⚡ web-spring</a>
+    <button class="navbar-toggler" data-bs-target="#navbarContent"
+            data-bs-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#">
+                    👤 <span th:text="${userProfile.email}">User</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item" th:href="@{/dashboard/profile}">My Profile</a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider"/>
+                    </li>
+                    <li>
+                        <form method="post" style="display:inline" th:action="@{/sign-out}">
+                            <input th:name="${_csrf != null ? _csrf.parameterName : '_csrf'}"
+                                   th:value="${_csrf != null ? _csrf.token : ''}"
+                                   type="hidden"/>
+                            <button class="dropdown-item text-danger" type="submit">Sign Out</button>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-3">
+    <p class="alert alert-success mb-0" role="alert" th:if="${MSG_SUCCESS}" th:text="${MSG_SUCCESS}"></p>
+    <p class="alert alert-info mb-0" role="alert" th:if="${MSG_INFO}" th:text="${MSG_INFO}"></p>
+    <p class="alert alert-danger mb-0" role="alert" th:if="${MSG_ERROR}" th:text="${MSG_ERROR}"></p>
+</div>
+
+<div class="container mt-4 mb-5">
+    <div class="row g-4">
+        <div class="col-12 col-md-3">
+            <div class="card border-0 rounded-4 shadow-sm">
+                <div class="card-header">MAIN MENU</div>
+                <div class="card-body p-2">
+                    <div class="list-group list-group-flush">
+                        <a class="list-group-item list-group-item-action rounded-3"
+                           th:href="@{/dashboard}">Dashboard</a>
+                        <a class="list-group-item list-group-item-action rounded-3"
+                           th:href="@{/dashboard/users}">Users</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-9">
+            <div layout:fragment="content"></div>
+        </div>
+    </div>
+</div>
+
+<script defer th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
