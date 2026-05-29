@@ -35,6 +35,7 @@ func (app *App) newGinRouter() http.Handler {
 	homeController := controller.NewHomeController()
 	authController := controller.NewAuthController(app.authService)
 	dashboardController := controller.NewDashboardController()
+	profileController := controller.NewProfileController()
 	userController := controller.NewUserController(app.userService)
 
 	public := router.Group("/")
@@ -56,6 +57,11 @@ func (app *App) newGinRouter() http.Handler {
 	{
 		private.GET("/dashboard", dashboardController.Dashboard)
 		private.POST("/sign-out", authController.SignOut)
+
+		profile := private.Group("/dashboard/profile")
+		{
+			profile.GET("", profileController.Index)
+		}
 
 		users := private.Group("/dashboard/users")
 		{
