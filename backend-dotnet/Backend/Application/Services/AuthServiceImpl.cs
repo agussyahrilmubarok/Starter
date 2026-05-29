@@ -34,11 +34,11 @@ public sealed class AuthServiceImpl(IUserRepository userRepository) : IAuthServi
         var emailNormalized = request.Email.ToLowerInvariant();
 
         var user = await userRepository.GetByEmailAsync(emailNormalized, ct)
-                   ?? throw new UnauthorizedException("Invalid email or password.", "credentials");
+                   ?? throw new UnauthorizedException("Email not registered.", "email");
 
         var valid = PasswordHelper.Verify(request.Password, user.Password);
         if (!valid)
-            throw new UnauthorizedException("Invalid email or password.", "credentials");
+            throw new UnauthorizedException("Wrong password.", "password");
 
         var token = TokenHelper.Generate(user.Id.ToString(), user.Email);
 

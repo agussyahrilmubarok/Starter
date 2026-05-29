@@ -40,7 +40,10 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
             )
         };
 
-        logger.LogError(exception, "Exception caught: {Message}", exception.Message);
+        if (statusCode >= 500)
+            logger.LogError(exception, "Unhandled exception: {Message}", exception.Message);
+        else
+            logger.LogWarning(exception, "Client error {StatusCode}: {Message}", statusCode, exception.Message);
 
         context.Response.StatusCode = statusCode;
         context.Response.ContentType = "application/json";
