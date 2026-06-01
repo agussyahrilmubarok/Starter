@@ -1,0 +1,43 @@
+services:
+  mysql:
+    image: mysql:9.7
+    container_name: mysql
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: sandbox_db
+      MYSQL_USER: sandbox
+      MYSQL_PASSWORD: sandbox
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - sandbox_net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "sandbox", "-psandbox"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    container_name: phpmyadmin
+    restart: on-failure
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: rootpass
+    ports:
+      - "5050:80"
+    networks:
+      - sandbox_net
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
+
+networks:
+  sandbox_net:
+    driver: bridge
