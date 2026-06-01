@@ -1,0 +1,47 @@
+services:
+  cassandra:
+    image: cassandra:5.0
+    container_name: cassandra
+    restart: on-failure
+    environment:
+      CASSANDRA_CLUSTER_NAME: sandbox_cluster
+      CASSANDRA_USER: sandbox
+      CASSANDRA_PASSWORD: sandbox
+      CASSANDRA_AUTHENTICATOR: PasswordAuthenticator
+      CASSANDRA_AUTHORIZER: CassandraAuthorizer
+    ports:
+      - "9042:9042"
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+    networks:
+      - sandbox_net
+    healthcheck:
+      test: ["CMD", "cqlsh", "-u", "cassandra", "-p", "cassandra", "-e", "describe keyspaces"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+  cassandra-web:
+    image: ipushc/cassandra-web:latest
+    container_name: cassandra-web
+    restart: on-failure
+    environment:
+      CASSANDRA_HOST: cassandra
+      CASSANDRA_PORT: 9042
+      CASSANDRA_USER: cassandra
+      CASSANDRA_PASSWORD: cassandra
+    ports:
+      - "8083:8083"
+    networks:
+      - sandbox_net
+    depends_on:
+      cassandra:
+        condition: service_healthy
+
+volumes:
+  cassandra_data:
+
+networks:
+  sandbox_net:
+    driver: bridge

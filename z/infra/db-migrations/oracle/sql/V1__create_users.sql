@@ -1,0 +1,18 @@
+CREATE TABLE users (
+  id          RAW(16)       DEFAULT SYS_GUID() PRIMARY KEY,
+  name        VARCHAR2(100) NOT NULL,
+  email       VARCHAR2(150) NOT NULL,
+  password    VARCHAR2(255) NOT NULL,
+  created_at  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
+  updated_at  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX uq_users_email ON users (email);
+
+CREATE OR REPLACE TRIGGER trg_users_updated_at
+BEFORE UPDATE ON users
+FOR EACH ROW
+BEGIN
+  :NEW.updated_at := CURRENT_TIMESTAMP;
+END;
+/

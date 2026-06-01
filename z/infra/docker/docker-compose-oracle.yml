@@ -1,0 +1,43 @@
+services:
+  oracle:
+    image: gvenzl/oracle-free:23-slim
+    container_name: oracle
+    restart: on-failure
+    environment:
+      ORACLE_PASSWORD: sandbox
+      APP_USER: sandbox
+      APP_USER_PASSWORD: sandbox
+    ports:
+      - "1521:1521"
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+    networks:
+      - sandbox_net
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:25.1.0
+    container_name: cloudbeaver
+    restart: on-failure
+    ports:
+      - "5050:8978"
+    volumes:
+      - cloudbeaver_data:/opt/cloudbeaver/workspace
+    networks:
+      - sandbox_net
+    depends_on:
+      oracle:
+        condition: service_healthy
+
+volumes:
+  oracle_data:
+  cloudbeaver_data:
+
+networks:
+  sandbox_net:
+    driver: bridge
