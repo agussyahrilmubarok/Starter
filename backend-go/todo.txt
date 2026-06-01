@@ -1,7 +1,0 @@
-* 
-* [ ] `FindAll` does not implement pagination, which can become problematic with large datasets.
-* [ ] `autoMigrate` is effectively disabled with a hardcoded `false`; migrations will not run automatically (though this is generally a good practice for production).
-* [ ] CORS is configured with `AllowOrigins: ["*"]`, which is too permissive for production environments.
-* [ ] No rate limiting is implemented, leaving the API vulnerable to abuse.
-* [ ] No request/response logging middleware is in place; logging only exists at the service layer.
-* [ ] No health check endpoint is available for service monitoring.
