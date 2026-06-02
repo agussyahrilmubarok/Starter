@@ -1,38 +1,11 @@
-# Run Web development server
-dev/web:
+# export PATH=$PATH:$(go env GOPATH)/bin
+
+web/run:
 	go run cmd/web/main.go
 
-# Clean and verify Go modules
-tidy:
-	go mod tidy
+mockery/setup:
+	go install github.com/vektra/mockery/v2@latest
 
-# Run all tests
-test:
-	go test ./...
-
-# Update Go version in go.mod
-# Usage:
-# make go/edit VERSION=1.25.0
-go/edit:
-	go mod edit -go=$(VERSION)
-	go mod tidy
-
-# Update all project dependencies to latest version
-go/update:
-	go get -u ./...
-	go mod tidy
-
-# Install Swagger CLI and dependencies
-swagger/install:
-	go install github.com/swaggo/swag/cmd/swag@latest
-	go get github.com/swaggo/swag@latest
-	go mod tidy
-
-# Generate Swagger documentation for Gin application
-swagger/gin/generate:
-	swag init -g internal/app/gin.go -o api/gin/docs
-
-# comments
-## Add Go binary path to PATH environment variable
-## export PATH=$PATH:$(go env GOPATH)/bin
-#
+# mockery --name=UserRepository --dir=internal/domain --output=internal/domain/mocks --outpkg=mocks
+mockery/domain/generate:
+	mockery --name=$(name) --dir=internal/domain --output=internal/domain/mocks --outpkg=mocks

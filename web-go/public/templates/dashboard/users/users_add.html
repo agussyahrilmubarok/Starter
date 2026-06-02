@@ -1,16 +1,15 @@
 {{ define "content" }}
 
 <div class="card border-0 rounded-4 shadow-sm">
-    <div class="card-header">EDIT USER</div>
+    <div class="card-header">ADD USER</div>
     <div class="card-body">
-        <form method="POST" action="/dashboard/users/{{ .Values.ID }}/edit">
+        <form method="POST" action="/dashboard/users/add">
 
             <div class="mb-3">
                 <label class="form-label fw-semibold">Full Name</label>
                 <input type="text" name="name" value="{{ .Values.Name }}"
-                    class="form-control rounded-3 {{if .Errors.Name}}is-invalid{{end}}"
-                    placeholder="Full Name" />
-                {{if .Errors.Name}}
+                    class="form-control rounded-3 {{if .Errors.Name}}is-invalid{{end}}" placeholder="Full Name" />
+                {{if .Errors.Email}}
                 <div class="invalid-feedback">{{.Errors.Name}}</div>
                 {{end}}
             </div>
@@ -27,19 +26,15 @@
 
             <div class="mb-3">
                 <label class="form-label fw-semibold">Password</label>
-                <input type="password" name="password"
+                <input type="password" name="password" value="{{ .Values.Password }}"
                     class="form-control rounded-3 {{if .Errors.Password}}is-invalid{{end}}"
-                    placeholder="Kosongkan jika tidak ingin mengubah password" />
+                    placeholder="Enter your password" />
                 {{if .Errors.Password}}
                 <div class="invalid-feedback">{{.Errors.Password}}</div>
                 {{end}}
             </div>
 
-            {{if .Errors.Error}}
-            <div class="alert alert-danger rounded-3">{{.Errors.Error}}</div>
-            {{end}}
-
-            <button type="submit" class="btn btn-md btn-primary rounded-4 shadow-sm border-0">Update</button>
+            <button type="submit" class="btn btn-md btn-primary rounded-4 shadow-sm border-0">Save</button>
             <a href="/dashboard/users" class="btn btn-md btn-secondary rounded-4 shadow-sm border-0 ms-2">Cancel</a>
 
         </form>

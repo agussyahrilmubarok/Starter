@@ -3,10 +3,14 @@ package main
 import (
 	"log"
 
-	"agussyahrilmubarok.github.io/web/internal/application"
-	"agussyahrilmubarok.github.io/web/internal/config"
-	"agussyahrilmubarok.github.io/web/pkg/database"
+	"agussyahrilmubarok.github.io/web/internal/delivery/web/controller"
+	"agussyahrilmubarok.github.io/web/internal/infrastructure/config"
+	"agussyahrilmubarok.github.io/web/internal/infrastructure/repository/postgres"
+	"agussyahrilmubarok.github.io/web/internal/infrastructure/server"
 	"agussyahrilmubarok.github.io/web/pkg/logger"
+	"go.uber.org/zap"
+
+	deliveryweb "agussyahrilmubarok.github.io/web/internal/delivery/web"
 )
 
 func main() {
@@ -15,27 +19,24 @@ func main() {
 		log.Fatalf("failed to load config: %v", err)
 	}
 
-	err = logger.Init(logger.DefaultOptions())
-	if err != nil {
-		log.Fatalf("failed to load config: %v", err)
+	if err := logger.Init(cfg.App.Logger.FilePath, logger.ParseLevel(cfg.App.Logger.Level)); err != nil {
+		log.Fatalf("failed to init logger: %v", err)
 	}
 	defer logger.Sync()
 
-	db, err := database.NewPostgres(database.PostgresConfig{
-		Host:     cfg.Database.Host,
-		User:     cfg.Database.User,
-		Password: cfg.Database.Password,
-		DBName:   cfg.Database.DBName,
-		Port:     cfg.Database.Port,
-		SSLMode:  cfg.Database.SSLMode,
-		TimeZone: cfg.Database.TimeZone,
-	})
+	db, err := config.NewPostgres(cfg)
 	if err != nil {
-		log.Fatalf("failed to connect to database: %v", err)
+		logger.Fatal("failed to connect database", zap.Error(err))
 	}
 
-	app := application.New(cfg, db)
-	if err := app.Run(); err != nil {
-		log.Fatalf("failed to run application: %v", err)
+	userRepo := postgres.NewUserRepository(db)
+
+	appController := controller.NewAppController(userRepo)
+
+	srv := server.NewWEBServer(cfg)
+	deliveryweb.Register(srv.Router(), appController)
+
+	if err := srv.Run(); err != nil {
+		logger.Fatal("server error", zap.Error(err))
 	}
 }
