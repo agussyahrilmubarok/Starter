@@ -12,12 +12,6 @@ func Register(
 ) {
 	r.Use(middleware.RequestIDMiddleware())
 
-	// r.NoRoute(func(c *gin.Context) {
-	// 	c.HTML(http.StatusNotFound, "not_found.html", gin.H{
-	// 		"Title": "404",
-	// 	})
-	// })
-
 	r.HTMLRender = appController.LoadTemplate("./public/templates")
 	r.Static("/static", "./public/static")
 	r.StaticFile("/favicon.ico", "./public/static/favicon.ico")
@@ -28,6 +22,7 @@ func Register(
 	}
 
 	guest := r.Group("/")
+	guest.Use(middleware.GuestMiddleware())
 	{
 		guest.GET("/sign-up", appController.SignUp)
 		guest.POST("/sign-up", appController.SignUp)

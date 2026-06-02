@@ -194,7 +194,15 @@ func (h *AppController) UserEdit(c *gin.Context) {
 		return
 	}
 
-	user, _ := h.userRepository.FindByID(c.Request.Context(), parsedID)
+	// FIX: handle error FindByID
+	user, err := h.userRepository.FindByID(c.Request.Context(), parsedID)
+	if err != nil || user == nil {
+		s := sessions.Default(c)
+		s.AddFlash("User not found", "error")
+		s.Save()
+		c.Redirect(http.StatusFound, "/dashboard/users")
+		return
+	}
 
 	var req payload.UpdateUserRequest
 
@@ -241,7 +249,7 @@ func (h *AppController) UserEdit(c *gin.Context) {
 			render(c, http.StatusInternalServerError, "users_edit.html", data)
 			return
 		}
-		user.Password = string(hashed)
+		user.Password = hashed
 	}
 
 	if err := h.userRepository.Update(c.Request.Context(), user); err != nil {
