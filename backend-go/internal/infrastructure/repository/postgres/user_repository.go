@@ -13,6 +13,10 @@ type userRepository struct {
 	db *gorm.DB
 }
 
+func NewUserRepository(db *gorm.DB) domain.UserRepository {
+	return &userRepository{db: db}
+}
+
 // FindAll implements [domain.UserRepository].
 func (r *userRepository) FindAll(ctx context.Context) ([]domain.User, error) {
 	var users []domain.User
@@ -77,8 +81,4 @@ func (r *userRepository) Count(ctx context.Context) (int64, error) {
 		return 0, err
 	}
 	return count, nil
-}
-
-func NewUserRepository(db *gorm.DB) domain.UserRepository {
-	return &userRepository{db: db}
 }

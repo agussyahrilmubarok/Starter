@@ -8,6 +8,18 @@ import (
 	"gorm.io/gorm"
 )
 
+//go:generate mockery --name=UserRepository
+type UserRepository interface {
+	FindAll(ctx context.Context) ([]User, error)
+	FindByID(ctx context.Context, id uuid.UUID) (*User, error)
+	FindByEmail(ctx context.Context, email string) (*User, error)
+	Create(ctx context.Context, user *User) error
+	Update(ctx context.Context, user *User) error
+	Delete(ctx context.Context, id uuid.UUID) error
+	ExistsByEmail(ctx context.Context, email string) (bool, error)
+	Count(ctx context.Context) (int64, error)
+}
+
 type User struct {
 	ID        uuid.UUID `gorm:"type:uuid;primaryKey"`
 	Name      string    `gorm:"type:varchar(100);not null"`
@@ -26,16 +38,4 @@ func (u *User) BeforeCreate(tx *gorm.DB) error {
 		u.ID = uuid.New()
 	}
 	return nil
-}
-
-//go:generate mockery --name=UserRepository
-type UserRepository interface {
-	FindAll(ctx context.Context) ([]User, error)
-	FindByID(ctx context.Context, id uuid.UUID) (*User, error)
-	FindByEmail(ctx context.Context, email string) (*User, error)
-	Create(ctx context.Context, user *User) error
-	Update(ctx context.Context, user *User) error
-	Delete(ctx context.Context, id uuid.UUID) error
-	ExistsByEmail(ctx context.Context, email string) (bool, error)
-	Count(ctx context.Context) (int64, error)
 }
