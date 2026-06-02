@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"errors"
 	"net/http"
 	"strings"
 
@@ -32,7 +33,7 @@ func Auth(jwtManager security.JWTManager) gin.HandlerFunc {
 		userID, err := jwtManager.ValidateToken(parts[1])
 		if err != nil {
 			msg := "Invalid token"
-			if err == security.ErrExpiredToken {
+			if errors.Is(err, security.ErrExpiredToken) {
 				msg = "Token has expired"
 			}
 			c.AbortWithStatusJSON(http.StatusUnauthorized, payload.ErrorResponse{

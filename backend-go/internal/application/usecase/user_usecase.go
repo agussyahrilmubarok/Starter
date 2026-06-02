@@ -74,7 +74,7 @@ func (uc *userUseCase) GetByID(ctx context.Context, id uuid.UUID) (*dto.UserResp
 func (uc *userUseCase) Create(ctx context.Context, req dto.CreateUserRequest) (*dto.UserResponse, error) {
 	log := logger.FromCtx(ctx).With(zap.String("email", req.Email))
 
-	exists, err := uc.userRepository.ExistsByEmail(ctx, req.Email)
+	exists, err := uc.userRepository.ExistsByEmail(ctx, strings.ToLower(req.Email))
 	if err != nil {
 		log.Error("failed to check email existence", zap.Error(err))
 		return nil, err
@@ -90,19 +90,19 @@ func (uc *userUseCase) Create(ctx context.Context, req dto.CreateUserRequest) (*
 		return nil, err
 	}
 
-	user := domain.User{
+	user := &domain.User{
 		Name:     req.Name,
 		Email:    strings.ToLower(req.Email),
-		Password: string(hashed),
+		Password: hashed,
 	}
 
-	if err := uc.userRepository.Create(ctx, &user); err != nil {
+	if err := uc.userRepository.Create(ctx, user); err != nil {
 		log.Error("failed to create user", zap.Error(err))
 		return nil, err
 	}
 
 	log.Info("user created", zap.String("id", user.ID.String()))
-	res := dto.NewUserResponse(&user)
+	res := dto.NewUserResponse(user)
 	return &res, nil
 }
 
@@ -125,7 +125,7 @@ func (uc *userUseCase) Update(ctx context.Context, id uuid.UUID, req dto.UpdateU
 	}
 
 	if req.Email != "" && req.Email != user.Email {
-		exists, err := uc.userRepository.ExistsByEmail(ctx, req.Email)
+		exists, err := uc.userRepository.ExistsByEmail(ctx, strings.ToLower(req.Email))
 		if err != nil {
 			log.Error("failed to check email existence", zap.Error(err))
 			return nil, err
@@ -134,7 +134,7 @@ func (uc *userUseCase) Update(ctx context.Context, id uuid.UUID, req dto.UpdateU
 			log.Warn("email already exists", zap.String("email", req.Email))
 			return nil, ErrEmailAlreadyExist
 		}
-		user.Email = req.Email
+		user.Email = strings.ToLower(req.Email)
 	}
 
 	if req.Password != "" {
@@ -143,7 +143,7 @@ func (uc *userUseCase) Update(ctx context.Context, id uuid.UUID, req dto.UpdateU
 			log.Error("failed to hash password", zap.Error(err))
 			return nil, err
 		}
-		user.Password = string(hashed)
+		user.Password = hashed
 	}
 
 	if err := uc.userRepository.Update(ctx, user); err != nil {

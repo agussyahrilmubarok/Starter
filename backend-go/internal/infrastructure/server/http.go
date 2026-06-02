@@ -28,6 +28,7 @@ func NewHTTPServer(cfg *config.Config) *HTTPServer {
 	}
 
 	router := gin.New()
+	router.Use(gin.Recovery())
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", cfg.App.Port),
@@ -49,11 +50,12 @@ func (s *HTTPServer) Router() *gin.Engine {
 }
 
 func (s *HTTPServer) Run() error {
+	log := logger.Get()
 
 	go func() {
-		fmt.Printf("[%s] server running on %s\n", s.cfg.App.Name, s.server.Addr)
+		log.Info("server running...", zap.String("app_name", s.cfg.App.Name), zap.String("app_addr", s.server.Addr))
 		if err := s.server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			logger.Fatal("server error", zap.Error(err))
+			log.Fatal("server error", zap.Error(err))
 		}
 	}()
 
@@ -61,7 +63,7 @@ func (s *HTTPServer) Run() error {
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 
-	logger.Info("shutting down server....")
+	log.Info("shutting down server....")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -70,6 +72,6 @@ func (s *HTTPServer) Run() error {
 		return fmt.Errorf("server forced to shutdown: %w", err)
 	}
 
-	logger.Info("server exited gracefully")
+	log.Info("server exited gracefully")
 	return nil
 }

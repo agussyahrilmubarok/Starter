@@ -172,7 +172,7 @@ func TestUser_Create(t *testing.T) {
 				Password: "secret123",
 			},
 			mockSetup: func(repo *mocks.UserRepository) {
-				repo.On("ExistsByEmail", mock.Anything, "Alice@Mail.COM").Return(false, nil)
+				repo.On("ExistsByEmail", mock.Anything, "alice@mail.com").Return(false, nil)
 				repo.On("Create", mock.Anything, mock.AnythingOfType("*domain.User")).Return(nil)
 			},
 			wantErr: nil,

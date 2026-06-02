@@ -3,6 +3,7 @@ package http
 import (
 	"agussyahrilmubarok.github.io/backend/internal/delivery/http/handler"
 	"agussyahrilmubarok.github.io/backend/internal/delivery/http/middleware"
+	"agussyahrilmubarok.github.io/backend/internal/infrastructure/config"
 	"agussyahrilmubarok.github.io/backend/internal/infrastructure/security"
 	"github.com/gin-gonic/gin"
 
@@ -13,10 +14,13 @@ import (
 
 func Register(
 	r *gin.Engine,
+	cfg *config.Config,
 	jwtManager security.JWTManager,
 	authHandler *handler.AuthHandler,
 	userHandler *handler.UserHandler,
 ) {
+	r.Use(middleware.CORSMiddleware(&cfg.App.CORS))
+
 	v1 := r.Group("/api/v1")
 	v1.Use(middleware.RequestIDMiddleware())
 

@@ -6,6 +6,7 @@ type App struct {
 	Env    string `mapstructure:"env"`
 	JWT    JWT    `mapstructure:"jwt"`
 	Logger Logger `mapstructure:"logger"`
+	CORS   CORS   `mapstructure:"cors"`
 }
 
 type JWT struct {
@@ -16,4 +17,8 @@ type JWT struct {
 type Logger struct {
 	FilePath string `mapstructure:"file_path"`
 	Level    string `mapstructure:"level"`
+}
+
+type CORS struct {
+	AllowedOrigins []string `mapstructure:"allowed_origins"`
 }

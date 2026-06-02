@@ -1,13 +1,17 @@
 app:
   name: "backend"
   port: 8080
-  env: "development"
+  env: "production"
   jwt:
     secret: "SecretKeySecretKeySecretKeySecretKeySecretKeySecretKeySecretKeySecretKey"
     expiry_hour: 24
   logger:
     file_path: "logs/app.log"
     level: "debug"
+  cors:
+    allowed_origins:
+      - "http://localhost:3000"
+      - "https://your.domain.com"
 
 postgres:
   host: "localhost"

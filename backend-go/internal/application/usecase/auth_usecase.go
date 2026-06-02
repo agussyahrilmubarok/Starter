@@ -40,7 +40,7 @@ func NewAuthUseCase(userRepository domain.UserRepository, jwtManager security.JW
 func (uc *authUseCase) SignUp(ctx context.Context, req dto.SignUpRequest) (*dto.AuthResponse, error) {
 	log := logger.FromCtx(ctx).With(zap.String("email", req.Email))
 
-	exists, err := uc.userRepository.ExistsByEmail(ctx, req.Email)
+	exists, err := uc.userRepository.ExistsByEmail(ctx, strings.ToLower(req.Email))
 	if err != nil {
 		log.Error("failed to check email existence", zap.Error(err))
 		return nil, err
@@ -56,13 +56,13 @@ func (uc *authUseCase) SignUp(ctx context.Context, req dto.SignUpRequest) (*dto.
 		return nil, err
 	}
 
-	user := domain.User{
+	user := &domain.User{
 		Name:     req.Name,
 		Email:    strings.ToLower(req.Email),
 		Password: hashed,
 	}
 
-	if err := uc.userRepository.Create(ctx, &user); err != nil {
+	if err := uc.userRepository.Create(ctx, user); err != nil {
 		log.Error("failed to create user", zap.Error(err))
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func (uc *authUseCase) SignUp(ctx context.Context, req dto.SignUpRequest) (*dto.
 	log.Info("user signed up", zap.String("id", user.ID.String()))
 	return &dto.AuthResponse{
 		Token: token,
-		User:  dto.NewUserResponse(&user),
+		User:  dto.NewUserResponse(user),
 	}, nil
 }
 
