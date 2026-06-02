@@ -88,7 +88,7 @@ func (h *AppController) UserAdd(c *gin.Context) {
 		return
 	}
 
-	exists, err := h.userRepository.ExistsByEmail(c.Request.Context(), req.Email)
+	exists, err := h.userRepository.ExistsByEmail(c.Request.Context(), strings.ToLower(req.Email))
 	if err != nil {
 		log.Error("failed to check email existence", zap.Error(err))
 		data["Values"] = req
@@ -220,7 +220,7 @@ func (h *AppController) UserEdit(c *gin.Context) {
 	}
 
 	if req.Email != "" && req.Email != user.Email {
-		exists, err := h.userRepository.ExistsByEmail(c.Request.Context(), req.Email)
+		exists, err := h.userRepository.ExistsByEmail(c.Request.Context(), strings.ToLower(req.Email))
 		if err != nil {
 			log.Error("failed to check email existence", zap.Error(err))
 			data["Values"] = user
@@ -237,7 +237,7 @@ func (h *AppController) UserEdit(c *gin.Context) {
 			render(c, http.StatusBadRequest, "users_edit.html", data)
 			return
 		}
-		user.Email = req.Email
+		user.Email = strings.ToLower(req.Email)
 	}
 
 	if req.Password != "" {

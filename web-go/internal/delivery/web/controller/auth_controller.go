@@ -45,7 +45,7 @@ func (h *AppController) SignUp(c *gin.Context) {
 		return
 	}
 
-	exists, err := h.userRepository.ExistsByEmail(c.Request.Context(), req.Email)
+	exists, err := h.userRepository.ExistsByEmail(c.Request.Context(), strings.ToLower(req.Email))
 	if err != nil {
 		log.Error("failed to check email existence", zap.Error(err))
 		data["Values"] = req
