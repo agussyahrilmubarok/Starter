@@ -1,78 +1,111 @@
 TODO: Internationalization (i18n) Implementation
 ================================================
+Scope: HTML templates only (frontend-facing text)
+      Backend Go code, flash messages, and error logs stay in English.
 
-[ ] 1. Choose i18n library
-      - Evaluate: go-i18n (nicksnyder/go-i18n) or gotext
-      - Recommended: go-i18n (widely used, supports pluralization, TOML/JSON/YAML)
+[ ] 1. Fix existing bugs first (prerequisite before i18n)
+      - dashboard_index.html : replace "Selamat Datang," with "Welcome,"
+      - users_add.html       : fix {{if .Errors.Email}} → {{if .Errors.Name}} for Name field error
+      - dashboard_layout.html: add missing Toastr CSS/JS imports (flash messages currently broken)
 
-[ ] 2. Set up i18n package structure
-      - Create pkg/i18n/ package
+[ ] 2. Create translation files
       - Create locales/ directory at project root
-      - Add translation files: locales/en.toml, locales/id.toml (etc.)
+      - Add locales/en.toml (default/fallback)
+      - Add locales/id.toml (Bahasa Indonesia)
+      - Cover all strings listed in item 4 below
 
-[ ] 3. Create translation keys for all hardcoded strings
+[ ] 3. Set up i18n in templates
+      - Add template FuncMap with "T" translation function
+        e.g. {{ T "welcome_message" }} → "Welcome," / "Selamat Datang,"
+      - Register FuncMap in controller.go before LoadTemplate()
+      - Pass active locale into every render() call via gin.H
 
-      [ ] 3a. Controllers (Go backend messages)
-            - "Failed to load users"
-            - "Something went wrong"
-            - "Email already exists"
-            - "User not found"
-            - "User added successfully!"
-            - "User updated successfully!"
-            - "User deleted successfully!"
-            - "Failed to delete user"
-            - "Sign up successfully!"
-            - "Validation error"
-            - "Internal server error"
-            - "Bad request"
-            - "Invalid email"
-            - "Invalid password"
+[ ] 4. Replace hardcoded strings in templates with translation keys
 
-      [ ] 3b. HTML Templates
-            - dashboard_index.html : "Selamat Datang," → "Welcome,"  (CURRENTLY IN INDONESIAN — fix first)
-            - sign_in_index.html   : "Welcome back! Please enter your details"
-            - sign_in_index.html   : "Don't have an account?"
-            - sign_up_index.html   : "Create Account", "Sign up to continue"
-            - sign_up_index.html   : "Already have an account?"
-            - users_index.html     : "No users found", "Are you sure you want to delete this user?"
-            - users_add.html       : "Add User", "Full Name", "Email Address", "Password"
-            - users_edit.html      : "Edit User", "Leave blank if you don't want to change the password"
-            - profile_index.html   : "MY PROFILE", "FULL NAME", "EMAIL", "USER ID", "MEMBER SINCE"
-            - layouts              : "MAIN MENU", "Dashboard", "Users", "My Profile", "Sign Out"
+      [ ] 4a. layouts/dashboard_layout.html
+            - "MAIN MENU"
+            - "Dashboard"
+            - "Users"
+            - "My Profile"
+            - "Sign Out"
 
-      [ ] 3c. Validator error messages (pkg/validator/validator.go)
-            - "is required"
-            - "Invalid email format"
-            - "already exists"
-            - "must be at least %s characters"
-            - "must be at most %s characters"
-            - "must be a number"
-            - "Invalid value"
+      [ ] 4b. layouts/default_layout.html
+            - (no user-visible hardcoded text currently)
 
-[ ] 4. Implement locale detection middleware
-      - Detect from: Accept-Language header (browser default)
-      - Optionally: URL prefix (/en/, /id/) or query param (?lang=id)
-      - Store active locale in gin.Context
+      [ ] 4c. auth/sign_in_index.html
+            - "Sign In"
+            - "Welcome back! Please enter your details"
+            - "Email Address"
+            - "Password"
+            - "Enter your email"
+            - "Enter your password"
+            - "Sign In" (button)
+            - "Don't have an account?"
+            - "Sign Up" (link)
+
+      [ ] 4d. auth/sign_up_index.html
+            - "Create Account"
+            - "Sign up to continue"
+            - "Full Name"
+            - "Email Address"
+            - "Password"
+            - "Enter your full name"
+            - "Enter your email"
+            - "Enter your password"
+            - "Sign Up" (button)
+            - "Already have an account?"
+            - "Sign In" (link)
+
+      [ ] 4e. dashboard/dashboard_index.html
+            - "DASHBOARD"
+            - "Welcome," (was "Selamat Datang,")
+
+      [ ] 4f. dashboard/profile/profile_index.html
+            - "MY PROFILE"
+            - "FULL NAME"
+            - "EMAIL"
+            - "USER ID"
+            - "MEMBER SINCE"
+            - "User data not found. Please log in again."
+
+      [ ] 4g. dashboard/users/users_index.html
+            - "USERS"
+            - "ADD USER"
+            - "Full Name"
+            - "Email Address"
+            - "Actions"
+            - "EDIT"
+            - "DELETE"
+            - "No users found"
+            - "Are you sure you want to delete this user?" (JS confirm)
+
+      [ ] 4h. dashboard/users/users_add.html
+            - "ADD USER"
+            - "Full Name"
+            - "Email Address"
+            - "Password"
+            - "Save" (button)
+            - "Cancel" (button)
+
+      [ ] 4i. dashboard/users/users_edit.html
+            - "EDIT USER"
+            - "Full Name"
+            - "Email Address"
+            - "Password"
+            - "Leave blank if you don't want to change the password"
+            - "Update" (button)
+            - "Cancel" (button)
+
+[ ] 5. Implement locale detection middleware
       - Create internal/delivery/web/middleware/locale.go
+      - Detect locale from: cookie (user preference) → Accept-Language header → fallback to "en"
+      - Store active locale in gin.Context (c.Set("locale", "id"))
 
-[ ] 5. Pass translator to templates
-      - Add a template function map: "T" func(key string) string
-      - Register via gin's FuncMap before loading templates
-      - Usage in templates: {{ T "welcome_message" }}
+[ ] 6. Add language switcher UI
+      - Add switcher to both layout files (default_layout.html, dashboard_layout.html)
+      - On switch: set cookie and redirect back to current page
+      - Add a POST /language route to handle the switch
 
-[ ] 6. Pass translator to controllers
-      - Extract locale from gin.Context in each handler
-      - Use locale to translate flash messages and error strings
-
-[ ] 7. Add language switcher UI
-      - Add dropdown or links in both layouts (default_layout.html, dashboard_layout.html)
-      - Persist selected language in cookie or session
-
-[ ] 8. Write tests
-      - Unit test for locale middleware
-      - Unit test for translated validator error messages
-      - Smoke test each page renders correctly in each supported locale
-
-[ ] 9. Documentation
-      - Update README.md with supported languages
-      - Document how to add a new language/translation file
+[ ] 7. Documentation
+      - Update README.md: list supported languages
+      - Document how to add a new locale file
