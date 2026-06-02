@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"io/fs"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -66,7 +65,8 @@ func (h *AppController) LoadTemplate(templateDir string) multitemplate.Renderer 
 		if fileInfo, err := os.Stat(page); err == nil && !fileInfo.IsDir() {
 			files := append([]string{filepath.Join(templateDir, "layouts", "default_layout.html")}, page)
 			files = append(files, commons...)
-			renderer.AddFromFiles(filepath.Base(page), files...)
+			templateName := filepath.Base(page)
+			renderer.AddFromFiles(templateName, files...)
 		}
 	}
 
@@ -78,19 +78,24 @@ func (h *AppController) LoadTemplate(templateDir string) multitemplate.Renderer 
 		if fileInfo, err := os.Stat(page); err == nil && !fileInfo.IsDir() {
 			files := append([]string{filepath.Join(templateDir, "layouts", "default_layout.html")}, page)
 			files = append(files, commons...)
-			renderer.AddFromFiles(filepath.Base(page), files...)
+			templateName := filepath.Base(page)
+			renderer.AddFromFiles(templateName, files...)
 		}
 	}
 
-	filepath.WalkDir(filepath.Join(templateDir, "dashboard"), func(path string, d fs.DirEntry, err error) error {
-		if err != nil || d.IsDir() || filepath.Ext(path) != ".html" {
-			return err
+	dashboardPages, err := filepath.Glob(templateDir + "/dashboard/**/*.html")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	for _, page := range dashboardPages {
+		if fileInfo, err := os.Stat(page); err == nil && !fileInfo.IsDir() {
+			files := append([]string{filepath.Join(templateDir, "layouts", "dashboard_layout.html")}, page)
+			files = append(files, commons...)
+			templateName := filepath.Base(page)
+			renderer.AddFromFiles(templateName, files...)
 		}
-		files := append([]string{filepath.Join(templateDir, "layouts", "dashboard_layout.html")}, path)
-		files = append(files, commons...)
-		renderer.AddFromFiles(filepath.Base(path), files...)
-		return nil
-	})
+	}
 
 	return renderer
 }

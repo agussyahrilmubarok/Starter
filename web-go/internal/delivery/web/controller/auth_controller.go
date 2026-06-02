@@ -37,6 +37,7 @@ func (h *AppController) SignUp(c *gin.Context) {
 	}
 
 	if err := c.ShouldBind(&req); err != nil {
+		log.Warn("failed to validate request", zap.Error(err))
 		data["Values"] = req
 		data["Message"] = "Validation error"
 		data["Errors"] = validator.ParseError(err)
@@ -115,6 +116,7 @@ func (h *AppController) SignIn(c *gin.Context) {
 	}
 
 	if err := c.ShouldBind(&req); err != nil {
+		log.Warn("failed to validate request", zap.Error(err))
 		data["Values"] = req
 		data["Message"] = "Validation error"
 		data["Errors"] = validator.ParseError(err)

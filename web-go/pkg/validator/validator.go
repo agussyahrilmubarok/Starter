@@ -2,7 +2,6 @@ package validator
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -16,7 +15,7 @@ func ParseError(err error) map[string]string {
 	}
 
 	for _, fe := range validationErrors {
-		field := strings.ToLower(fe.Field())
+		field := fe.Field()
 		switch fe.Tag() {
 		case "required":
 			errorsMap[field] = fmt.Sprintf("%s is required", field)

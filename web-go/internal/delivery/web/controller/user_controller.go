@@ -80,6 +80,7 @@ func (h *AppController) UserAdd(c *gin.Context) {
 	var req payload.CreateUserRequest
 
 	if err := c.ShouldBind(&req); err != nil {
+		log.Warn("failed to validate request", zap.Error(err))
 		data["Values"] = req
 		data["Message"] = "Validation error"
 		data["Errors"] = validator.ParseError(err)
@@ -194,7 +195,6 @@ func (h *AppController) UserEdit(c *gin.Context) {
 		return
 	}
 
-	// FIX: handle error FindByID
 	user, err := h.userRepository.FindByID(c.Request.Context(), parsedID)
 	if err != nil || user == nil {
 		s := sessions.Default(c)
@@ -207,6 +207,7 @@ func (h *AppController) UserEdit(c *gin.Context) {
 	var req payload.UpdateUserRequest
 
 	if err := c.ShouldBind(&req); err != nil {
+		log.Warn("failed to validate request", zap.Error(err))
 		data["Values"] = user
 		data["Message"] = "Validation error"
 		data["Errors"] = validator.ParseError(err)
