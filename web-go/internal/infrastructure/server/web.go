@@ -60,11 +60,12 @@ func (s *WEBServer) Router() *gin.Engine {
 }
 
 func (s *WEBServer) Run() error {
+	log := logger.Get()
 
 	go func() {
-		logger.Info("server running...", zap.String("app_name", s.cfg.App.Name), zap.String("app_addr", s.server.Addr))
+		log.Info("server running...", zap.String("app_name", s.cfg.App.Name), zap.String("app_addr", s.server.Addr))
 		if err := s.server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			logger.Fatal("server error", zap.Error(err))
+			log.Fatal("server error", zap.Error(err))
 		}
 	}()
 
@@ -72,7 +73,7 @@ func (s *WEBServer) Run() error {
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 
-	logger.Info("shutting down server....")
+	log.Info("shutting down server....")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -81,6 +82,6 @@ func (s *WEBServer) Run() error {
 		return fmt.Errorf("server forced to shutdown: %w", err)
 	}
 
-	logger.Info("server exited gracefully")
+	log.Info("server exited gracefully")
 	return nil
 }

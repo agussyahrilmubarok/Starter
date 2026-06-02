@@ -8,7 +8,6 @@ import (
 	"agussyahrilmubarok.github.io/web/internal/infrastructure/repository/postgres"
 	"agussyahrilmubarok.github.io/web/internal/infrastructure/server"
 	"agussyahrilmubarok.github.io/web/pkg/logger"
-	"go.uber.org/zap"
 
 	deliveryweb "agussyahrilmubarok.github.io/web/internal/delivery/web"
 )
@@ -26,7 +25,7 @@ func main() {
 
 	db, err := config.NewPostgres(cfg)
 	if err != nil {
-		logger.Fatal("failed to connect database", zap.Error(err))
+		log.Fatalf("failed to connect database: %v", err)
 	}
 
 	userRepo := postgres.NewUserRepository(db)
@@ -37,6 +36,6 @@ func main() {
 	deliveryweb.Register(srv.Router(), appController)
 
 	if err := srv.Run(); err != nil {
-		logger.Fatal("server error", zap.Error(err))
+		log.Fatalf("server error: %v", err)
 	}
 }
