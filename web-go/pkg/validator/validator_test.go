@@ -42,8 +42,8 @@ func TestParseError_Required(t *testing.T) {
 
 	result := customValidator.ParseError(err)
 
-	assert.Equal(t, "Name is required", result["name"])
-	assert.Equal(t, "Email is required", result["email"])
+	assert.Equal(t, "Name is required", result["Name"])
+	assert.Equal(t, "Email is required", result["Email"])
 }
 
 func TestParseError_Email(t *testing.T) {
@@ -55,7 +55,7 @@ func TestParseError_Email(t *testing.T) {
 
 	result := customValidator.ParseError(err)
 
-	assert.Equal(t, "Invalid email format", result["email"])
+	assert.Equal(t, "Invalid email format", result["Email"])
 }
 
 func TestParseError_Min(t *testing.T) {
@@ -67,7 +67,7 @@ func TestParseError_Min(t *testing.T) {
 
 	result := customValidator.ParseError(err)
 
-	assert.Equal(t, "Name must be at least 2 characters", result["name"])
+	assert.Equal(t, "Name must be at least 2 characters", result["Name"])
 }
 
 func TestParseError_Max(t *testing.T) {
@@ -80,7 +80,7 @@ func TestParseError_Max(t *testing.T) {
 
 	result := customValidator.ParseError(err)
 
-	assert.Equal(t, "Bio must be at most 200 characters", result["bio"])
+	assert.Equal(t, "Bio must be at most 200 characters", result["Bio"])
 }
 
 func TestParseError_Numeric(t *testing.T) {
@@ -92,7 +92,7 @@ func TestParseError_Numeric(t *testing.T) {
 
 	result := customValidator.ParseError(err)
 
-	assert.Equal(t, "Age must be a number", result["age"])
+	assert.Equal(t, "Age must be a number", result["Age"])
 }
 
 func TestParseError_Unique(t *testing.T) {
@@ -100,7 +100,7 @@ func TestParseError_Unique(t *testing.T) {
 
 	result := customValidator.ParseError(err)
 
-	assert.Equal(t, "Email already exists", result["email"])
+	assert.Equal(t, "Email already exists", result["Email"])
 }
 
 func TestParseError_Default(t *testing.T) {
@@ -108,7 +108,7 @@ func TestParseError_Default(t *testing.T) {
 
 	result := customValidator.ParseError(err)
 
-	assert.Equal(t, "Invalid value", result["code"])
+	assert.Equal(t, "Invalid value", result["Code"])
 }
 
 func TestParseError_NonValidationError(t *testing.T) {
