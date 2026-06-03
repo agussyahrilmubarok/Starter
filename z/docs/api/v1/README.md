@@ -28,7 +28,7 @@ Authorization: Bearer <token>
 
 ```json
 {
-  "message": "success message",
+  "message": "Successfully",
   "data": {}
 }
 ```
@@ -37,10 +37,9 @@ Authorization: Bearer <token>
 
 ```json
 {
-  "success": false,
-  "message": "invalid request",
+  "message": "Invalid request",
   "errors": {
-    "error": "error"
+    "error": "Something went wrong"
   }
 }
 ```
@@ -77,7 +76,7 @@ POST /auth/sign-up
 
 ```json
 {
-  "message": "signup success",
+  "message": "Signed up successfully",
   "data": {
     "id": "usr_xxx",
     "name": "John Doe",
@@ -96,10 +95,9 @@ POST /auth/sign-up
 
 ```json
 {
-  "success": false,
-  "message": "invalid request",
+  "message": "Invalid request",
   "errors": {
-    "email": "email already exists"
+    "email": "Email already exists"
   }
 }
 ```
@@ -133,7 +131,7 @@ POST /auth/sign-in
 
 ```json
 {
-  "message": "signin success",
+  "message": "Signed in successfully",
   "data": {
     "access_token": "your-jwt-token",
     "user": {
@@ -155,10 +153,9 @@ POST /auth/sign-in
 
 ```json
 {
-  "success": false,
-  "message": "invalid credentials",
+  "message": "Invalid credentials",
   "errors": {
-    "email": "email or password is incorrect"
+    "password": "Wrong password"
   }
 }
 ```
@@ -195,7 +192,7 @@ Authorization: Bearer <token>
 
 ```json
 {
-  "message": "get users success",
+  "message": "Users fetched successfully",
   "data": [
     {
       "id": "usr_1",
@@ -216,10 +213,9 @@ Authorization: Bearer <token>
 
 ```json
 {
-  "success": false,
-  "message": "unauthorized",
+  "message": "Unauthorized",
   "errors": {
-    "token": "invalid token"
+    "token": "Invalid token"
   }
 }
 ```
@@ -256,7 +252,7 @@ Authorization: Bearer <token>
 
 ```json
 {
-  "message": "get user success",
+  "message": "User fetched successfully",
   "data": {
     "id": "usr_1",
     "name": "John Doe",
@@ -275,10 +271,9 @@ Authorization: Bearer <token>
 
 ```json
 {
-  "success": false,
-  "message": "user not found",
+  "message": "User not found",
   "errors": {
-    "id": "user does not exist"
+    "error": "User does not exist"
   }
 }
 ```
@@ -319,7 +314,7 @@ Authorization: Bearer <token>
 
 ```json
 {
-  "message": "create user success",
+  "message": "User created successfully",
   "data": {
     "id": "usr_2",
     "name": "Jane Doe",
@@ -338,10 +333,9 @@ Authorization: Bearer <token>
 
 ```json
 {
-  "success": false,
-  "message": "invalid request",
+  "message": "Invalid request",
   "errors": {
-    "email": "email already exists"
+    "email": "Email already exists"
   }
 }
 ```
@@ -380,7 +374,7 @@ Authorization: Bearer <token>
 
 ```json
 {
-  "message": "update user success",
+  "message": "User updated successfully",
   "data": {
     "id": "usr_1",
     "name": "John Doe Updated",
@@ -399,10 +393,9 @@ Authorization: Bearer <token>
 
 ```json
 {
-  "success": false,
-  "message": "user not found",
+  "message": "User not found",
   "errors": {
-    "id": "user does not exist"
+    "error": "User does not exist"
   }
 }
 ```
@@ -446,10 +439,9 @@ Authorization: Bearer <token>
 
 ```json
 {
-  "success": false,
-  "message": "user not found",
+  "message": "User not found",
   "errors": {
-    "id": "user does not exist"
+    "error": "User does not exist"
   }
 }
 ```

@@ -7,7 +7,7 @@
 ### SIGN UP
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/auth/sign-up \
+curl -X POST http://localhost:8080/api/v2/auth/sign-up \
   -H "Content-Type: application/json" \
   -d '{
     "name": "John Doe",
@@ -19,7 +19,7 @@ curl -X POST http://localhost:8080/api/v1/auth/sign-up \
 ### SIGN IN
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/auth/sign-in \
+curl -X POST http://localhost:8080/api/v2/auth/sign-in \
   -H "Content-Type: application/json" \
   -d '{
     "email": "john@example.com",
@@ -34,7 +34,7 @@ curl -X POST http://localhost:8080/api/v1/auth/sign-in \
 ### GET ALL USERS
 
 ```bash
-curl -X GET http://localhost:8080/api/v1/users \
+curl -X GET http://localhost:8080/api/v2/users \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json"
 ```
@@ -42,7 +42,7 @@ curl -X GET http://localhost:8080/api/v1/users \
 ### GET USER BY ID
 
 ```bash
-curl -X GET http://localhost:8080/api/v1/users/{id} \
+curl -X GET http://localhost:8080/api/v2/users/{id} \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json"
 ```
@@ -50,7 +50,7 @@ curl -X GET http://localhost:8080/api/v1/users/{id} \
 ### CREATE USER
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/users \
+curl -X POST http://localhost:8080/api/v2/users \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -63,7 +63,7 @@ curl -X POST http://localhost:8080/api/v1/users \
 ### UPDATE USER BY ID
 
 ```bash
-curl -X PUT http://localhost:8080/api/v1/users/{id} \
+curl -X PUT http://localhost:8080/api/v2/users/{id}
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -74,7 +74,7 @@ curl -X PUT http://localhost:8080/api/v1/users/{id} \
 ### DELETE USER BY ID
 
 ```bash
-curl -X DELETE http://localhost:8080/api/v1/users/{id} \
+curl -X DELETE http://localhost:8080/api/v2/users/{id} \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json"
 ```
