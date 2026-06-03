@@ -1,9 +1,6 @@
 package io.github.agussyahrilmubarok.backend.application.service.impl;
 
-import io.github.agussyahrilmubarok.backend.application.dto.user.CreateUserRequest;
-import io.github.agussyahrilmubarok.backend.application.dto.user.UpdateUserRequest;
-import io.github.agussyahrilmubarok.backend.application.dto.user.UserMapper;
-import io.github.agussyahrilmubarok.backend.application.dto.user.UserResponse;
+import io.github.agussyahrilmubarok.backend.application.dto.user.*;
 import io.github.agussyahrilmubarok.backend.common.exception.EmailAlreadyExistsException;
 import io.github.agussyahrilmubarok.backend.common.exception.NotFoundException;
 import io.github.agussyahrilmubarok.backend.domain.User;
@@ -16,6 +13,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
@@ -26,8 +25,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -70,9 +68,10 @@ class UserServiceImplTest {
     @DisplayName("getAll()")
     class GetAll {
 
+        @SuppressWarnings("unchecked")
         @Test
-        @DisplayName("should return list of all users")
-        void shouldReturnAllUsers() {
+        @DisplayName("should return paginated users with default params")
+        void shouldReturnPaginatedUsers() {
             UUID id1 = UUID.randomUUID();
             UUID id2 = UUID.randomUUID();
             User user1 = buildUser(id1, "Alice", "alice@example.com");
@@ -80,25 +79,112 @@ class UserServiceImplTest {
             UserResponse response1 = buildUserResponse(user1);
             UserResponse response2 = buildUserResponse(user2);
 
-            when(userRepository.findAll()).thenReturn(List.of(user1, user2));
+            UserPageRequest request = new UserPageRequest(1, 10, "created_at,desc", null);
+
+            Page<User> userPage = new PageImpl<>(
+                    List.of(user1, user2),
+                    PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt")),
+                    2
+            );
+
+            when(userRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(userPage);
             when(userMapper.toResponse(user1)).thenReturn(response1);
             when(userMapper.toResponse(user2)).thenReturn(response2);
 
-            List<UserResponse> result = userService.getAll();
+            Page<UserResponse> result = userService.getAll(request);
 
-            assertThat(result).hasSize(2);
-            assertThat(result).containsExactly(response1, response2);
-            verify(userRepository).findAll();
+            assertThat(result.getContent()).hasSize(2);
+            assertThat(result.getContent()).containsExactly(response1, response2);
+            assertThat(result.getTotalElements()).isEqualTo(2);
+            assertThat(result.getNumber()).isEqualTo(0);
+            verify(userRepository).findAll(any(Specification.class), any(Pageable.class));
         }
 
+        @SuppressWarnings("unchecked")
         @Test
-        @DisplayName("should return empty list when no users exist")
-        void shouldReturnEmptyList() {
-            when(userRepository.findAll()).thenReturn(List.of());
+        @DisplayName("should return empty page when no users exist")
+        void shouldReturnEmptyPage() {
+            UserPageRequest request = new UserPageRequest(1, 10, "created_at,desc", null);
 
-            List<UserResponse> result = userService.getAll();
+            Page<User> emptyPage = new PageImpl<>(
+                    List.of(),
+                    PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt")),
+                    0
+            );
 
-            assertThat(result).isEmpty();
+            when(userRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(emptyPage);
+
+            Page<UserResponse> result = userService.getAll(request);
+
+            assertThat(result.getContent()).isEmpty();
+            assertThat(result.getTotalElements()).isEqualTo(0);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Test
+        @DisplayName("should pass search keyword to repository via specification")
+        void shouldPassSearchKeyword() {
+            UserPageRequest request = new UserPageRequest(1, 10, "name,asc", "alice");
+
+            Page<User> emptyPage = new PageImpl<>(
+                    List.of(),
+                    PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "name")),
+                    0
+            );
+
+            when(userRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(emptyPage);
+
+            userService.getAll(request);
+
+            verify(userRepository).findAll(any(Specification.class), any(Pageable.class));
+        }
+
+        @SuppressWarnings("unchecked")
+        @Test
+        @DisplayName("should treat blank search as null specification")
+        void shouldTreatBlankSearchAsNull() {
+            UserPageRequest request = new UserPageRequest(1, 10, "created_at,desc", "   ");
+
+            Page<User> emptyPage = new PageImpl<>(
+                    List.of(),
+                    PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt")),
+                    0
+            );
+
+            when(userRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(emptyPage);
+
+            userService.getAll(request);
+
+            verify(userRepository).findAll(any(Specification.class), any(Pageable.class));
+        }
+
+        @SuppressWarnings("unchecked")
+        @Test
+        @DisplayName("should return correct pagination metadata")
+        void shouldReturnCorrectPaginationMetadata() {
+            UserPageRequest request = new UserPageRequest(2, 5, "created_at,desc", null);
+
+            List<User> users = List.of(
+                    buildUser(UUID.randomUUID(), "Alice", "alice@example.com"),
+                    buildUser(UUID.randomUUID(), "Bob", "bob@example.com")
+            );
+
+            Page<User> page = new PageImpl<>(
+                    users,
+                    PageRequest.of(1, 5, Sort.by(Sort.Direction.DESC, "createdAt")),
+                    12
+            );
+
+            when(userRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(page);
+            when(userMapper.toResponse(any(User.class))).thenReturn(buildUserResponse(users.getFirst()));
+
+            Page<UserResponse> result = userService.getAll(request);
+
+            assertThat(result.getTotalElements()).isEqualTo(12);
+            assertThat(result.getTotalPages()).isEqualTo(3);
+            assertThat(result.getNumber()).isEqualTo(1);
+            assertThat(result.hasNext()).isTrue();
+            assertThat(result.hasPrevious()).isTrue();
         }
     }
 

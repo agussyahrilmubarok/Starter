@@ -21,7 +21,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("API Documentation")
-                        .version("v1")
+                        .version("v2")
                         .description("Spring Boot REST API"))
                 .components(new Components()
                         .addSecuritySchemes(SECURITY_SCHEME_NAME, new SecurityScheme()

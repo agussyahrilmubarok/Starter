@@ -1,20 +1,22 @@
 package io.github.agussyahrilmubarok.backend.application.service.impl;
 
-import io.github.agussyahrilmubarok.backend.application.dto.user.CreateUserRequest;
-import io.github.agussyahrilmubarok.backend.application.dto.user.UpdateUserRequest;
-import io.github.agussyahrilmubarok.backend.application.dto.user.UserMapper;
-import io.github.agussyahrilmubarok.backend.application.dto.user.UserResponse;
+import io.github.agussyahrilmubarok.backend.application.dto.user.*;
 import io.github.agussyahrilmubarok.backend.application.service.UserService;
 import io.github.agussyahrilmubarok.backend.common.exception.EmailAlreadyExistsException;
 import io.github.agussyahrilmubarok.backend.common.exception.NotFoundException;
 import io.github.agussyahrilmubarok.backend.domain.User;
 import io.github.agussyahrilmubarok.backend.infrastructure.persistence.repository.UserRepository;
+import io.github.agussyahrilmubarok.backend.infrastructure.persistence.specification.UserSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -28,11 +30,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserResponse> getAll() {
-        return userRepository.findAll()
-                .stream()
-                .map(userMapper::toResponse)
-                .toList();
+    public Page<UserResponse> getAll(UserPageRequest request) {
+        Sort sort = parseSort(request.sort());
+        Pageable pageable = PageRequest.of(request.page() - 1, request.size(), sort);
+
+        Specification<User> spec = UserSpecification.hasSearch(request.search());
+
+        return userRepository.findAll(spec, pageable)
+                .map(userMapper::toResponse);
     }
 
     @Override
@@ -93,5 +98,49 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException("User with id " + id + " not found"));
 
         userRepository.deleteById(id);
+    }
+
+    private Sort parseSort(String sortParam) {
+        if (sortParam == null || sortParam.isBlank()) {
+            return Sort.by(Sort.Direction.DESC, "createdAt");
+        }
+
+        try {
+            String[] parts = sortParam.split(",");
+            String rawField = parts[0].trim();
+
+            String field = convertToCamelCase(rawField);
+
+            Sort.Direction direction =
+                    parts.length > 1 && "asc".equalsIgnoreCase(parts[1].trim())
+                            ? Sort.Direction.ASC
+                            : Sort.Direction.DESC;
+
+            return Sort.by(direction, field);
+
+        } catch (Exception e) {
+            return Sort.by(Sort.Direction.DESC, "createdAt");
+        }
+    }
+
+    private String convertToCamelCase(String input) {
+        if (input == null || input.isBlank()) return "createdAt";
+
+        if (input.contains("_")) {
+            StringBuilder result = new StringBuilder();
+            String[] tokens = input.split("_");
+            for (int i = 0; i < tokens.length; i++) {
+                String token = tokens[i];
+                if (i == 0) {
+                    result.append(token.toLowerCase());
+                } else {
+                    result.append(Character.toUpperCase(token.charAt(0)))
+                            .append(token.substring(1).toLowerCase());
+                }
+            }
+            return result.toString();
+        }
+
+        return input.trim();
     }
 }

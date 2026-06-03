@@ -2,13 +2,14 @@ package io.github.agussyahrilmubarok.backend.application.service;
 
 import io.github.agussyahrilmubarok.backend.application.dto.user.CreateUserRequest;
 import io.github.agussyahrilmubarok.backend.application.dto.user.UpdateUserRequest;
+import io.github.agussyahrilmubarok.backend.application.dto.user.UserPageRequest;
 import io.github.agussyahrilmubarok.backend.application.dto.user.UserResponse;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
-    List<UserResponse> getAll();
+    Page<UserResponse> getAll(final UserPageRequest request);
 
     UserResponse getById(final UUID id);
 

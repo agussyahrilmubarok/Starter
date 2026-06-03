@@ -2,11 +2,17 @@ package io.github.agussyahrilmubarok.backend.delivery.http.rest;
 
 import io.github.agussyahrilmubarok.backend.application.dto.user.CreateUserRequest;
 import io.github.agussyahrilmubarok.backend.application.dto.user.UpdateUserRequest;
+import io.github.agussyahrilmubarok.backend.application.dto.user.UserPageRequest;
 import io.github.agussyahrilmubarok.backend.application.dto.user.UserResponse;
 import io.github.agussyahrilmubarok.backend.application.service.UserService;
 import io.github.agussyahrilmubarok.backend.delivery.http.payload.ApiResponse;
+import io.github.agussyahrilmubarok.backend.delivery.http.payload.PagedApiResponse;
+import io.github.agussyahrilmubarok.backend.delivery.http.payload.PaginationResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,16 +22,33 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "/api/v1/users", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v2/users", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class UserResource {
 
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<UserResponse>>> getAll() {
-        List<UserResponse> response = userService.getAll();
-        return ResponseEntity.ok(new ApiResponse<>("Users retrieved successfully", response));
+    public ResponseEntity<PagedApiResponse<List<UserResponse>>> getAll(
+            @RequestParam(defaultValue = "1")
+            @Min(value = 1, message = "Must be a positive integer") int page,
+            @RequestParam(defaultValue = "10")
+            @Min(value = 1, message = "Must be between 1 and 100")
+            @Max(value = 100, message = "Must be between 1 and 100") int size,
+            @RequestParam(defaultValue = "created_at,desc") String sort,
+            @RequestParam(required = false) String search
+    ) {
+        UserPageRequest request = new UserPageRequest(page, size, sort, search);
+        Page<UserResponse> result = userService.getAll(request);
+        PaginationResponse pagination = new PaginationResponse(
+                result.getNumber() + 1,
+                result.getSize(),
+                result.getTotalElements(),
+                result.getTotalPages(),
+                result.hasNext(),
+                result.hasPrevious()
+        );
+        return ResponseEntity.ok(new PagedApiResponse<>("Users fetched successfully", result.getContent(), pagination));
     }
 
     @GetMapping("/{userId}")
