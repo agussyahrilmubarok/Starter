@@ -99,7 +99,7 @@ class JwtAuthenticationFilterTest {
 
         assertThatThrownBy(() -> filter.doFilterInternal(request, response, filterChain))
                 .isInstanceOf(JwtExpiredTokenException.class)
-                .hasMessage("Token has expired.");
+                .hasMessage("Token has expired");
 
         assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();
     }
@@ -112,7 +112,7 @@ class JwtAuthenticationFilterTest {
 
         assertThatThrownBy(() -> filter.doFilterInternal(request, response, filterChain))
                 .isInstanceOf(JwtInvalidTokenException.class)
-                .hasMessage("Invalid token.");
+                .hasMessage("Invalid token");
 
         assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();
     }

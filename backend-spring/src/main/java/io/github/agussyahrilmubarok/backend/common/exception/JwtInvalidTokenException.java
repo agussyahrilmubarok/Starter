@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.UNAUTHORIZED)
 public class JwtInvalidTokenException extends RuntimeException {
     public JwtInvalidTokenException() {
-        super("Invalid token.");
+        super("Invalid token");
     }
 }

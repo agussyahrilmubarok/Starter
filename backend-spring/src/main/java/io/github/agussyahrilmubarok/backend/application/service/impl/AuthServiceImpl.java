@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Locale;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -28,13 +30,13 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public AuthResponse signUp(SignUpRequest request) {
-        if (userRepository.existsByEmail(request.email())) {
+        if (userRepository.existsByEmail(request.email().toLowerCase(Locale.ROOT))) {
             throw new EmailAlreadyExistsException();
         }
 
         User user = new User();
         user.setName(request.name());
-        user.setEmail(request.email().toLowerCase());
+        user.setEmail(request.email().toLowerCase(Locale.ROOT));
         user.setPassword(passwordEncoder.encode(request.password()));
         userRepository.save(user);
 
@@ -46,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional(readOnly = true)
     public AuthResponse signIn(SignInRequest request) {
-        User user = userRepository.findByEmail(request.email())
+        User user = userRepository.findByEmail(request.email().toLowerCase(Locale.ROOT))
                 .orElseThrow(EmailNotRegisteredException::new);
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {

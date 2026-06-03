@@ -31,7 +31,7 @@ public class AuthResource {
             @Valid @RequestBody SignUpRequest request) {
         AuthResponse response = authService.signUp(request);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<>("Sign up successfully", response));
+                .body(new ApiResponse<>("Signed up successfully", response));
     }
 
     @PostMapping("/sign-in")
@@ -40,6 +40,6 @@ public class AuthResource {
             @Valid @RequestBody SignInRequest request) {
         AuthResponse response = authService.signIn(request);
         return ResponseEntity.ok()
-                .body(new ApiResponse<>("Sign in successfully", response));
+                .body(new ApiResponse<>("Signed in successfully", response));
     }
 }

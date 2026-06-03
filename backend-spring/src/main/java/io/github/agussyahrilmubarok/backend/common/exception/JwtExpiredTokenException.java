@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.UNAUTHORIZED)
 public class JwtExpiredTokenException extends RuntimeException {
     public JwtExpiredTokenException() {
-        super("Token has expired.");
+        super("Token has expired");
     }
 }

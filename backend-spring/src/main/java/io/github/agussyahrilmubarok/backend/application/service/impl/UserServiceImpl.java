@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @Service
@@ -46,13 +47,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponse create(CreateUserRequest request) {
-        if (userRepository.existsByEmail(request.email())) {
+        if (userRepository.existsByEmail(request.email().toLowerCase(Locale.ROOT))) {
             throw new EmailAlreadyExistsException();
         }
 
         User user = new User();
         user.setName(request.name());
-        user.setEmail(request.email().toLowerCase());
+        user.setEmail(request.email().toLowerCase(Locale.ROOT));
         user.setPassword(passwordEncoder.encode(request.password()));
         userRepository.save(user);
 
@@ -70,10 +71,10 @@ public class UserServiceImpl implements UserService {
         }
 
         if (request.email() != null && !request.email().isBlank() && !user.getEmail().equals(request.email())) {
-            if (userRepository.existsByEmail(request.email())) {
+            if (userRepository.existsByEmail(request.email().toLowerCase(Locale.ROOT))) {
                 throw new EmailAlreadyExistsException();
             }
-            user.setEmail(request.email().toLowerCase());
+            user.setEmail(request.email().toLowerCase(Locale.ROOT));
         }
 
         if (request.password() != null && !request.password().isBlank()) {

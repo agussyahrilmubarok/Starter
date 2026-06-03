@@ -77,7 +77,7 @@ class AuthServiceImplTest {
 
         @BeforeEach
         void setUp() {
-            request = new SignUpRequest("Alice", "Alice@Example.com", "password123");
+            request = new SignUpRequest("Alice", "alice@example.com", "password123");
         }
 
         @Test
@@ -85,7 +85,7 @@ class AuthServiceImplTest {
         void shouldSaveUserAndReturnAuthResponse() {
             UUID aliceId = UUID.randomUUID();
 
-            when(userRepository.existsByEmail("Alice@Example.com")).thenReturn(false);
+            when(userRepository.existsByEmail("alice@example.com")).thenReturn(false);
             when(passwordEncoder.encode("password123")).thenReturn("hashed_password");
             when(userRepository.save(any(User.class))).thenAnswer(inv -> {
                 User u = inv.getArgument(0);
@@ -148,11 +148,11 @@ class AuthServiceImplTest {
         @Test
         @DisplayName("should throw EmailAlreadyExistsException when email is taken")
         void shouldThrowWhenEmailAlreadyExists() {
-            when(userRepository.existsByEmail("Alice@Example.com")).thenReturn(true);
+            when(userRepository.existsByEmail("alice@example.com")).thenReturn(true);
 
             assertThatThrownBy(() -> authService.signUp(request))
                     .isInstanceOf(EmailAlreadyExistsException.class)
-                    .hasMessage("Email already exists.");
+                    .hasMessage("Email already exists");
 
             verify(userRepository, never()).save(any());
             verifyNoInteractions(passwordEncoder);
@@ -209,7 +209,7 @@ class AuthServiceImplTest {
 
             assertThatThrownBy(() -> authService.signIn(request))
                     .isInstanceOf(EmailNotRegisteredException.class)
-                    .hasMessage("Email is not registered.");
+                    .hasMessage("Email is not registered");
 
             verifyNoInteractions(passwordEncoder);
             verifyNoInteractions(jwtManager);
@@ -223,7 +223,7 @@ class AuthServiceImplTest {
 
             assertThatThrownBy(() -> authService.signIn(request))
                     .isInstanceOf(WrongPasswordException.class)
-                    .hasMessage("Wrong password.");
+                    .hasMessage("Wrong password");
 
             verifyNoInteractions(jwtManager);
         }

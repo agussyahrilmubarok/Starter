@@ -1,3 +1,4 @@
 - [ ] Add logger in console and files.
 - [ ] Add request id middleware.
 - [ ] Add rest unit test.
+- [ ] Add pagination.

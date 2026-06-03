@@ -94,7 +94,7 @@ class JwtManagerTest {
 
             assertThatThrownBy(() -> shortLivedManager.validateToken(token))
                     .isInstanceOf(JwtExpiredTokenException.class)
-                    .hasMessage("Token has expired.");
+                    .hasMessage("Token has expired");
         }
 
         @Test
@@ -102,7 +102,7 @@ class JwtManagerTest {
         void shouldThrowWhenTokenMalformed() {
             assertThatThrownBy(() -> jwtManager.validateToken("this.is.not.a.valid.jwt"))
                     .isInstanceOf(JwtInvalidTokenException.class)
-                    .hasMessage("Invalid token.");
+                    .hasMessage("Invalid token");
         }
 
         @Test
