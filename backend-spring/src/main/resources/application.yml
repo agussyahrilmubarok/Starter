@@ -1,3 +1,7 @@
+server:
+  port: ${SERVER_PORT:8080}
+  shutdown: graceful
+
 spring:
   datasource:
     url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/sandbox_db}
@@ -18,6 +22,8 @@ spring:
             non_contextual_creation: true
         id:
           new_generator_mappings: true
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
 
 error:
   handling:
@@ -33,6 +39,8 @@ springdoc:
   pathsToMatch: /, /api/**
 
 jwt:
-  secret-key: ${JWT_SECRET_KEY:48616e7961547568616e44616e5361796159616e67546168754b}
+  secret-key: ${JWT_SECRET_KEY:SecretKeySecretKeySecretKeySecretKeySecretKeySecretKeySecretKeySecretKey}
   exp-time-ms: ${JWT_EXP_TIME_MS:86400000}  # 24 hours
-  
+
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
