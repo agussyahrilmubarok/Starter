@@ -3,11 +3,6 @@ TODO: Internationalization (i18n) Implementation
 Scope: HTML templates only (frontend-facing text)
       Backend Go code, flash messages, and error logs stay in English.
 
-[ ] 1. Fix existing bugs first (prerequisite before i18n)
-      - dashboard_index.html : replace "Selamat Datang," with "Welcome,"
-      - users_add.html       : fix {{if .Errors.Email}} → {{if .Errors.Name}} for Name field error
-      - dashboard_layout.html: add missing Toastr CSS/JS imports (flash messages currently broken)
-
 [ ] 2. Create translation files
       - Create locales/ directory at project root
       - Add locales/en.toml (default/fallback)
