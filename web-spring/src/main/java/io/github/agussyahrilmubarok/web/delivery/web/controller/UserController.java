@@ -5,6 +5,7 @@ import io.github.agussyahrilmubarok.web.application.dto.user.UpdateUserRequest;
 import io.github.agussyahrilmubarok.web.application.service.UserService;
 import io.github.agussyahrilmubarok.web.common.exception.EmailAlreadyExistsException;
 import io.github.agussyahrilmubarok.web.common.exception.NotFoundException;
+import io.github.agussyahrilmubarok.web.common.util.WebUtils;
 import io.github.agussyahrilmubarok.web.infrastructure.security.CustomUserDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -52,11 +53,11 @@ public class UserController {
             bindingResult.rejectValue("email", "Exists.user.email");
             return "dashboard/users/create";
         } catch (final Exception e) {
-            model.addAttribute("MSG_ERROR", "Something went wrong. Please try again.");
+            model.addAttribute(WebUtils.MSG_ERROR, "Something went wrong. Please try again.");
             return "dashboard/users/create";
         }
 
-        redirectAttributes.addFlashAttribute("MSG_SUCCESS", "User was created successfully.");
+        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, "User was created successfully.");
         return "redirect:/dashboard/users";
     }
 
@@ -69,7 +70,7 @@ public class UserController {
         try {
             model.addAttribute("editUser", userService.getById(id));
         } catch (final NotFoundException e) {
-            redirectAttributes.addFlashAttribute("MSG_ERROR", "User not found.");
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, "User not found.");
             return "redirect:/dashboard/users";
         }
         return "dashboard/users/edit";
@@ -93,14 +94,14 @@ public class UserController {
             bindingResult.rejectValue("email", "Exists.user.email");
             return "dashboard/users/edit";
         } catch (final NotFoundException e) {
-            redirectAttributes.addFlashAttribute("MSG_ERROR", "User not found.");
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, "User not found.");
             return "redirect:/dashboard/users";
         } catch (final Exception e) {
-            model.addAttribute("MSG_ERROR", "Something went wrong. Please try again.");
+            model.addAttribute(WebUtils.MSG_ERROR, "Something went wrong. Please try again.");
             return "dashboard/users/edit";
         }
 
-        redirectAttributes.addFlashAttribute("MSG_SUCCESS", "User was updated successfully.");
+        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, "User was updated successfully.");
         return "redirect:/dashboard/users";
     }
 
@@ -111,9 +112,9 @@ public class UserController {
     ) {
         try {
             userService.delete(id);
-            redirectAttributes.addFlashAttribute("MSG_SUCCESS", "User was deleted successfully.");
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, "User was deleted successfully.");
         } catch (final NotFoundException e) {
-            redirectAttributes.addFlashAttribute("MSG_ERROR", "User not found.");
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, "User not found.");
         }
         return "redirect:/dashboard/users";
     }

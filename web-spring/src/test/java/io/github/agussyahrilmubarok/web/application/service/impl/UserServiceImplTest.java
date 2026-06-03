@@ -225,7 +225,7 @@ class UserServiceImplTest {
             UpdateUserRequest request = new UpdateUserRequest(null, "NEW@EXAMPLE.COM", null);
 
             when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
-            when(userRepository.existsByEmail("NEW@EXAMPLE.COM")).thenReturn(false);
+            when(userRepository.existsByEmail("new@example.com")).thenReturn(false);
             when(userRepository.save(any(User.class))).thenReturn(existingUser);
             when(userMapper.toResponse(any(User.class))).thenReturn(buildUserResponse(existingUser));
 

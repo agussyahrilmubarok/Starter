@@ -4,10 +4,12 @@ import io.github.agussyahrilmubarok.web.application.dto.auth.SignInRequest;
 import io.github.agussyahrilmubarok.web.application.dto.user.CreateUserRequest;
 import io.github.agussyahrilmubarok.web.application.service.UserService;
 import io.github.agussyahrilmubarok.web.common.exception.EmailAlreadyExistsException;
+import io.github.agussyahrilmubarok.web.common.util.WebUtils;
 import io.github.agussyahrilmubarok.web.infrastructure.security.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,15 +27,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequiredArgsConstructor
 public class AuthController {
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
-
-    public AuthController(UserService userService, AuthenticationManager authenticationManager) {
-        this.userService = userService;
-        this.authenticationManager = authenticationManager;
-    }
 
     @GetMapping("/sign-up")
     public String signUpForm(
@@ -64,11 +62,11 @@ public class AuthController {
             bindingResult.rejectValue("email", "Exists.user.email");
             return "auth/sign-up";
         } catch (final Exception e) {
-            model.addAttribute("MSG_ERROR", "Something went wrong. Please try again.");
+            model.addAttribute(WebUtils.MSG_ERROR, "Something went wrong. Please try again.");
             return "auth/sign-up";
         }
 
-        redirectAttributes.addFlashAttribute("MSG_SUCCESS", "Sign up successfully! Please sign in.");
+        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, "Sign up successfully! Please sign in.");
         return "redirect:/sign-in";
     }
 
@@ -109,10 +107,10 @@ public class AuthController {
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
 
         } catch (final BadCredentialsException e) {
-            model.addAttribute("MSG_ERROR", "Invalid email or password.");
+            model.addAttribute(WebUtils.MSG_ERROR, "Invalid email or password.");
             return "auth/sign-in";
         } catch (final Exception e) {
-            model.addAttribute("MSG_ERROR", "Authentication failed. Please try again.");
+            model.addAttribute(WebUtils.MSG_ERROR, "Authentication failed. Please try again.");
             return "auth/sign-in";
         }
 
@@ -131,7 +129,7 @@ public class AuthController {
             session.invalidate();
         }
 
-        redirectAttributes.addFlashAttribute("MSG_SUCCESS", "You have signed out.");
+        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, "You have signed out.");
         return "redirect:/sign-in";
     }
 }
