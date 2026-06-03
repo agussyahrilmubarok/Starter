@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public UserResponse getById(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User with id " + id + " not found."));
+                .orElseThrow(() -> new NotFoundException("User with id " + id + " not found"));
 
         return userMapper.toResponse(user);
     }
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponse update(UUID id, UpdateUserRequest request) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User with id " + id + " not found."));
+                .orElseThrow(() -> new NotFoundException("User with id " + id + " not found"));
 
         if (request.name() != null && !request.name().isBlank()) {
             user.setName(request.name());
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void delete(UUID id) {
         userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User with id " + id + " not found."));
+                .orElseThrow(() -> new NotFoundException("User with id " + id + " not found"));
 
         userRepository.deleteById(id);
     }
