@@ -1,0 +1,2 @@
+- [ ] Fix fields input validation message.
+- [ ] Add logger in console and file.
