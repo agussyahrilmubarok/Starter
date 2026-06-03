@@ -34,9 +34,15 @@ curl -X POST http://localhost:8080/api/v2/auth/sign-in \
 ### GET ALL USERS
 
 ```bash
-curl -X GET http://localhost:8080/api/v2/users \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Content-Type: application/json"
+curl -X GET "http://localhost:8080/api/v2/users?page=1&size=10&sort=created_at,desc" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+### GET ALL USERS WITH SEARCH
+
+```bash
+curl -X GET "http://localhost:8080/api/v2/users?page=1&size=10&sort=created_at,desc&search=john" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 ### GET USER BY ID
