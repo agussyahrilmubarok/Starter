@@ -78,7 +78,7 @@ func TestAuth_SignUp(t *testing.T) {
 			mockSetup: func(repo *mocks.UserRepository) {
 				repo.On("ExistsByEmail", mock.Anything, "alice@mail.com").Return(true, nil)
 			},
-			wantErr: usecase.ErrEmailAlreadyExist,
+			wantErr: usecase.ErrEmailAlreadyExists,
 		},
 		{
 			name: "exists by email error",

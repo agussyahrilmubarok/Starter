@@ -95,7 +95,7 @@ func TestAuthHandler_SignUp_EmailAlreadyExist(t *testing.T) {
 		Password: "password123",
 	}
 
-	authUC.On("SignUp", mock.Anything, reqBody).Return(nil, usecase.ErrEmailAlreadyExist)
+	authUC.On("SignUp", mock.Anything, reqBody).Return(nil, usecase.ErrEmailAlreadyExists)
 
 	body, _ := json.Marshal(reqBody)
 	req := httptest.NewRequest(http.MethodPost, "/v1/auth/sign-up", bytes.NewBuffer(body))

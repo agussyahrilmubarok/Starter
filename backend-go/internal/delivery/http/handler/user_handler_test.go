@@ -199,7 +199,7 @@ func TestUserHandler_Create_EmailAlreadyExist(t *testing.T) {
 		Email:    "john@example.com",
 		Password: "password123",
 	}
-	userUC.On("Create", mock.Anything, reqBody).Return(nil, usecase.ErrEmailAlreadyExist)
+	userUC.On("Create", mock.Anything, reqBody).Return(nil, usecase.ErrEmailAlreadyExists)
 
 	body, _ := json.Marshal(reqBody)
 	req := httptest.NewRequest(http.MethodPost, "/v1/users", bytes.NewBuffer(body))
@@ -301,7 +301,7 @@ func TestUserHandler_Update_EmailAlreadyExist(t *testing.T) {
 	id := uuid.New()
 	reqBody := dto.UpdateUserRequest{Email: "taken@example.com"}
 
-	userUC.On("Update", mock.Anything, id, reqBody).Return(nil, usecase.ErrEmailAlreadyExist)
+	userUC.On("Update", mock.Anything, id, reqBody).Return(nil, usecase.ErrEmailAlreadyExists)
 
 	body, _ := json.Marshal(reqBody)
 	req := httptest.NewRequest(http.MethodPut, fmt.Sprintf("/v1/users/%s", id), bytes.NewBuffer(body))

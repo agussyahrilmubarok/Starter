@@ -115,7 +115,7 @@ func (h *UserHandler) Create(c *gin.Context) {
 
 	user, err := h.userUC.Create(c.Request.Context(), req)
 	if err != nil {
-		if errors.Is(err, usecase.ErrEmailAlreadyExist) {
+		if errors.Is(err, usecase.ErrEmailAlreadyExists) {
 			c.JSON(http.StatusConflict, payload.ErrorResponse{
 				Message: "Conflict",
 				Errors:  map[string]string{"email": "Email already exists"},
@@ -177,7 +177,7 @@ func (h *UserHandler) Update(c *gin.Context) {
 				Message: "Not found",
 				Errors:  map[string]string{"error": "User not found"},
 			})
-		case errors.Is(err, usecase.ErrEmailAlreadyExist):
+		case errors.Is(err, usecase.ErrEmailAlreadyExists):
 			c.JSON(http.StatusConflict, payload.ErrorResponse{
 				Message: "Conflict",
 				Errors:  map[string]string{"email": "Email already exists"},

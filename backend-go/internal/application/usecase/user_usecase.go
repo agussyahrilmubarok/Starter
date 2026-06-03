@@ -14,8 +14,8 @@ import (
 )
 
 var (
-	ErrUserNotFound      = errors.New("user not found")
-	ErrEmailAlreadyExist = errors.New("email already exists")
+	ErrUserNotFound       = errors.New("user not found")
+	ErrEmailAlreadyExists = errors.New("email already exists")
 )
 
 //go:generate mockery --name=UserUseCase
@@ -81,7 +81,7 @@ func (uc *userUseCase) Create(ctx context.Context, req dto.CreateUserRequest) (*
 	}
 	if exists {
 		log.Warn("email already exists")
-		return nil, ErrEmailAlreadyExist
+		return nil, ErrEmailAlreadyExists
 	}
 
 	hashed, err := crypto.HashPassword(req.Password)
@@ -132,7 +132,7 @@ func (uc *userUseCase) Update(ctx context.Context, id uuid.UUID, req dto.UpdateU
 		}
 		if exists {
 			log.Warn("email already exists", zap.String("email", req.Email))
-			return nil, ErrEmailAlreadyExist
+			return nil, ErrEmailAlreadyExists
 		}
 		user.Email = strings.ToLower(req.Email)
 	}

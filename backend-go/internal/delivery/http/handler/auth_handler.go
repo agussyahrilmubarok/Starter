@@ -44,7 +44,7 @@ func (h *AuthHandler) SignUp(c *gin.Context) {
 
 	res, err := h.authUC.SignUp(c.Request.Context(), req)
 	if err != nil {
-		if errors.Is(err, usecase.ErrEmailAlreadyExist) {
+		if errors.Is(err, usecase.ErrEmailAlreadyExists) {
 			c.JSON(http.StatusConflict, payload.ErrorResponse{
 				Message: "Conflict",
 				Errors:  map[string]string{"email": "Email already exists"},

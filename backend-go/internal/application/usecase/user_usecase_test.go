@@ -204,7 +204,7 @@ func TestUser_Create(t *testing.T) {
 			mockSetup: func(repo *mocks.UserRepository) {
 				repo.On("ExistsByEmail", mock.Anything, mock.Anything).Return(true, nil)
 			},
-			wantErr: usecase.ErrEmailAlreadyExist,
+			wantErr: usecase.ErrEmailAlreadyExists,
 		},
 		{
 			name: "exists by email error",
@@ -313,7 +313,7 @@ func TestUser_Update(t *testing.T) {
 				repo.On("FindByID", mock.Anything, user.ID).Return(user, nil)
 				repo.On("ExistsByEmail", mock.Anything, "taken@mail.com").Return(true, nil)
 			},
-			wantErr: usecase.ErrEmailAlreadyExist,
+			wantErr: usecase.ErrEmailAlreadyExists,
 		},
 		{
 			name: "find by id error",

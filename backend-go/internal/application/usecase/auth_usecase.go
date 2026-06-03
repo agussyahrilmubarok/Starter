@@ -47,7 +47,7 @@ func (uc *authUseCase) SignUp(ctx context.Context, req dto.SignUpRequest) (*dto.
 	}
 	if exists {
 		log.Warn("email already exists")
-		return nil, ErrEmailAlreadyExist
+		return nil, ErrEmailAlreadyExists
 	}
 
 	hashed, err := crypto.HashPassword(req.Password)
