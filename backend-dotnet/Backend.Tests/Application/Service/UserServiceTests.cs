@@ -2,6 +2,7 @@ using Backend.Application.DTO.User;
 using Backend.Application.Service;
 using Backend.Common.Exceptions;
 using Backend.Domain.User;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace Backend.Tests.Application.Service;
@@ -14,7 +15,8 @@ public class UserServiceTests
     public UserServiceTests()
     {
         _repoMock = new Mock<IUserRepository>();
-        _sut = new UserService(_repoMock.Object);
+        var loggerMock = new Mock<ILogger<UserService>>();
+        _sut = new UserService(_repoMock.Object, loggerMock.Object);
     }
 
     private static User MakeUser(

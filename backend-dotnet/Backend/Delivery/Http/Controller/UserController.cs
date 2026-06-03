@@ -23,14 +23,14 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetAll(CancellationToken ct)
     {
         var users = await _userService.GetAllAsync(ct);
-        return Ok(new ApiResponse<IEnumerable<UserResponse>>("Get all users successfully", users));
+        return Ok(new ApiResponse<IEnumerable<UserResponse>>("Users fetched successfully", users));
     }
 
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken ct)
     {
         var user = await _userService.GetByIdAsync(id, ct);
-        return Ok(new ApiResponse<UserResponse>("Get user successfully", user));
+        return Ok(new ApiResponse<UserResponse>("User fetched successfully", user));
     }
 
     [HttpPost]

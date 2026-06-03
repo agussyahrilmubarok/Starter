@@ -94,11 +94,18 @@ public class GlobalExceptionHandler : IMiddleware
                         ["password"] = exception.Message
                     });
                 break;
-            
+
             case UnauthorizedAccessException:
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 response = new ApiResponse<object>("Unauthorized.",
                     new Dictionary<string, string> { ["error"] = exception.Message });
+                break;
+
+            case AppValidationException ve:
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response = new ApiResponse<object>(
+                    "Validation failed.",
+                    ve.Errors);
                 break;
 
             default:

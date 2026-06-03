@@ -1,0 +1,428 @@
+2026-06-03 19:00:57 [INF]  : Database connected successfully
+2026-06-03 19:00:58 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:00:58 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:00:58 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:00:59 [INF] Microsoft.EntityFrameworkCore.Database.Command : Executed DbCommand (120ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-03 19:00:59 [INF]  : Database connected successfully
+2026-06-03 19:00:59 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:00:59 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Development
+2026-06-03 19:00:59 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:01 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:01:01 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+-06-03 19:01:00 [INF]  : Database connected successfully
+2026-06-03 19:01:00 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:00 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Development
+2026-06-03 19:01:00 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:00 [ERR] Backend.Delivery.Http.Middleware.GlobalExceptionHandler 0HNM1CV3IUH9S: Unhandled exception: Wrong password.Backend.Common.Exceptions.WrongPasswordException: Wrong password.
+   at Backend.Delivery.Http.Controller.AuthController.SignIn(SignInRequest request, CancellationToken ct) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Controller/AuthController.cs:line 33
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Backend.Delivery.Http.Middleware.GlobalExceptionHandler.InvokeAsync(HttpContext context, RequestDelegate next) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Middleware/GlobalExceptionHandler.cs:line 21
+
+2026-06-03 19:01:01 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:01:01 [INF]  : Database connected successfully
+2026-06-03 19:01:01 [INF] Microsoft.EntityFrameworkCore.Database.Command : Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-03 19:01:01 [INF]  : Database connected successfully
+2026-06-03 19:01:01 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:01 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Development
+2026-06-03 19:01:01 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:01 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:01 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:01:01 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:01 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CV3IUH9V: Failed to determine the https port for redirect.
+2026-06-03 19:01:01 [ERR] Backend.Delivery.Http.Middleware.GlobalExceptionHandler 0HNM1CV3IUH9U: Unhandled exception: Email ghost@mail.com is not registered.Backend.Common.Exceptions.EmailNotRegisteredException: Email ghost@mail.com is not registered.
+   at Backend.Delivery.Http.Controller.AuthController.SignIn(SignInRequest request, CancellationToken ct) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Controller/AuthController.cs:line 33
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Backend.Delivery.Http.Middleware.GlobalExceptionHandler.InvokeAsync(HttpContext context, RequestDelegate next) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Middleware/GlobalExceptionHandler.cs:line 21
+
+2026-06-03 19:01:01 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:01:01 [INF] Microsoft.EntityFrameworkCore.Database.Command : Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-03 19:01:01 [INF]  : Database connected successfully
+2026-06-03 19:01:02 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:02 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Development
+2026-06-03 19:01:02 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:02 [INF]  : Database connected successfully
+2026-06-03 19:01:02 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:02 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:01:02 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:02 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CV3IUHA1: Failed to determine the https port for redirect.
+2026-06-03 19:01:02 [ERR] Backend.Delivery.Http.Middleware.GlobalExceptionHandler 0HNM1CV3IUHA1: Unhandled exception: User with id 3ae5a5c8-6f99-45e0-9089-d83e9574f705 not found.Backend.Common.Exceptions.NotFoundException: User with id 3ae5a5c8-6f99-45e0-9089-d83e9574f705 not found.
+   at Backend.Delivery.Http.Controller.UserController.Delete(Guid id, CancellationToken ct) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Controller/UserController.cs:line 54
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Backend.Delivery.Http.Middleware.GlobalExceptionHandler.InvokeAsync(HttpContext context, RequestDelegate next) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Middleware/GlobalExceptionHandler.cs:line 21
+
+2026-06-03 19:01:02 [INF]  : Database connected successfully
+2026-06-03 19:01:02 [INF] Microsoft.EntityFrameworkCore.Database.Command : Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-03 19:01:02 [INF]  : Database connected successfully
+2026-06-03 19:01:02 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:02 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:01:02 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:02 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:02 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Development
+2026-06-03 19:01:02 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:02 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CV3IUHA2: Failed to determine the https port for redirect.
+2026-06-03 19:01:03 [ERR] Backend.Delivery.Http.Middleware.GlobalExceptionHandler 0HNM1CV3IUHA3: Unhandled exception: Email john@mail.com is already registered.Backend.Common.Exceptions.EmailAlreadyExistsException: Email john@mail.com is already registered.
+   at Backend.Delivery.Http.Controller.AuthController.SignUp(SignUpRequest request, CancellationToken ct) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Controller/AuthController.cs:line 25
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Backend.Delivery.Http.Middleware.GlobalExceptionHandler.InvokeAsync(HttpContext context, RequestDelegate next) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Middleware/GlobalExceptionHandler.cs:line 21
+
+2026-06-03 19:01:03 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:01:03 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:01:03 [INF]  : Database connected successfully
+2026-06-03 19:01:03 [INF] Microsoft.EntityFrameworkCore.Database.Command : Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-03 19:01:03 [INF]  : Database connected successfully
+2026-06-03 19:01:03 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:03 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:01:03 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:03 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:03 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Development
+2026-06-03 19:01:03 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:03 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CV3IUHA5: Failed to determine the https port for redirect.
+2026-06-03 19:01:03 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:01:03 [INF] Microsoft.EntityFrameworkCore.Database.Command : Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-03 19:01:03 [INF]  : Database connected successfully
+2026-06-03 19:01:03 [INF]  : Database connected successfully
+2026-06-03 19:01:03 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:03 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:01:03 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:03 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:03 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Development
+2026-06-03 19:01:03 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:03 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CV3IUHA7: Failed to determine the https port for redirect.
+2026-06-03 19:01:03 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:01:04 [INF]  : Database connected successfully
+2026-06-03 19:01:04 [INF] Microsoft.EntityFrameworkCore.Database.Command : Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-03 19:01:04 [INF]  : Database connected successfully
+2026-06-03 19:01:04 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:04 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Development
+2026-06-03 19:01:04 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:04 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:04 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:01:04 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:04 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CV3IUHA9: Failed to determine the https port for redirect.
+2026-06-03 19:01:04 [ERR] Backend.Delivery.Http.Middleware.GlobalExceptionHandler 0HNM1CV3IUHA9: Unhandled exception: User with id d0384d20-1a28-4985-8df0-608335ec4e78 not found.Backend.Common.Exceptions.NotFoundException: User with id d0384d20-1a28-4985-8df0-608335ec4e78 not found.
+   at Backend.Delivery.Http.Controller.UserController.Update(Guid id, UpdateUserRequest request, CancellationToken ct) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Controller/UserController.cs:line 47
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Backend.Delivery.Http.Middleware.GlobalExceptionHandler.InvokeAsync(HttpContext context, RequestDelegate next) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Middleware/GlobalExceptionHandler.cs:line 21
+
+2026-06-03 19:01:04 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:01:04 [INF]  : Database connected successfully
+2026-06-03 19:01:05 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:05 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:01:05 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:05 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CV3IUHAA: Failed to determine the https port for redirect.
+2026-06-03 19:01:05 [ERR] Backend.Delivery.Http.Middleware.GlobalExceptionHandler 0HNM1CV3IUHAA: Unhandled exception: User with id 43e66d43-2bbc-4fc9-9327-be77f6421b80 not found.Backend.Common.Exceptions.NotFoundException: User with id 43e66d43-2bbc-4fc9-9327-be77f6421b80 not found.
+   at Backend.Delivery.Http.Controller.UserController.GetById(Guid id, CancellationToken ct) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Controller/UserController.cs:line 32
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Backend.Delivery.Http.Middleware.GlobalExceptionHandler.InvokeAsync(HttpContext context, RequestDelegate next) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Middleware/GlobalExceptionHandler.cs:line 21
+
+2026-06-03 19:01:05 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:01:05 [INF]  : Database connected successfully
+2026-06-03 19:01:05 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:05 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:01:05 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:05 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CV3IUHAB: Failed to determine the https port for redirect.
+2026-06-03 19:01:05 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:01:05 [INF]  : Database connected successfully
+2026-06-03 19:01:05 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:05 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:01:05 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:05 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CV3IUHAC: Failed to determine the https port for redirect.
+2026-06-03 19:01:05 [ERR] Backend.Delivery.Http.Middleware.GlobalExceptionHandler 0HNM1CV3IUHAC: Unhandled exception: Email john@mail.com is already registered.Backend.Common.Exceptions.EmailAlreadyExistsException: Email john@mail.com is already registered.
+   at Backend.Delivery.Http.Controller.UserController.Create(CreateUserRequest request, CancellationToken ct) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Controller/UserController.cs:line 39
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Backend.Delivery.Http.Middleware.GlobalExceptionHandler.InvokeAsync(HttpContext context, RequestDelegate next) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Middleware/GlobalExceptionHandler.cs:line 21
+
+2026-06-03 19:01:05 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:01:05 [INF]  : Database connected successfully
+2026-06-03 19:01:05 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:05 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:01:05 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:05 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CV3IUHAD: Failed to determine the https port for redirect.
+2026-06-03 19:01:06 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:01:06 [INF]  : Database connected successfully
+2026-06-03 19:01:06 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:01:06 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:01:06 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:01:06 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CV3IUHAE: Failed to determine the https port for redirect.
+2026-06-03 19:01:06 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:02:04 [INF]  : Database connected successfully
+2026-06-03 19:02:05 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:02:05 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:02:05 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:02:06 [INF] Microsoft.EntityFrameworkCore.Database.Command : Executed DbCommand (272ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-03 19:02:08 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:02:08 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Development
+2026-06-03 19:02:08 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspace2026-06-03 19:02:08 [INF] Microsoft.Hosting.Lifetime : Applicatio2026-06-03 19:02:09 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:02:10 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+time : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:02:09 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:02:09 [INF]  : Database connected successfully
+2026-06-03 19:02:09 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:02:09 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:02:09 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:02:09 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CVNVTHR9: Failed to determine the https port for redirect.
+2026-06-03 19:02:10 [INF] Microsoft.EntityFrameworkCore.Database.Command : Executed DbCommand (100ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-03 19:02:10 [INF]  : Database connected successfully
+2026-06-03 19:02:10 [INF]  : Database connected successfully
+2026-06-03 19:02:10 [ERR] Backend.Delivery.Http.Middleware.GlobalExceptionHandler 0HNM1CVNVTHRA: Unhandled exception: Email ghost@mail.com is not registered.Backend.Common.Exceptions.EmailNotRegisteredException: Email ghost@mail.com is not registered.
+   at Backend.Delivery.Http.Controller.AuthController.SignIn(SignInRequest request, CancellationToken ct) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Controller/AuthController.cs:line 33
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Backend.Delivery.Http.Middleware.GlobalExceptionHandler.InvokeAsync(HttpContext context, RequestDelegate next) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Middleware/GlobalExceptionHandler.cs:line 21
+
+2026-06-03 19:02:10 [INF] Microsoft.EntityFrameworkCore.Database.Command : Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-03 19:02:10 [INF]  : Database connected successfully
+2026-06-03 19:02:10 [ERR] Backend.Delivery.Http.Middleware.GlobalExceptionHandler 0HNM1CVNVTHRB: Unhandled exception: User with id 759b2501-c2ad-4d7a-8280-c41e25b85ad4 not found.Backend.Common.Exceptions.NotFoundException: User with id 759b2501-c2ad-4d7a-8280-c41e25b85ad4 not found.
+   at Backend.Delivery.Http.Controller.UserController.Delete(Guid id, CancellationToken ct) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Controller/UserController.cs:line 54
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Backend.Delivery.Http.Middleware.GlobalExceptionHandler.InvokeAsync(HttpContext context, RequestDelegate next) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Middleware/GlobalExceptionHandler.cs:line 21
+
+2026-06-03 19:02:10 [INF]  : Database connected successfully
+2026-06-03 19:02:11 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:02:11 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:02:11 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:02:11 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CVNVTHRD: Failed to determine the https port for redirect.
+2026-06-03 19:02:11 [INF]  : Database connected successfully
+2026-06-03 19:02:11 [INF] Microsoft.EntityFrameworkCore.Database.Command : Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-03 19:02:11 [INF]  : Database connected successfully
+2026-06-03 19:02:11 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:02:11 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Development
+2026-06-03 19:02:11 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:02:11 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:02:11 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:02:11 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:02:12 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CVNVTHRF: Failed to determine the https port for redirect.
+2026-06-03 19:02:12 [ERR] Backend.Delivery.Http.Middleware.GlobalExceptionHandler 0HNM1CVNVTHRE: Unhandled exception: Email john@mail.com is already registered.Backend.Common.Exceptions.EmailAlreadyExistsException: Email john@mail.com is already registered.
+   at Backend.Delivery.Http.Controller.AuthController.SignUp(SignUpRequest request, CancellationToken ct) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Controller/AuthController.cs:line 25
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Backend.Delivery.Http.Middleware.GlobalExceptionHandler.InvokeAsync(HttpContext context, RequestDelegate next) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Middleware/GlobalExceptionHandler.cs:line 21
+
+2026-06-03 19:02:12 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:02:12 [INF]  : Database connected successfully
+2026-06-03 19:02:12 [INF] Microsoft.EntityFrameworkCore.Database.Command : Executed DbCommand (39ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-03 19:02:12 [INF]  : Database connected successfully
+2026-06-03 19:02:12 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:02:12 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Development
+2026-06-03 19:02:12 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:02:12 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:02:12 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:02:12 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:02:12 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CVNVTHRH: Failed to determine the https port for redirect.
+2026-06-03 19:02:12 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:02:12 [INF]  : Database connected successfully
+2026-06-03 19:02:12 [INF] Microsoft.EntityFrameworkCore.Database.Command : Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-03 19:02:12 [INF]  : Database connected successfully
+2026-06-03 19:02:13 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:02:13 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:02:13 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:02:13 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CVNVTHRI: Failed to determine the https port for redirect.
+2026-06-03 19:02:13 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:02:13 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Development
+2026-06-03 19:02:13 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:02:13 [ERR] Backend.Delivery.Http.Middleware.GlobalExceptionHandler 0HNM1CVNVTHRI: Unhandled exception: User with id 16b5c8a5-5d58-4b87-a805-5b8dba767236 not found.Backend.Common.Exceptions.NotFoundException: User with id 16b5c8a5-5d58-4b87-a805-5b8dba767236 not found.
+   at Backend.Delivery.Http.Controller.UserController.Update(Guid id, UpdateUserRequest request, CancellationToken ct) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Controller/UserController.cs:line 47
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Backend.Delivery.Http.Middleware.GlobalExceptionHandler.InvokeAsync(HttpContext context, RequestDelegate next) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Middleware/GlobalExceptionHandler.cs:line 21
+
+2026-06-03 19:02:13 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:02:13 [INF] Microsoft.EntityFrameworkCore.Database.Command : Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-03 19:02:13 [INF]  : Database connected successfully
+2026-06-03 19:02:13 [INF]  : Database connected successfully
+2026-06-03 19:02:13 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:02:13 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Development
+2026-06-03 19:02:13 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:02:13 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:02:13 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:02:13 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:02:13 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CVNVTHRK: Failed to determine the https port for redirect.
+2026-06-03 19:02:13 [ERR] Backend.Delivery.Http.Middleware.GlobalExceptionHandler 0HNM1CVNVTHRK: Unhandled exception: User with id d418e54a-3ad1-462b-9cbe-6476a3997732 not found.Backend.Common.Exceptions.NotFoundException: User with id d418e54a-3ad1-462b-9cbe-6476a3997732 not found.
+   at Backend.Delivery.Http.Controller.UserController.GetById(Guid id, CancellationToken ct) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Controller/UserController.cs:line 32
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Backend.Delivery.Http.Middleware.GlobalExceptionHandler.InvokeAsync(HttpContext context, RequestDelegate next) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Middleware/GlobalExceptionHandler.cs:line 21
+
+2026-06-03 19:02:13 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:02:13 [INF]  : Database connected successfully
+2026-06-03 19:02:14 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:02:14 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:02:14 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:02:14 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CVNVTHRM: Failed to determine the https port for redirect.
+2026-06-03 19:02:14 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:02:14 [INF]  : Database connected successfully
+2026-06-03 19:02:14 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:02:14 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:02:14 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:02:14 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CVNVTHRN: Failed to determine the https port for redirect.
+2026-06-03 19:02:14 [ERR] Backend.Delivery.Http.Middleware.GlobalExceptionHandler 0HNM1CVNVTHRN: Unhandled exception: Email john@mail.com is already registered.Backend.Common.Exceptions.EmailAlreadyExistsException: Email john@mail.com is already registered.
+   at Backend.Delivery.Http.Controller.UserController.Create(CreateUserRequest request, CancellationToken ct) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Controller/UserController.cs:line 39
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Backend.Delivery.Http.Middleware.GlobalExceptionHandler.InvokeAsync(HttpContext context, RequestDelegate next) in /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Delivery/Http/Middleware/GlobalExceptionHandler.cs:line 21
+
+2026-06-03 19:02:14 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:02:14 [INF]  : Database connected successfully
+2026-06-03 19:02:14 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:02:14 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:02:14 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:02:14 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CVNVTHRO: Failed to determine the https port for redirect.
+2026-06-03 19:02:14 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...
+2026-06-03 19:02:14 [INF]  : Database connected successfully
+2026-06-03 19:02:15 [INF] Microsoft.Hosting.Lifetime : Application started. Press Ctrl+C to shut down.
+2026-06-03 19:02:15 [INF] Microsoft.Hosting.Lifetime : Hosting environment: Testing
+2026-06-03 19:02:15 [INF] Microsoft.Hosting.Lifetime : Content root path: /home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend
+2026-06-03 19:02:15 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware 0HNM1CVNVTHRP: Failed to determine the https port for redirect.
+2026-06-03 19:02:15 [INF] Microsoft.Hosting.Lifetime : Application is shutting down...

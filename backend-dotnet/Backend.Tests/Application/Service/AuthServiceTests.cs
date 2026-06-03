@@ -3,6 +3,7 @@ using Backend.Application.Service;
 using Backend.Common.Exceptions;
 using Backend.Domain.User;
 using Backend.Infrastructure.Security;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace Backend.Tests.Application.Service;
@@ -17,7 +18,8 @@ public class AuthServiceTests
     {
         _repoMock = new Mock<IUserRepository>();
         _jwtMock = new Mock<IJwtManager>();
-        _sut = new AuthService(_repoMock.Object, _jwtMock.Object);
+        var loggerMock = new Mock<ILogger<AuthService>>();
+        _sut = new AuthService(_repoMock.Object, _jwtMock.Object, loggerMock.Object);
     }
 
     private static User MakeUser(

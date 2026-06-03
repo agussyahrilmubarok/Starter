@@ -2,7 +2,7 @@ using Backend.Common.Exceptions;
 using Backend.Infrastructure.Security;
 using Microsoft.Extensions.Configuration;
 
-namespace Backend.Tests.Unit;
+namespace Backend.Tests.Infrastructure.Security;
 
 public class JwtManagerTests
 {

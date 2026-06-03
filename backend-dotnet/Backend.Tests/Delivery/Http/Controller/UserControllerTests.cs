@@ -128,7 +128,7 @@ public class UserControllerTests : IDisposable
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(body);
-        Assert.Equal("Get all users successfully", body.Message);
+        Assert.Equal("Users fetched successfully", body.Message);
         Assert.Equal(2, body.Data!.Count);
     }
 
