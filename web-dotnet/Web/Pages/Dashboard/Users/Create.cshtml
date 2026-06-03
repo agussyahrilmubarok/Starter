@@ -14,20 +14,20 @@
             <div class="alert alert-danger rounded-3">@Model.ErrorMessage</div>
         }
         <form method="post">
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Full Name</label>
+            <div class="form-group mb-3">
+                <label class="mb-1 fw-bold">Full Name</label>
                 <input asp-for="Input.Name" class="form-control rounded-3" placeholder="Full Name" type="text" />
                 <span asp-validation-for="Input.Name" class="text-danger small"></span>
             </div>
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Email Address</label>
-                <input asp-for="Input.Email" class="form-control rounded-3" placeholder="Enter your email"
+            <div class="form-group mb-3">
+                <label class="mb-1 fw-bold">Email Address</label>
+                <input asp-for="Input.Email" class="form-control rounded-3" placeholder="Email Address"
                        type="email" />
                 <span asp-validation-for="Input.Email" class="text-danger small"></span>
             </div>
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Password</label>
-                <input asp-for="Input.Password" class="form-control rounded-3" placeholder="Enter your password"
+            <div class="form-group mb-3">
+                <label class="mb-1 fw-bold">Password</label>
+                <input asp-for="Input.Password" class="form-control rounded-3" placeholder="Password"
                        type="password" />
                 <span asp-validation-for="Input.Password" class="text-danger small"></span>
             </div>
