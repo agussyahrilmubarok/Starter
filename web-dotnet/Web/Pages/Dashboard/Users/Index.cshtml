@@ -1,0 +1,56 @@
+@page "/dashboard/users"
+@model Web.Pages.Dashboard.Users.IndexModel
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "Users";
+    ViewData["UserEmail"] = Model.UserEmail;
+}
+
+<div class="card border-0 rounded-4 shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>USERS</span>
+        <a class="btn btn-sm btn-success rounded-4 shadow-sm border-0" href="/dashboard/users/create">ADD USER</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email Address</th>
+                        <th>Created At</th>
+                        <th style="width:20%">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Users.Any())
+                    {
+                        <tr>
+                            <td class="text-center text-muted py-4" colspan="4">No users found</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var u in Model.Users)
+                        {
+                            <tr>
+                                <td>@u.Name</td>
+                                <td>@u.Email</td>
+                                <td>@u.CreatedAt.ToString("dd MMM yyyy")</td>
+                                <td class="text-center text-nowrap">
+                                    <a class="btn btn-sm btn-primary rounded-4 shadow-sm border-0 me-1"
+                                       href="/dashboard/users/edit/@u.Id">EDIT</a>
+                                    <form class="d-inline" method="post" asp-page-handler="Delete" asp-route-id="@u.Id"
+                                          onsubmit="return confirm('Are you sure you want to delete this user?')">
+                                        <button class="btn btn-sm btn-danger rounded-4 shadow-sm border-0"
+                                                type="submit">DELETE</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

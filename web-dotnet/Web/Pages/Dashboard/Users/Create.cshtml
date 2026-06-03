@@ -1,0 +1,42 @@
+@page "/dashboard/users/create"
+@model Web.Pages.Dashboard.Users.CreateModel
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "Create User";
+    ViewData["UserEmail"] = Model.UserEmail;
+}
+
+<div class="card border-0 rounded-4 shadow-sm">
+    <div class="card-header">ADD USER</div>
+    <div class="card-body">
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger rounded-3">@Model.ErrorMessage</div>
+        }
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Full Name</label>
+                <input asp-for="Input.Name" class="form-control rounded-3" placeholder="Full Name" type="text" />
+                <span asp-validation-for="Input.Name" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Email Address</label>
+                <input asp-for="Input.Email" class="form-control rounded-3" placeholder="Enter your email"
+                       type="email" />
+                <span asp-validation-for="Input.Email" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Password</label>
+                <input asp-for="Input.Password" class="form-control rounded-3" placeholder="Enter your password"
+                       type="password" />
+                <span asp-validation-for="Input.Password" class="text-danger small"></span>
+            </div>
+            <button class="btn btn-md btn-primary rounded-4 shadow-sm border-0" type="submit">Save</button>
+            <a class="btn btn-md btn-secondary rounded-4 shadow-sm border-0 ms-2" href="/dashboard/users">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
