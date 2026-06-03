@@ -1,38 +1,37 @@
-using Backend.Api.Exceptions;
-using Backend.Application.Services;
-using Backend.Common.Exceptions;
-using Backend.Common.Middleware;
+using Backend.Application.Service;
+using Backend.Common.Extensions;
+using Backend.Common.Logging;
+using Backend.Delivery.Http.Middleware;
+using Backend.Domain.User;
 using Backend.Infrastructure.Persistence;
-using Backend.Infrastructure.Persistence.Repositories;
+using Backend.Infrastructure.Persistence.Repository;
+using Backend.Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+
+AppLogger.Initialize();
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IUserRepository, UserRepositoryImpl>();
-builder.Services.AddScoped<IJwtService, JwtServiceImpl>();
-builder.Services.AddScoped<IAuthService, AuthServiceImpl>();
-builder.Services.AddScoped<IUserService, UserServiceImpl>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddSingleton<IJwtManager, JwtManager>();
 
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-builder.Services.AddProblemDetails();
+builder.Services.AddTransient<RequestIdMiddleware>();
+builder.Services.AddTransient<GlobalExceptionHandler>();
 
-builder.Services.AddControllers(options => { options.Filters.Add<ValidationExceptionFilter>(); })
-    .ConfigureApiBehaviorOptions(options => { options.SuppressModelStateInvalidFilter = true; });
-
-builder.Services.AddOpenApi();
-
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy =>
-    {
-        policy.WithOrigins("http://localhost:3000")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
+builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddAuthorization();
+builder.Services.AddControllers();
+builder.Services.AddValidationErrorResponse();
+builder.Services.AddOpenApiWithBearer();
+builder.Services.AddCorsPolicy(builder.Configuration);
 
 var app = builder.Build();
 
@@ -42,11 +41,11 @@ using (var scope = app.Services.CreateScope())
     try
     {
         await db.Database.CanConnectAsync();
-        Console.WriteLine("Database connected successfully");
+        Log.Information("Database connected successfully");
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Database connection failed: {ex.Message}");
+        Log.Fatal(ex, "Database connection failed");
     }
 }
 
@@ -56,10 +55,24 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "Swagger"));
 }
 
-app.UseCors();
-app.UseExceptionHandler();
-app.UseHttpsRedirection();
-app.UseMiddleware<JwtMiddleware>();
+app.UseCors("DefaultPolicy");
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
+app.UseMiddleware<RequestIdMiddleware>();
+app.UseMiddleware<GlobalExceptionHandler>();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
-app.Run();
+try
+{
+    app.Run();
+}
+finally
+{
+    AppLogger.Flush();
+}

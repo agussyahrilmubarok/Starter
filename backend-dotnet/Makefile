@@ -13,4 +13,10 @@ build:
 sln:
 	dotnet new sln -n $(sln)
 
+test:
+	dotnet test
+
+test/filter:
+	dotnet test --filter "FullyQualifiedName~${name}"
+
 # type choices: webapi (API), worker (Background), console (CLI), classlib (Library), xunit (Test)
