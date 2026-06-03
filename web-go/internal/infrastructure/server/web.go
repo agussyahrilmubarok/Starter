@@ -18,13 +18,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type WEBServer struct {
+type WebServer struct {
 	cfg    *config.Config
 	router *gin.Engine
 	server *http.Server
 }
 
-func NewWEBServer(cfg *config.Config) *WEBServer {
+func NewWebServer(cfg *config.Config) *WebServer {
 	if cfg.App.Env == "production" {
 		gin.SetMode(gin.ReleaseMode)
 	}
@@ -48,18 +48,18 @@ func NewWEBServer(cfg *config.Config) *WEBServer {
 		IdleTimeout:  30 * time.Second,
 	}
 
-	return &WEBServer{
+	return &WebServer{
 		cfg:    cfg,
 		router: router,
 		server: srv,
 	}
 }
 
-func (s *WEBServer) Router() *gin.Engine {
+func (s *WebServer) Router() *gin.Engine {
 	return s.router
 }
 
-func (s *WEBServer) Run() error {
+func (s *WebServer) Run() error {
 	log := logger.Get()
 
 	go func() {

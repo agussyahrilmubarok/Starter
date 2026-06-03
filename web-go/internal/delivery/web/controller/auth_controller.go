@@ -128,9 +128,9 @@ func (h *AppController) SignIn(c *gin.Context) {
 	if err != nil {
 		log.Error("failed to find user", zap.Error(err))
 		data["Values"] = req
-		data["Message"] = "Bad request"
-		data["Errors"] = map[string]string{"Email": "Invalid email"}
-		render(c, http.StatusBadRequest, "sign_in_index.html", data)
+		data["Message"] = "Internal server error"
+		data["MsgError"] = "Something went wrong"
+		render(c, http.StatusInternalServerError, "sign_in_index.html", data)
 		return
 	}
 	if user == nil {

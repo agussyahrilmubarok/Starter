@@ -226,7 +226,7 @@ func (h *AppController) UserEdit(c *gin.Context) {
 			data["Values"] = user
 			data["Message"] = "Internal server error"
 			data["MsgError"] = "Something went wrong"
-			render(c, http.StatusBadRequest, "users_edit.html", data)
+			render(c, http.StatusInternalServerError, "users_edit.html", data)
 			return
 		}
 		if exists {

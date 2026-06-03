@@ -32,7 +32,7 @@ func main() {
 
 	appController := controller.NewAppController(userRepo)
 
-	srv := server.NewWEBServer(cfg)
+	srv := server.NewWebServer(cfg)
 	deliveryweb.Register(srv.Router(), appController)
 
 	if err := srv.Run(); err != nil {
