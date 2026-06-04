@@ -29,7 +29,7 @@ const SignUp: FC = () => {
       },
       {
         onSuccess: (data: SignUpResponse) => {
-          toast.success(data?.message || "Signed in successfully");
+          toast.success(data?.message || "Signed up successfully");
           navigate("/sign-in");
         },
         onError: (error: Error) => {
