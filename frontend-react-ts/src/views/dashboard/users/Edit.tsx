@@ -10,6 +10,8 @@ import useDocumentTitle from "../../../hooks/common/useDocumentTitle";
 import DashboardLayout from "../../../layouts/DashboardLayout";
 
 const UserEditForm: FC<{ user: User }> = ({ user }) => {
+  useDocumentTitle("Edit User");
+
   const navigate = useNavigate();
   const { mutate, isPending } = useUserUpdate();
 
@@ -28,7 +30,7 @@ const UserEditForm: FC<{ user: User }> = ({ user }) => {
       },
       {
         onSuccess: (data: UserResponse) => {
-          toast.success(data?.message || "Edit user successfully");
+          toast.success(data?.message || "User updated successfully");
           navigate("/dashboard/users");
         },
         onError: (error: Error) => {

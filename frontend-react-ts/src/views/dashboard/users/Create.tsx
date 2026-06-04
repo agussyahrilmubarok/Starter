@@ -29,7 +29,7 @@ const UserCreate: FC = () => {
       },
       {
         onSuccess: (data: UserResponse) => {
-          toast.success(data?.message || "Create user successfully");
+          toast.success(data?.message || "User created successfully");
           navigate("/dashboard/users");
         },
         onError: (error: Error) => {

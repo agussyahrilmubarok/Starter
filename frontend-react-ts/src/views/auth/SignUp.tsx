@@ -4,6 +4,7 @@ import { type AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useSignUp } from "../../hooks/auth/useSignUp";
 import { type ValidationErrors } from "../../types/common";
+import { type SignUpResponse } from "../../types/auth";
 import useDocumentTitle from "../../hooks/common/useDocumentTitle";
 
 const SignUp: FC = () => {
@@ -27,8 +28,8 @@ const SignUp: FC = () => {
         password,
       },
       {
-        onSuccess: () => {
-          toast.success("Sign up successfully");
+        onSuccess: (data: SignUpResponse) => {
+          toast.success(data?.message || "Signed in successfully");
           navigate("/sign-in");
         },
         onError: (error: Error) => {

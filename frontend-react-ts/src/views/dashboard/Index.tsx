@@ -13,7 +13,7 @@ const Dashboard: FC = () => {
       <div className="card border-0 rounded-4 shadow-sm">
         <div className="card-header">DASHBOARD</div>
         <div className="card-body">
-          Selamat Datang, <strong>{ user?.name || "" }</strong>
+          Welcome, <strong>{ user?.name || "" }</strong>
         </div>
       </div>
     </DashboardLayout>

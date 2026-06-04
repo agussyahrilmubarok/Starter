@@ -29,7 +29,7 @@ const SignIn: FC = () => {
       },
       {
         onSuccess: (data: SignInResponse) => {
-          toast.success(data?.message || "Sign in successfully");
+          toast.success(data?.message || "Signed in successfully");
 
           const d = data.data;
           const token = d.token;
