@@ -19,7 +19,12 @@ public class SignInModel : PageModel
 
     public string? ErrorMessage { get; set; }
 
-    public void OnGet() { }
+    public IActionResult OnGet()
+    {
+        if (!string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+            return RedirectToPage("/Dashboard/Index");
+        return Page();
+    }
 
     public async Task<IActionResult> OnPostAsync(CancellationToken ct)
     {
@@ -28,7 +33,7 @@ public class SignInModel : PageModel
         var user = await _userRepository.FindByEmailAsync(Input.Email.ToLower(), ct);
         if (user == null || !BCrypt.Net.BCrypt.Verify(Input.Password, user.Password))
         {
-            ErrorMessage = "Invalid email or password.";
+            ErrorMessage = "Invalid email or password";
             return Page();
         }
 
@@ -36,6 +41,7 @@ public class SignInModel : PageModel
         HttpContext.Session.SetString("UserName", user.Name);
         HttpContext.Session.SetString("UserEmail", user.Email);
 
+        TempData["MSG_SUCCESS"] = "Signed in successfully!";
         return RedirectToPage("/Dashboard/Index");
     }
 

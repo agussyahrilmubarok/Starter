@@ -13,7 +13,7 @@ public class ProfileModel : PageModel
         _userRepository = userRepository;
     }
 
-    public new User? User { get; private set; }
+    public User? User { get; private set; }
     public string UserEmail { get; private set; } = string.Empty;
 
     public async Task<IActionResult> OnGetAsync(CancellationToken ct)

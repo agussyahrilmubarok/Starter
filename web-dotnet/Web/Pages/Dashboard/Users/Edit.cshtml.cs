@@ -33,7 +33,7 @@ public class EditModel : PageModel
         var user = await _userRepository.FindByIdAsync(Id, ct);
         if (user == null)
         {
-            TempData["MSG_ERROR"] = "User not found.";
+            TempData["MSG_ERROR"] = "User not found";
             return RedirectToPage("/Dashboard/Users/Index");
         }
 
@@ -51,7 +51,7 @@ public class EditModel : PageModel
         var user = await _userRepository.FindByIdAsync(Id, ct);
         if (user == null)
         {
-            TempData["MSG_ERROR"] = "User not found.";
+            TempData["MSG_ERROR"] = "User not found";
             return RedirectToPage("/Dashboard/Users/Index");
         }
 
@@ -65,7 +65,7 @@ public class EditModel : PageModel
             {
                 if (await _userRepository.ExistsByEmailAsync(Input.Email.ToLowerInvariant(), ct))
                 {
-                    ModelState.AddModelError("Input.Email", "Email already exists.");
+                    ModelState.AddModelError("Input.Email", "The email has already been taken");
                     return Page();
                 }
                 user.UpdateEmail(Input.Email.ToLowerInvariant());
@@ -78,11 +78,11 @@ public class EditModel : PageModel
         }
         catch (Exception)
         {
-            ErrorMessage = "Something went wrong. Please try again.";
+            ErrorMessage = "Something went wrong. Please try again";
             return Page();
         }
 
-        TempData["MSG_SUCCESS"] = "User was updated successfully.";
+        TempData["MSG_SUCCESS"] = "User updated successfully";
         return RedirectToPage("/Dashboard/Users/Index");
     }
 

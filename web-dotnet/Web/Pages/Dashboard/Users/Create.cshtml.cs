@@ -50,11 +50,11 @@ public class CreateModel : PageModel
         }
         catch (Exception)
         {
-            ErrorMessage = "Something went wrong. Please try again.";
+            ErrorMessage = "Something went wrong. Please try again";
             return Page();
         }
 
-        TempData["MSG_SUCCESS"] = "User was created successfully.";
+        TempData["MSG_SUCCESS"] = "User created successfully";
         return RedirectToPage("/Dashboard/Users/Index");
     }
 

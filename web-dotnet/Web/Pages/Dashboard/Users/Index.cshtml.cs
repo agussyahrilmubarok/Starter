@@ -34,12 +34,12 @@ public class IndexModel : PageModel
         var user = await _userRepository.FindByIdAsync(id, ct);
         if (user == null)
         {
-            TempData["MSG_ERROR"] = "User not found.";
+            TempData["MSG_ERROR"] = "User not found";
             return RedirectToPage();
         }
 
         await _userRepository.DeleteAsync(id, ct);
-        TempData["MSG_SUCCESS"] = "User was deleted successfully.";
+        TempData["MSG_SUCCESS"] = "User deleted successfully";
         return RedirectToPage();
     }
 }

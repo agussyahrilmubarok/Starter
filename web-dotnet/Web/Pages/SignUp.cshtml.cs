@@ -19,7 +19,12 @@ public class SignUpModel : PageModel
 
     public string? ErrorMessage { get; set; }
 
-    public void OnGet() { }
+    public IActionResult OnGet()
+    {
+        if (!string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+            return RedirectToPage("/Dashboard/Index");
+        return Page();
+    }
 
     public async Task<IActionResult> OnPostAsync(CancellationToken ct)
     {
@@ -27,7 +32,7 @@ public class SignUpModel : PageModel
 
         if (await _userRepository.ExistsByEmailAsync(Input.Email.ToLower(), ct))
         {
-            ModelState.AddModelError("Input.Email", "Email already exists.");
+            ModelState.AddModelError("Input.Email", "The email has already been taken");
             return Page();
         }
 
@@ -39,11 +44,11 @@ public class SignUpModel : PageModel
         }
         catch (Exception)
         {
-            ErrorMessage = "Something went wrong. Please try again.";
+            ErrorMessage = "Something went wrong. Please try again";
             return Page();
         }
 
-        TempData["MSG_SUCCESS"] = "Sign up successfully! Please sign in.";
+        TempData["MSG_SUCCESS"] = "Signed up successfully! Please sign in";
         return RedirectToPage("/SignIn");
     }
 
