@@ -27,7 +27,7 @@ const handleSignUp = () => {
     },
     {
       onSuccess: (data: SignUpResponse) => {
-        toast.success(data?.message || "Signed in successfully");
+        toast.success(data?.message || "Signed up successfully");
         router.push({ name: "signin" });
       },
       onError: (error: Error) => {
