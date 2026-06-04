@@ -3,6 +3,9 @@
 backend/run:
 	go run cmd/backend/main.go
 
+backend/test:
+	go test ./...
+
 swagger/setup:
 	go install github.com/swaggo/swag/cmd/swag@latest
 	go get github.com/swaggo/swag@latest
