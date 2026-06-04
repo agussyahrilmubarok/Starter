@@ -14,13 +14,13 @@ public class User
     public static User Create(string name, string email, string hashedPassword)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name is requiredUser retrieved successfully, nameof(name)");
+            throw new ArgumentException("Name is required", nameof(name));
 
         if (string.IsNullOrWhiteSpace(email))
-            throw new ArgumentException("Email is requiredUser retrieved successfully, nameof(email)");
+            throw new ArgumentException("Email is required", nameof(email));
 
         if (string.IsNullOrWhiteSpace(hashedPassword))
-            throw new ArgumentException("Password is requiredUser retrieved successfully, nameof(hashedPassword)");
+            throw new ArgumentException("Password is required", nameof(hashedPassword));
 
         var now = DateTime.UtcNow;
 
@@ -38,7 +38,7 @@ public class User
     public void UpdateName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name is requiredUser retrieved successfully, nameof(name)");
+            throw new ArgumentException("Name is required", nameof(name));
 
         Name = name;
         UpdatedAt = DateTime.UtcNow;
@@ -47,7 +47,7 @@ public class User
     public void UpdateEmail(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
-            throw new ArgumentException("Email is requiredUser retrieved successfully, nameof(email)");
+            throw new ArgumentException("Email is required", nameof(email));
 
         Email = email;
         UpdatedAt = DateTime.UtcNow;
@@ -56,7 +56,7 @@ public class User
     public void UpdatePassword(string hashedPassword)
     {
         if (string.IsNullOrWhiteSpace(hashedPassword))
-            throw new ArgumentException("Password is requiredUser retrieved successfully, nameof(hashedPassword)");
+            throw new ArgumentException("Password is required", nameof(hashedPassword));
 
         Password = hashedPassword;
         UpdatedAt = DateTime.UtcNow;

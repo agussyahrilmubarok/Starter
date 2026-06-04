@@ -56,23 +56,10 @@ public class GlobalExceptionHandler : IMiddleware
                 break;
 
             case JwtExpiredTokenException:
-                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                response = new ApiResponse<object>(
-                    "Unauthorized",
-                    new Dictionary<string, string>
-                    {
-                        ["error"] = exception.Message
-                    });
-                break;
-
             case JwtInvalidTokenException:
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                response = new ApiResponse<object>(
-                    "Unauthorized",
-                    new Dictionary<string, string>
-                    {
-                        ["error"] = exception.Message
-                    });
+                response = new ApiResponse<object>("Unauthorized",
+                    new Dictionary<string, string> { ["error"] = exception.Message });
                 break;
 
             case EmailNotRegisteredException:
@@ -111,7 +98,7 @@ public class GlobalExceptionHandler : IMiddleware
             default:
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 response = new ApiResponse<object>(
-                    "Something went wron",
+                    "Something went wrong",
                     new Dictionary<string, string>
                     {
                         ["error"] = "Something went wrong"

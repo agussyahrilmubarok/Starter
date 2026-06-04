@@ -106,7 +106,7 @@ public static class ServiceCollectionExtensions
     IConfiguration configuration)
     {
         var cors = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
-            ?? throw new InvalidOperationException("Cors config is missingUser retrieved successfully");
+            ?? throw new InvalidOperationException("Cors config is missing");
 
         services.AddCors(options =>
         {

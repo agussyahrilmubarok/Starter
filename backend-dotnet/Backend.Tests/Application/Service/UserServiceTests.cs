@@ -85,7 +85,7 @@ public class UserServiceTests
         var ex = await Assert.ThrowsAsync<NotFoundException>(
             () => _sut.GetByIdAsync(randomId));
 
-        Assert.Contains(randomId.ToString(), ex.Message);
+        Assert.Contains("User not found", ex.Message);
     }
 
     [Fact]

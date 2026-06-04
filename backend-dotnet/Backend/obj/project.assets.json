@@ -1455,25 +1455,25 @@
     ]
   },
   "packageFolders": {
-    "/home/something/.nuget/packages/": {}
+    "/home/xCode666/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/something/Workspaces/personal/starter-hot/convention-names/f-backend-dotnet/Starter/backend-dotnet/Backend/Backend.csproj",
+      "projectUniqueName": "/home/xCode666/dev-backend-dotnet/Starter/backend-dotnet/Backend/Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "/home/something/Workspaces/personal/starter-hot/convention-names/f-backend-dotnet/Starter/backend-dotnet/Backend/Backend.csproj",
-      "packagesPath": "/home/something/.nuget/packages/",
-      "outputPath": "/home/something/Workspaces/personal/starter-hot/convention-names/f-backend-dotnet/Starter/backend-dotnet/Backend/obj/",
+      "projectPath": "/home/xCode666/dev-backend-dotnet/Starter/backend-dotnet/Backend/Backend.csproj",
+      "packagesPath": "/home/xCode666/.nuget/packages/",
+      "outputPath": "/home/xCode666/dev-backend-dotnet/Starter/backend-dotnet/Backend/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/something/.nuget/NuGet/NuGet.Config"
+        "/home/xCode666/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
-        "/usr/lib/dotnet/library-packs": {},
+        "/usr/lib64/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1550,7 +1550,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/10.0.108/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

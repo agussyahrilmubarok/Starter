@@ -28,10 +28,10 @@ public class UserService : IUserService
         if (user is null)
         {
             _logger.LogWarning("User not found");
-            throw new NotFoundException($"User with id {id} not foundUser retrieved successfully");
+            throw new NotFoundException($"User not found");
         }
 
-        _logger.LogInformation("User fetched");
+        _logger.LogInformation("User fetched {UserId}", user.Id);
         return ToResponse(user);
     }
 
@@ -59,7 +59,7 @@ public class UserService : IUserService
         if (user is null)
         {
             _logger.LogWarning("User not found");
-            throw new NotFoundException($"User with id {id} not foundUser retrieved successfully");
+            throw new NotFoundException($"User not found");
         }
 
         if (!string.IsNullOrWhiteSpace(request.Name))
@@ -81,7 +81,7 @@ public class UserService : IUserService
 
         await _userRepository.UpdateAsync(user, ct);
 
-        _logger.LogInformation("User updated");
+        _logger.LogInformation("User updated {UserId}", user.Id);
         return ToResponse(user);
     }
 
@@ -91,11 +91,11 @@ public class UserService : IUserService
         if (user is null)
         {
             _logger.LogWarning("User not found");
-            throw new NotFoundException($"User with id {id} not foundUser retrieved successfully");
+            throw new NotFoundException($"User not found");
         }
 
         await _userRepository.DeleteAsync(user.Id, ct);
-        _logger.LogInformation("User deleted");
+        _logger.LogInformation("User deleted {UserId}", id);
     }
 
     private static UserResponse ToResponse(User user) => new(

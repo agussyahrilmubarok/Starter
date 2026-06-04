@@ -16,7 +16,7 @@ public class JwtManager : IJwtManager
     public JwtManager(IConfiguration configuration)
     {
         _secret = configuration["Jwt:Secret"]
-            ?? throw new InvalidOperationException("Jwt:Secret is not configuredUser retrieved successfully");
+            ?? throw new InvalidOperationException("Jwt:Secret is not configured");
         _issuer = configuration["Jwt:Issuer"] ?? "Backend";
         _audience = configuration["Jwt:Audience"] ?? "BackendUsers";
         _expiresInMinutes = int.Parse(configuration["Jwt:ExpiresInMinutes"] ?? "1440");

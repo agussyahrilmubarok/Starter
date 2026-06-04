@@ -172,7 +172,7 @@ public class UserControllerTests : IDisposable
 
         _serviceMock
             .Setup(s => s.GetByIdAsync(randomId, It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new NotFoundException($"User with id {randomId} not foundUser retrieved successfully"));
+            .ThrowsAsync(new NotFoundException($"User with id {randomId} User not found"));
 
         var response = await _client.GetAsync($"/api/v1/users/{randomId}");
 
@@ -247,7 +247,7 @@ public class UserControllerTests : IDisposable
 
         _serviceMock
             .Setup(s => s.UpdateAsync(randomId, It.IsAny<UpdateUserRequest>(), It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new NotFoundException($"User with id {randomId} not foundUser retrieved successfully"));
+            .ThrowsAsync(new NotFoundException($"User with id {randomId} User not found"));
 
         var response = await _client.PutAsJsonAsync($"/api/v1/users/{randomId}",
             new UpdateUserRequest(null, null, null));
@@ -276,7 +276,7 @@ public class UserControllerTests : IDisposable
 
         _serviceMock
             .Setup(s => s.DeleteAsync(randomId, It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new NotFoundException($"User with id {randomId} not foundUser retrieved successfully"));
+            .ThrowsAsync(new NotFoundException($"User with id {randomId} User not found"));
 
         var response = await _client.DeleteAsync($"/api/v1/users/{randomId}");
 
