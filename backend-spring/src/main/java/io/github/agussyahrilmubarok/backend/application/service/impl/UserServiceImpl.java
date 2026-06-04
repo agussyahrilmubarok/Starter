@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
                     log.warn("User with id {} not found", id);
                     return new NotFoundException("User not found");
                 });
-        log.info("User fetched");
+        log.info("User fetched {}", user.getId());
         return userMapper.toResponse(user);
     }
 
@@ -100,7 +100,8 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepository.save(user);
-        log.info("User updated");
+
+        log.info("User updated {}", user.getId());
         return userMapper.toResponse(user);
     }
 
@@ -114,7 +115,7 @@ public class UserServiceImpl implements UserService {
                 });
 
         userRepository.deleteById(user.getId());
-        log.info("User deleted");
+        log.info("User deleted {}", user.getId());
     }
 
     private Sort parseSort(String sortParam) {
