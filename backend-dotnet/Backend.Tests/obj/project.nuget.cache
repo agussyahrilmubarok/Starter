@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "U6XZedyXTX8=",
+  "dgSpecHash": "F2jAkG1+8DQ=",
   "success": true,
-  "projectFilePath": "/home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend.Tests/Backend.Tests.csproj",
+  "projectFilePath": "/home/something/Workspaces/personal/starter-hot/convention-names/f-backend-dotnet/Starter/backend-dotnet/Backend.Tests/Backend.Tests.csproj",
   "expectedPackageFiles": [
     "/home/something/.nuget/packages/bcrypt.net-next/4.2.0/bcrypt.net-next.4.2.0.nupkg.sha512",
     "/home/something/.nuget/packages/castle.core/5.1.1/castle.core.5.1.1.nupkg.sha512",

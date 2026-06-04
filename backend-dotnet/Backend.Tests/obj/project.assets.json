@@ -4183,11 +4183,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend.Tests/Backend.Tests.csproj",
+      "projectUniqueName": "/home/something/Workspaces/personal/starter-hot/convention-names/f-backend-dotnet/Starter/backend-dotnet/Backend.Tests/Backend.Tests.csproj",
       "projectName": "Backend.Tests",
-      "projectPath": "/home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend.Tests/Backend.Tests.csproj",
+      "projectPath": "/home/something/Workspaces/personal/starter-hot/convention-names/f-backend-dotnet/Starter/backend-dotnet/Backend.Tests/Backend.Tests.csproj",
       "packagesPath": "/home/something/.nuget/packages/",
-      "outputPath": "/home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend.Tests/obj/",
+      "outputPath": "/home/something/Workspaces/personal/starter-hot/convention-names/f-backend-dotnet/Starter/backend-dotnet/Backend.Tests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/something/.nuget/NuGet/NuGet.Config"
@@ -4203,8 +4203,8 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "/home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Backend.csproj": {
-              "projectPath": "/home/something/Workspaces/personal/starter/backend-dotnet/Starter/backend-dotnet/Backend/Backend.csproj"
+            "/home/something/Workspaces/personal/starter-hot/convention-names/f-backend-dotnet/Starter/backend-dotnet/Backend/Backend.csproj": {
+              "projectPath": "/home/something/Workspaces/personal/starter-hot/convention-names/f-backend-dotnet/Starter/backend-dotnet/Backend/Backend.csproj"
             }
           }
         }

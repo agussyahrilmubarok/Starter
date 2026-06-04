@@ -8,7 +8,7 @@ public record UpdateUserRequest(
     string? Name,
 
     [property: JsonPropertyName("email")]
-    [EmailAddress(ErrorMessage = "Email is not valid.")]
+    [EmailAddress(ErrorMessage = "Email is not validUser retrieved successfully")]
     string? Email,
 
     [property: JsonPropertyName("password")]

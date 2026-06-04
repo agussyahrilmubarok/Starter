@@ -124,7 +124,7 @@ public class UserServiceTests
         var ex = await Assert.ThrowsAsync<EmailAlreadyExistsException>(
             () => _sut.CreateAsync(request));
 
-        Assert.Contains(request.Email, ex.Message);
+        Assert.Contains("The email has already been taken", ex.Message);
 
         _repoMock.Verify(
             r => r.CreateAsync(It.IsAny<User>(), It.IsAny<CancellationToken>()),

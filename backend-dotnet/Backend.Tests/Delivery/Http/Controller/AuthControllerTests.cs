@@ -83,7 +83,7 @@ public class AuthControllerTests : IDisposable
 
         _serviceMock
             .Setup(s => s.SignUpAsync(It.IsAny<SignUpRequest>(), It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new EmailAlreadyExistsException(request.Email));
+            .ThrowsAsync(new EmailAlreadyExistsException());
 
         var response = await _client.PostAsJsonAsync("/api/v1/auth/sign-up", request);
 
@@ -126,7 +126,7 @@ public class AuthControllerTests : IDisposable
 
         _serviceMock
             .Setup(s => s.SignInAsync(It.IsAny<SignInRequest>(), It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new EmailNotRegisteredException(request.Email));
+            .ThrowsAsync(new EmailNotRegisteredException());
 
         var response = await _client.PostAsJsonAsync("/api/v1/auth/sign-in", request);
 

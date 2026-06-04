@@ -24,13 +24,13 @@ public class AuthController : ControllerBase
     {
         var auth = await _authService.SignUpAsync(request, ct);
         return StatusCode(StatusCodes.Status201Created,
-            new ApiResponse<AuthResponse>("Sign up successfully", auth));
+            new ApiResponse<AuthResponse>("Signed up successfully", auth));
     }
 
     [HttpPost("sign-in")]
     public async Task<IActionResult> SignIn([FromBody] SignInRequest request, CancellationToken ct)
     {
         var auth = await _authService.SignInAsync(request, ct);
-        return Ok(new ApiResponse<AuthResponse>("Sign in successfully", auth));
+        return Ok(new ApiResponse<AuthResponse>("Signed in successfully", auth));
     }
 }

@@ -24,8 +24,8 @@ public class AuthService : IAuthService
         var alreadyExists = await _userRepository.ExistsByEmailAsync(request.Email, ct);
         if (alreadyExists)
         {
-            _logger.LogWarning("Email already exists");
-            throw new EmailAlreadyExistsException(request.Email);
+            _logger.LogWarning("The email has already been taken");
+            throw new EmailAlreadyExistsException();
         }
 
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
@@ -45,7 +45,7 @@ public class AuthService : IAuthService
         if (user is null)
         {
             _logger.LogWarning("Email not registered");
-            throw new EmailNotRegisteredException(request.Email);
+            throw new EmailNotRegisteredException();
         }
 
         var isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.Password);

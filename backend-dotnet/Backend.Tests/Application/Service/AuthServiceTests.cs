@@ -90,7 +90,7 @@ public class AuthServiceTests
         var ex = await Assert.ThrowsAsync<EmailAlreadyExistsException>(
             () => _sut.SignUpAsync(request));
 
-        Assert.Contains(request.Email, ex.Message);
+        Assert.Contains("The email has already been taken", ex.Message);
 
         _repoMock.Verify(
             r => r.CreateAsync(It.IsAny<User>(), It.IsAny<CancellationToken>()),
@@ -158,7 +158,7 @@ public class AuthServiceTests
         var ex = await Assert.ThrowsAsync<EmailNotRegisteredException>(
             () => _sut.SignInAsync(request));
 
-        Assert.Contains(request.Email, ex.Message);
+        Assert.Contains("The email address is not registered", ex.Message);
 
         _jwtMock.Verify(
             j => j.GenerateToken(It.IsAny<Guid>()),

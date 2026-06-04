@@ -38,7 +38,7 @@ public class GlobalExceptionHandler : IMiddleware
             case NotFoundException:
                 context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                 response = new ApiResponse<object>(
-                    "Not found.",
+                    "Not found",
                     new Dictionary<string, string>
                     {
                         ["error"] = exception.Message
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler : IMiddleware
             case EmailAlreadyExistsException:
                 context.Response.StatusCode = (int)HttpStatusCode.Conflict;
                 response = new ApiResponse<object>(
-                    "Conflict.",
+                    "Conflict",
                     new Dictionary<string, string>
                     {
                         ["email"] = exception.Message
@@ -58,7 +58,7 @@ public class GlobalExceptionHandler : IMiddleware
             case JwtExpiredTokenException:
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 response = new ApiResponse<object>(
-                    "Unauthorized.",
+                    "Unauthorized",
                     new Dictionary<string, string>
                     {
                         ["error"] = exception.Message
@@ -68,7 +68,7 @@ public class GlobalExceptionHandler : IMiddleware
             case JwtInvalidTokenException:
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 response = new ApiResponse<object>(
-                    "Unauthorized.",
+                    "Unauthorized",
                     new Dictionary<string, string>
                     {
                         ["error"] = exception.Message
@@ -78,7 +78,7 @@ public class GlobalExceptionHandler : IMiddleware
             case EmailNotRegisteredException:
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 response = new ApiResponse<object>(
-                    "Unauthorized.",
+                    "Unauthorized",
                     new Dictionary<string, string>
                     {
                         ["email"] = exception.Message
@@ -88,7 +88,7 @@ public class GlobalExceptionHandler : IMiddleware
             case WrongPasswordException:
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 response = new ApiResponse<object>(
-                    "Unauthorized.",
+                    "Unauthorized",
                     new Dictionary<string, string>
                     {
                         ["password"] = exception.Message
@@ -97,24 +97,24 @@ public class GlobalExceptionHandler : IMiddleware
 
             case UnauthorizedAccessException:
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                response = new ApiResponse<object>("Unauthorized.",
+                response = new ApiResponse<object>("Unauthorized",
                     new Dictionary<string, string> { ["error"] = exception.Message });
                 break;
 
             case AppValidationException ve:
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 response = new ApiResponse<object>(
-                    "Validation failed.",
+                    "Validation failed",
                     ve.Errors);
                 break;
 
             default:
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 response = new ApiResponse<object>(
-                    "Something went wrong.",
+                    "Something went wron",
                     new Dictionary<string, string>
                     {
-                        ["error"] = "Something went wrong."
+                        ["error"] = "Something went wrong"
                     });
                 break;
         }

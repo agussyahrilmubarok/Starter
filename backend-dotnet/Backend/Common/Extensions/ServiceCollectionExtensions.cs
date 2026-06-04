@@ -26,7 +26,7 @@ public static class ServiceCollectionExtensions
 
                 return new BadRequestObjectResult(new
                 {
-                    message = "Validation failed.",
+                    message = "Validation failed",
                     errors
                 });
             };
@@ -106,7 +106,7 @@ public static class ServiceCollectionExtensions
     IConfiguration configuration)
     {
         var cors = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
-            ?? throw new InvalidOperationException("Cors config is missing.");
+            ?? throw new InvalidOperationException("Cors config is missingUser retrieved successfully");
 
         services.AddCors(options =>
         {

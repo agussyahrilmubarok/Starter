@@ -128,7 +128,7 @@ public class UserControllerTests : IDisposable
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(body);
-        Assert.Equal("Users fetched successfully", body.Message);
+        Assert.Equal("Users retrieved successfully", body.Message);
         Assert.Equal(2, body.Data!.Count);
     }
 
@@ -172,7 +172,7 @@ public class UserControllerTests : IDisposable
 
         _serviceMock
             .Setup(s => s.GetByIdAsync(randomId, It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new NotFoundException($"User with id {randomId} not found."));
+            .ThrowsAsync(new NotFoundException($"User with id {randomId} not foundUser retrieved successfully"));
 
         var response = await _client.GetAsync($"/api/v1/users/{randomId}");
 
@@ -204,7 +204,7 @@ public class UserControllerTests : IDisposable
 
         _serviceMock
             .Setup(s => s.CreateAsync(It.IsAny<CreateUserRequest>(), It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new EmailAlreadyExistsException(request.Email));
+            .ThrowsAsync(new EmailAlreadyExistsException());
 
         var response = await _client.PostAsJsonAsync("/api/v1/users", request);
 
@@ -247,7 +247,7 @@ public class UserControllerTests : IDisposable
 
         _serviceMock
             .Setup(s => s.UpdateAsync(randomId, It.IsAny<UpdateUserRequest>(), It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new NotFoundException($"User with id {randomId} not found."));
+            .ThrowsAsync(new NotFoundException($"User with id {randomId} not foundUser retrieved successfully"));
 
         var response = await _client.PutAsJsonAsync($"/api/v1/users/{randomId}",
             new UpdateUserRequest(null, null, null));
@@ -276,7 +276,7 @@ public class UserControllerTests : IDisposable
 
         _serviceMock
             .Setup(s => s.DeleteAsync(randomId, It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new NotFoundException($"User with id {randomId} not found."));
+            .ThrowsAsync(new NotFoundException($"User with id {randomId} not foundUser retrieved successfully"));
 
         var response = await _client.DeleteAsync($"/api/v1/users/{randomId}");
 

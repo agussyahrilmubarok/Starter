@@ -2,6 +2,6 @@ namespace Backend.Common.Exceptions;
 
 public class EmailAlreadyExistsException : Exception
 {
-    public EmailAlreadyExistsException(string email)
-        : base($"Email {email} is already registered.") { }
+    public EmailAlreadyExistsException()
+        : base("The email has already been taken") { }
 }

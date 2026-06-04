@@ -28,7 +28,7 @@ public class UserService : IUserService
         if (user is null)
         {
             _logger.LogWarning("User not found");
-            throw new NotFoundException($"User with id {id} not found.");
+            throw new NotFoundException($"User with id {id} not foundUser retrieved successfully");
         }
 
         _logger.LogInformation("User fetched");
@@ -40,8 +40,8 @@ public class UserService : IUserService
         var alreadyExists = await _userRepository.ExistsByEmailAsync(request.Email, ct);
         if (alreadyExists)
         {
-            _logger.LogWarning("Email already exists");
-            throw new EmailAlreadyExistsException(request.Email);
+            _logger.LogWarning("The email has already been taken");
+            throw new EmailAlreadyExistsException();
         }
 
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
@@ -59,7 +59,7 @@ public class UserService : IUserService
         if (user is null)
         {
             _logger.LogWarning("User not found");
-            throw new NotFoundException($"User with id {id} not found.");
+            throw new NotFoundException($"User with id {id} not foundUser retrieved successfully");
         }
 
         if (!string.IsNullOrWhiteSpace(request.Name))
@@ -70,8 +70,8 @@ public class UserService : IUserService
             var emailExists = await _userRepository.ExistsByEmailAsync(request.Email, ct);
             if (emailExists)
             {
-                _logger.LogWarning("Email already exists {Email}", request.Email);
-                throw new EmailAlreadyExistsException(request.Email);
+                _logger.LogWarning("The email has already been taken {Email}", request.Email);
+                throw new EmailAlreadyExistsException();
             }
             user.UpdateEmail(request.Email.ToLowerInvariant());
         }
@@ -91,7 +91,7 @@ public class UserService : IUserService
         if (user is null)
         {
             _logger.LogWarning("User not found");
-            throw new NotFoundException($"User with id {id} not found.");
+            throw new NotFoundException($"User with id {id} not foundUser retrieved successfully");
         }
 
         await _userRepository.DeleteAsync(user.Id, ct);
