@@ -38,3 +38,6 @@ bin/
 /dist/
 /nbdist/
 /.nb-gradle/
+
+## Others
+logs/

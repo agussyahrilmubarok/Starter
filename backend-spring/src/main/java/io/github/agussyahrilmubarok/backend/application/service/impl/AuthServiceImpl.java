@@ -12,6 +12,7 @@ import io.github.agussyahrilmubarok.backend.domain.User;
 import io.github.agussyahrilmubarok.backend.infrastructure.persistence.repository.UserRepository;
 import io.github.agussyahrilmubarok.backend.infrastructure.security.JwtManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
@@ -31,6 +33,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public AuthResponse signUp(SignUpRequest request) {
         if (userRepository.existsByEmail(request.email().toLowerCase(Locale.ROOT))) {
+            log.warn("The email has already been taken");
             throw new EmailAlreadyExistsException();
         }
 
@@ -42,6 +45,7 @@ public class AuthServiceImpl implements AuthService {
 
         String token = jwtManager.generateToken(user.getId().toString());
 
+        log.info("User signed up {}", user.getId());
         return toResponse(token, user);
     }
 
@@ -52,11 +56,13 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(EmailNotRegisteredException::new);
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
+            log.warn("Invalid password attempt for user {}", user.getId());
             throw new WrongPasswordException();
         }
 
         String token = jwtManager.generateToken(user.getId().toString());
 
+        log.info("User signed in {}", user.getId());
         return toResponse(token, user);
     }
 

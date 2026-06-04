@@ -48,7 +48,7 @@ public class UserResource {
                 result.hasNext(),
                 result.hasPrevious()
         );
-        return ResponseEntity.ok(new PagedApiResponse<>("Users fetched successfully", result.getContent(), pagination));
+        return ResponseEntity.ok(new PagedApiResponse<>("Users retrieved successfully", result.getContent(), pagination));
     }
 
     @GetMapping("/{userId}")

@@ -67,6 +67,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleException(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiResponse<>("Something went wrong", Map.of("error", "Something went wrong")));
+                .body(new ApiResponse<>("Internal server error", Map.of("error", "Something went wrong")));
     }
 }

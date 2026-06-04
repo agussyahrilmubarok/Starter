@@ -152,7 +152,7 @@ class AuthServiceImplTest {
 
             assertThatThrownBy(() -> authService.signUp(request))
                     .isInstanceOf(EmailAlreadyExistsException.class)
-                    .hasMessage("Email already exists");
+                    .hasMessage("The email has already been taken");
 
             verify(userRepository, never()).save(any());
             verifyNoInteractions(passwordEncoder);
@@ -209,7 +209,7 @@ class AuthServiceImplTest {
 
             assertThatThrownBy(() -> authService.signIn(request))
                     .isInstanceOf(EmailNotRegisteredException.class)
-                    .hasMessage("Email is not registered");
+                    .hasMessage("The email address is not registered");
 
             verifyNoInteractions(passwordEncoder);
             verifyNoInteractions(jwtManager);
@@ -223,7 +223,7 @@ class AuthServiceImplTest {
 
             assertThatThrownBy(() -> authService.signIn(request))
                     .isInstanceOf(WrongPasswordException.class)
-                    .hasMessage("Wrong password");
+                    .hasMessage("The password is incorrect");
 
             verifyNoInteractions(jwtManager);
         }

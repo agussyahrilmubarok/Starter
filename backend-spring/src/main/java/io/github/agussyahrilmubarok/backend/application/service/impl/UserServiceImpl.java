@@ -8,6 +8,7 @@ import io.github.agussyahrilmubarok.backend.domain.User;
 import io.github.agussyahrilmubarok.backend.infrastructure.persistence.repository.UserRepository;
 import io.github.agussyahrilmubarok.backend.infrastructure.persistence.specification.UserSpecification;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -36,6 +38,7 @@ public class UserServiceImpl implements UserService {
 
         Specification<User> spec = UserSpecification.hasSearch(request.search());
 
+        log.info("Users fetched");
         return userRepository.findAll(spec, pageable)
                 .map(userMapper::toResponse);
     }
@@ -44,8 +47,11 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public UserResponse getById(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User with id " + id + " not found"));
-
+                .orElseThrow(() -> {
+                    log.warn("User with id {} not found", id);
+                    return new NotFoundException("User not found");
+                });
+        log.info("User fetched");
         return userMapper.toResponse(user);
     }
 
@@ -53,6 +59,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponse create(CreateUserRequest request) {
         if (userRepository.existsByEmail(request.email().toLowerCase(Locale.ROOT))) {
+            log.warn("The email has already been taken");
             throw new EmailAlreadyExistsException();
         }
 
@@ -62,6 +69,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(request.password()));
         userRepository.save(user);
 
+        log.info("User created {}", user.getId());
         return userMapper.toResponse(user);
     }
 
@@ -69,14 +77,19 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponse update(UUID id, UpdateUserRequest request) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User with id " + id + " not found"));
+                .orElseThrow(() -> {
+                    log.warn("User with id {} not found", id);
+                    return new NotFoundException("User not found");
+                });
 
         if (request.name() != null && !request.name().isBlank()) {
             user.setName(request.name());
         }
 
-        if (request.email() != null && !request.email().isBlank() && !user.getEmail().equals(request.email())) {
+        if (request.email() != null && !request.email().isBlank() &&
+                !user.getEmail().equals(request.email().toLowerCase(Locale.ROOT))) {
             if (userRepository.existsByEmail(request.email().toLowerCase(Locale.ROOT))) {
+                log.warn("The email has already been taken {}", request.email());
                 throw new EmailAlreadyExistsException();
             }
             user.setEmail(request.email().toLowerCase(Locale.ROOT));
@@ -87,17 +100,21 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepository.save(user);
-
+        log.info("User updated");
         return userMapper.toResponse(user);
     }
 
     @Override
     @Transactional
     public void delete(UUID id) {
-        userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User with id " + id + " not found"));
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("User with id {} not found", id);
+                    return new NotFoundException("User not found");
+                });
 
-        userRepository.deleteById(id);
+        userRepository.deleteById(user.getId());
+        log.info("User deleted");
     }
 
     private Sort parseSort(String sortParam) {

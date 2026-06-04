@@ -217,7 +217,7 @@ class UserServiceImplTest {
 
             assertThatThrownBy(() -> userService.getById(id))
                     .isInstanceOf(NotFoundException.class)
-                    .hasMessageContaining(id.toString());
+                    .hasMessage("User not found");
         }
     }
 
@@ -371,7 +371,7 @@ class UserServiceImplTest {
 
             assertThatThrownBy(() -> userService.update(userId, request))
                     .isInstanceOf(NotFoundException.class)
-                    .hasMessageContaining(userId.toString());
+                    .hasMessage("User not found");
         }
     }
 
@@ -401,7 +401,7 @@ class UserServiceImplTest {
 
             assertThatThrownBy(() -> userService.delete(id))
                     .isInstanceOf(NotFoundException.class)
-                    .hasMessageContaining(id.toString());
+                    .hasMessage("User not found");
 
             verify(userRepository, never()).deleteById(any());
         }
