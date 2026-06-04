@@ -60,7 +60,7 @@ func TestAuthHandler_SignUp_Success(t *testing.T) {
 
 	var resp map[string]any
 	json.Unmarshal(w.Body.Bytes(), &resp)
-	assert.Equal(t, "Sign up successfully", resp["message"])
+	assert.Equal(t, "Signed up successfully", resp["message"])
 	assert.NotNil(t, resp["data"])
 }
 
@@ -69,8 +69,7 @@ func TestAuthHandler_SignUp_InvalidBody(t *testing.T) {
 	h := handler.NewAuthHandler(authUC)
 	r := setupAuthRouter(h)
 
-	// Missing required fields
-	body := []byte(`{"name":"Jo"}`) // name too short, missing email & password
+	body := []byte(`{"name":"Jo"}`)
 	req := httptest.NewRequest(http.MethodPost, "/v1/auth/sign-up", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
@@ -168,7 +167,7 @@ func TestAuthHandler_SignIn_Success(t *testing.T) {
 
 	var resp map[string]any
 	json.Unmarshal(w.Body.Bytes(), &resp)
-	assert.Equal(t, "Sign in successfully", resp["message"])
+	assert.Equal(t, "Signed in successfully", resp["message"])
 }
 
 func TestAuthHandler_SignIn_InvalidBody(t *testing.T) {
@@ -211,7 +210,7 @@ func TestAuthHandler_SignIn_InvalidEmail(t *testing.T) {
 	json.Unmarshal(w.Body.Bytes(), &resp)
 	assert.Equal(t, "Unauthorized", resp["message"])
 	errs := resp["errors"].(map[string]any)
-	assert.Equal(t, "Invalid email", errs["email"])
+	assert.Equal(t, "The email address is not registered", errs["email"])
 }
 
 func TestAuthHandler_SignIn_InvalidPassword(t *testing.T) {
@@ -238,7 +237,7 @@ func TestAuthHandler_SignIn_InvalidPassword(t *testing.T) {
 	var resp map[string]any
 	json.Unmarshal(w.Body.Bytes(), &resp)
 	errs := resp["errors"].(map[string]any)
-	assert.Equal(t, "Invalid password", errs["password"])
+	assert.Equal(t, "The password is incorrect", errs["password"])
 }
 
 func TestAuthHandler_SignIn_InternalError(t *testing.T) {

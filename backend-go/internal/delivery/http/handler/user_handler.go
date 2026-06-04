@@ -35,13 +35,13 @@ func (h *UserHandler) GetAll(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, payload.ErrorResponse{
 			Message: "Internal server error",
-			Errors:  map[string]string{"error": "Failed to get users"},
+			Errors:  map[string]string{"error": "Something went wrong"},
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, payload.SuccessResponse{
-		Message: "Get all users successfully",
+		Message: "Users retrieved successfully",
 		Data:    users,
 	})
 }
@@ -79,13 +79,13 @@ func (h *UserHandler) GetByID(c *gin.Context) {
 		}
 		c.JSON(http.StatusInternalServerError, payload.ErrorResponse{
 			Message: "Internal server error",
-			Errors:  map[string]string{"error": "Failed to get user"},
+			Errors:  map[string]string{"error": "Something went wrong"},
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, payload.SuccessResponse{
-		Message: "Get user successfully",
+		Message: "User retrieved successfully",
 		Data:    user,
 	})
 }
@@ -118,13 +118,13 @@ func (h *UserHandler) Create(c *gin.Context) {
 		if errors.Is(err, usecase.ErrEmailAlreadyExists) {
 			c.JSON(http.StatusConflict, payload.ErrorResponse{
 				Message: "Conflict",
-				Errors:  map[string]string{"email": "Email already exists"},
+				Errors:  map[string]string{"email": "The email has already been taken"},
 			})
 			return
 		}
 		c.JSON(http.StatusInternalServerError, payload.ErrorResponse{
 			Message: "Internal server error",
-			Errors:  map[string]string{"error": "Failed to create user"},
+			Errors:  map[string]string{"error": "Something went wrong"},
 		})
 		return
 	}
@@ -180,12 +180,12 @@ func (h *UserHandler) Update(c *gin.Context) {
 		case errors.Is(err, usecase.ErrEmailAlreadyExists):
 			c.JSON(http.StatusConflict, payload.ErrorResponse{
 				Message: "Conflict",
-				Errors:  map[string]string{"email": "Email already exists"},
+				Errors:  map[string]string{"email": "The email has already been taken"},
 			})
 		default:
 			c.JSON(http.StatusInternalServerError, payload.ErrorResponse{
 				Message: "Internal server error",
-				Errors:  map[string]string{"error": "Failed to update user"},
+				Errors:  map[string]string{"error": "Something went wrong"},
 			})
 		}
 		return
@@ -229,7 +229,7 @@ func (h *UserHandler) Delete(c *gin.Context) {
 		}
 		c.JSON(http.StatusInternalServerError, payload.ErrorResponse{
 			Message: "Internal server error",
-			Errors:  map[string]string{"error": "Failed to delete user"},
+			Errors:  map[string]string{"error": "Something went wrong"},
 		})
 		return
 	}

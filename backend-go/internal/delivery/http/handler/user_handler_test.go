@@ -56,7 +56,7 @@ func TestUserHandler_GetAll_Success(t *testing.T) {
 
 	var resp map[string]any
 	json.Unmarshal(w.Body.Bytes(), &resp)
-	assert.Equal(t, "Get all users successfully", resp["message"])
+	assert.Equal(t, "Users retrieved successfully", resp["message"])
 	data := resp["data"].([]any)
 	assert.Len(t, data, 2)
 }
@@ -95,7 +95,7 @@ func TestUserHandler_GetByID_Success(t *testing.T) {
 
 	var resp map[string]any
 	json.Unmarshal(w.Body.Bytes(), &resp)
-	assert.Equal(t, "Get user successfully", resp["message"])
+	assert.Equal(t, "User retrieved successfully", resp["message"])
 }
 
 func TestUserHandler_GetByID_InvalidUUID(t *testing.T) {

@@ -47,19 +47,19 @@ func (h *AuthHandler) SignUp(c *gin.Context) {
 		if errors.Is(err, usecase.ErrEmailAlreadyExists) {
 			c.JSON(http.StatusConflict, payload.ErrorResponse{
 				Message: "Conflict",
-				Errors:  map[string]string{"email": "Email already exists"},
+				Errors:  map[string]string{"email": "The email has already been taken"},
 			})
 			return
 		}
 		c.JSON(http.StatusInternalServerError, payload.ErrorResponse{
 			Message: "Internal server error",
-			Errors:  map[string]string{"error": "Failed to sign up"},
+			Errors:  map[string]string{"error": "Something went wrong"},
 		})
 		return
 	}
 
 	c.JSON(http.StatusCreated, payload.SuccessResponse{
-		Message: "Sign up successfully",
+		Message: "Signed up successfully",
 		Data:    res,
 	})
 }
@@ -91,26 +91,26 @@ func (h *AuthHandler) SignIn(c *gin.Context) {
 		if errors.Is(err, usecase.ErrInvalidEmail) {
 			c.JSON(http.StatusUnauthorized, payload.ErrorResponse{
 				Message: "Unauthorized",
-				Errors:  map[string]string{"email": "Invalid email"},
+				Errors:  map[string]string{"email": "The email address is not registered"},
 			})
 			return
 		}
 		if errors.Is(err, usecase.ErrInvalidPassword) {
 			c.JSON(http.StatusUnauthorized, payload.ErrorResponse{
 				Message: "Unauthorized",
-				Errors:  map[string]string{"password": "Invalid password"},
+				Errors:  map[string]string{"password": "The password is incorrect"},
 			})
 			return
 		}
 		c.JSON(http.StatusInternalServerError, payload.ErrorResponse{
 			Message: "Internal server error",
-			Errors:  map[string]string{"error": "Failed to sign in"},
+			Errors:  map[string]string{"error": "Something went wrong"},
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, payload.SuccessResponse{
-		Message: "Sign in successfully",
+		Message: "Signed in successfully",
 		Data:    res,
 	})
 }
