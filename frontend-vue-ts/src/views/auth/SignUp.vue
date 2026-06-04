@@ -6,6 +6,7 @@ import { toast } from "vue-sonner";
 import { useSignUp } from "../../composables/auth/useSignUp";
 import { type ValidationErrors } from "../../types/common";
 import useDocumentTitle from "../../composables/common/useDocumentTitle";
+import { SignUpResponse } from "../../types/auth";
 
 useDocumentTitle("Sign Up");
 
@@ -25,9 +26,9 @@ const handleSignUp = () => {
       password: password.value,
     },
     {
-      onSuccess: () => {
-        toast.success("Sign up successfully");
-        router.push("/sign-in");
+      onSuccess: (data: SignUpResponse) => {
+        toast.success(data?.message || "Signed in successfully");
+        router.push({ name: "signin" });
       },
       onError: (error: Error) => {
         const axiosError = error as AxiosError<{

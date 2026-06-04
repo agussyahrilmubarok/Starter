@@ -48,8 +48,8 @@ const handleUpdate = () => {
     },
     {
       onSuccess: (data: UserResponse) => {
-        toast.success(data?.message || "Edit user successfully");
-        router.push("/dashboard/users");
+        toast.success(data?.message || "User updated successfully");
+        router.push({ name: "users" });
       },
       onError: (error: Error) => {
         const axiosError = error as AxiosError<{

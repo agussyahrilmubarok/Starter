@@ -19,13 +19,13 @@ const email = ref<string>("");
 const password = ref<string>("");
 const errors = reactive<ValidationErrors>({});
 
-const handlerCreate = () => {
+const handleCreate = () => {
   mutate(
     { name: name.value, email: email.value, password: password.value },
     {
       onSuccess: (data: UserResponse) => {
-        toast.success(data?.message || "Create user successfully");
-        router.push("/dashboard/users");
+        toast.success(data?.message || "User created successfully");
+        router.push({ name: "users" });
       },
       onError: (error: Error) => {
         const axiosError = error as AxiosError<{
@@ -49,7 +49,7 @@ const handlerCreate = () => {
       <div class="card-header">ADD USER</div>
       <div class="card-body">
 
-        <form @submit.prevent="handlerCreate">
+        <form @submit.prevent="handleCreate">
 
           <div class="form-group mb-3">
             <label class="mb-1 fw-bold">Full Name</label>

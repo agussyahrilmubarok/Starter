@@ -27,7 +27,7 @@ const handleSignIn = () => {
     },
     {
       onSuccess: (data: SignInResponse) => {
-        toast.success(data?.message || "Sign in successfully");
+        toast.success(data?.message || "Signed in successfully");
 
         const d = data.data;
         const token = d.token;
@@ -40,7 +40,7 @@ const handleSignIn = () => {
         };
         authStore.setAuth(token, user);
 
-        router.push("/dashboard");
+        router.push({ name: "dashboard" });
       },
       onError: (error: Error) => {
         const axiosError = error as AxiosError<{

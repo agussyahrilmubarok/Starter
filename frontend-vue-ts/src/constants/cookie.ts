@@ -1,7 +1,7 @@
 // Storage keys for Cookies, LocalStorage, or SessionStorage
 export const COOKIE_KEYS = {
-  TOKEN: "frontend-vue-ts_auth_token", // Key for JWT Access Token
-  USER_DATA: "frontend-vue-ts_user_profile", // Key for storing basic user JSON
+  TOKEN: `${import.meta.env.VITE_APP_NAME || "frontend-vue-ts"}_auth_token`,
+  USER_DATA: `${import.meta.env.VITE_APP_NAME || "frontend-vue-ts"}_user_profile`,
 };
 
 // Cookie Options (Security Configuration)
