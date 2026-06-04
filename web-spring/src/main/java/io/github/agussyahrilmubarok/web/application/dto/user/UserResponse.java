@@ -7,7 +7,6 @@ public record UserResponse(
         UUID id,
         String name,
         String email,
-        String password,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

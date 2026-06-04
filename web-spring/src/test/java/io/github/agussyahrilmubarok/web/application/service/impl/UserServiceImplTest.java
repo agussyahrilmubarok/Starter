@@ -28,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -61,7 +62,6 @@ class UserServiceImplTest {
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
-                user.getPassword(),
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
@@ -132,7 +132,7 @@ class UserServiceImplTest {
 
             assertThatThrownBy(() -> userService.getById(id))
                     .isInstanceOf(NotFoundException.class)
-                    .hasMessageContaining(id.toString());
+                    .hasMessage("User not found");
         }
     }
 
@@ -147,7 +147,7 @@ class UserServiceImplTest {
             User savedUser = buildUser(UUID.randomUUID(), "Alice", "alice@example.com");
             UserResponse response = buildUserResponse(savedUser);
 
-            when(userRepository.existsByEmail(request.email())).thenReturn(false);
+            when(userRepository.existsByEmail("alice@example.com")).thenReturn(false);
             when(passwordEncoder.encode(request.password())).thenReturn("hashed_password");
             when(userRepository.save(any(User.class))).thenReturn(savedUser);
             when(userMapper.toResponse(any(User.class))).thenReturn(response);
@@ -155,7 +155,7 @@ class UserServiceImplTest {
             UserResponse result = userService.create(request);
 
             assertThat(result).isEqualTo(response);
-            verify(userRepository).existsByEmail(request.email());
+            verify(userRepository).existsByEmail("alice@example.com");
             verify(passwordEncoder).encode(request.password());
             verify(userRepository).save(any(User.class));
         }
@@ -166,13 +166,14 @@ class UserServiceImplTest {
             CreateUserRequest request = new CreateUserRequest("Alice", "ALICE@EXAMPLE.COM", "password123");
             User savedUser = buildUser(UUID.randomUUID(), "Alice", "alice@example.com");
 
-            when(userRepository.existsByEmail(anyString())).thenReturn(false);
+            when(userRepository.existsByEmail("alice@example.com")).thenReturn(false);
             when(passwordEncoder.encode(anyString())).thenReturn("hashed");
             when(userRepository.save(any(User.class))).thenReturn(savedUser);
             when(userMapper.toResponse(any(User.class))).thenReturn(buildUserResponse(savedUser));
 
             userService.create(request);
 
+            verify(userRepository).existsByEmail("alice@example.com");
             verify(userRepository).save(argThat(u -> u.getEmail().equals("alice@example.com")));
         }
 
@@ -181,7 +182,7 @@ class UserServiceImplTest {
         void shouldThrowWhenEmailAlreadyExists() {
             CreateUserRequest request = new CreateUserRequest("Alice", "alice@example.com", "password123");
 
-            when(userRepository.existsByEmail(request.email())).thenReturn(true);
+            when(userRepository.existsByEmail("alice@example.com")).thenReturn(true);
 
             assertThatThrownBy(() -> userService.create(request))
                     .isInstanceOf(EmailAlreadyExistsException.class);
@@ -206,7 +207,7 @@ class UserServiceImplTest {
         @Test
         @DisplayName("should update name only")
         void shouldUpdateNameOnly() {
-            UpdateUserRequest request = new UpdateUserRequest("New Name", null, null);
+            UpdateUserRequest request = new UpdateUserRequest(userId, "New Name", null, null);
             UserResponse response = buildUserResponse(existingUser);
 
             when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
@@ -222,7 +223,7 @@ class UserServiceImplTest {
         @Test
         @DisplayName("should update email to lowercase when new email provided")
         void shouldUpdateEmailLowercase() {
-            UpdateUserRequest request = new UpdateUserRequest(null, "NEW@EXAMPLE.COM", null);
+            UpdateUserRequest request = new UpdateUserRequest(userId, null, "NEW@EXAMPLE.COM", null);
 
             when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
             when(userRepository.existsByEmail("new@example.com")).thenReturn(false);
@@ -237,7 +238,7 @@ class UserServiceImplTest {
         @Test
         @DisplayName("should encode and update password when provided")
         void shouldUpdatePassword() {
-            UpdateUserRequest request = new UpdateUserRequest(null, null, "newpassword123");
+            UpdateUserRequest request = new UpdateUserRequest(userId, null, null, "newpassword123");
 
             when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
             when(passwordEncoder.encode("newpassword123")).thenReturn("new_hashed");
@@ -252,7 +253,7 @@ class UserServiceImplTest {
         @Test
         @DisplayName("should not update email when same as current")
         void shouldNotUpdateEmailWhenSame() {
-            UpdateUserRequest request = new UpdateUserRequest(null, "alice@example.com", null);
+            UpdateUserRequest request = new UpdateUserRequest(userId, null, "alice@example.com", null);
 
             when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
             when(userRepository.save(any(User.class))).thenReturn(existingUser);
@@ -266,7 +267,7 @@ class UserServiceImplTest {
         @Test
         @DisplayName("should throw EmailAlreadyExistsException when new email is taken")
         void shouldThrowWhenNewEmailTaken() {
-            UpdateUserRequest request = new UpdateUserRequest(null, "taken@example.com", null);
+            UpdateUserRequest request = new UpdateUserRequest(userId, null, "taken@example.com", null);
 
             when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
             when(userRepository.existsByEmail("taken@example.com")).thenReturn(true);
@@ -280,13 +281,13 @@ class UserServiceImplTest {
         @Test
         @DisplayName("should throw NotFoundException when user not found")
         void shouldThrowNotFoundOnUpdate() {
-            UpdateUserRequest request = new UpdateUserRequest("Name", null, null);
+            UpdateUserRequest request = new UpdateUserRequest(userId, "Name", null, null);
 
             when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> userService.update(userId, request))
                     .isInstanceOf(NotFoundException.class)
-                    .hasMessageContaining(userId.toString());
+                    .hasMessage("User not found");
         }
     }
 
@@ -316,7 +317,7 @@ class UserServiceImplTest {
 
             assertThatThrownBy(() -> userService.delete(id))
                     .isInstanceOf(NotFoundException.class)
-                    .hasMessageContaining(id.toString());
+                    .hasMessage("User not found");
 
             verify(userRepository, never()).deleteById(any());
         }

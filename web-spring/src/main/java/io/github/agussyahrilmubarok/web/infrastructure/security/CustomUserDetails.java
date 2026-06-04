@@ -67,8 +67,8 @@ public class CustomUserDetails implements UserDetails {
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
-                user.getPassword(),
                 user.getCreatedAt() != null ? user.getCreatedAt().toLocalDateTime() : null,
-                user.getUpdatedAt() != null ? user.getUpdatedAt().toLocalDateTime() : null);
+                user.getUpdatedAt() != null ? user.getUpdatedAt().toLocalDateTime() : null
+        );
     }
 }

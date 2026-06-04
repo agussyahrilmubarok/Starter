@@ -1,10 +1,12 @@
+# Makefile — SESUDAH
 .PHONY: help dev build test clean run jar check format lint deps update kill
 
-APP_NAME=web-spring
+APP_NAME = web-spring
+PORT    ?= 3000
 
 help:
 	@echo "Available commands:"
-	@echo "  make dev       - Run Spring Boot in development mode"
+	@echo "  make dev       - Run in development mode (profile: local)"
 	@echo "  make build     - Build project"
 	@echo "  make test      - Run tests"
 	@echo "  make clean     - Clean build files"
@@ -13,10 +15,10 @@ help:
 	@echo "  make check     - Run all verification"
 	@echo "  make deps      - Show dependencies"
 	@echo "  make update    - Refresh dependencies"
-	@echo "  make kill      - Kill app running on 8080"
+	@echo "  make kill      - Kill app running on PORT (default: 3000)"
 
 dev:
-	./mvnw spring-boot:run
+	./mvnw spring-boot:run -Dspring-boot.run.profiles=local
 
 build:
 	./mvnw clean package
@@ -49,4 +51,4 @@ update:
 	./mvnw versions:display-dependency-updates
 
 kill:
-	lsof -ti:8080 | xargs kill -9 || true
+	lsof -ti:$(PORT) | xargs kill -9 || true

@@ -1,4 +1,0 @@
-- [ ] Fix fields input validation message.
-- [ ] Add logger in console and file.
-- [ ] Add pagination.
-- [ ] Add i8n.
