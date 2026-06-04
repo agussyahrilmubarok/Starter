@@ -65,7 +65,7 @@ func (uc *userUseCase) GetByID(ctx context.Context, id uuid.UUID) (*dto.UserResp
 		return nil, ErrUserNotFound
 	}
 
-	log.Info("user fetched")
+	log.Info("user fetched", zap.String("user_id", user.ID.String()))
 	res := dto.NewUserResponse(user)
 	return &res, nil
 }
@@ -151,7 +151,7 @@ func (uc *userUseCase) Update(ctx context.Context, id uuid.UUID, req dto.UpdateU
 		return nil, err
 	}
 
-	log.Info("user updated")
+	log.Info("user updated", zap.String("user_id", user.ID.String()))
 	res := dto.NewUserResponse(user)
 	return &res, nil
 }
@@ -175,6 +175,6 @@ func (uc *userUseCase) Delete(ctx context.Context, id uuid.UUID) error {
 		return err
 	}
 
-	log.Info("user deleted")
+	log.Info("user deleted", zap.String("user_id", user.ID.String()))
 	return nil
 }
