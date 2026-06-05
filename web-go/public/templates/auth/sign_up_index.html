@@ -1,69 +1,110 @@
 {{ define "content" }}
-
 <div class="min-vh-100 d-flex align-items-center justify-content-center">
   <div class="col-11 col-sm-10 col-md-8 col-lg-5">
     <div class="card border-0 rounded-4 shadow-lg">
       <div class="card-body p-4 p-md-5">
-        <h3 class="fw-bold text-center mb-2">Create Account</h3>
-        <p class="text-secondary text-center mb-4">Sign up to continue</p>
+        <h3 class="fw-bold text-center mb-2">
+          {{ index .T "auth.signUp.headline" }}
+        </h3>
+
+        <p class="text-secondary text-center mb-4">
+          {{ index .T "auth.signUp.subtitle" }}
+        </p>
+
+        {{ if .MsgError }}
+        <div class="alert alert-danger rounded-3">
+          {{ .MsgError }}
+        </div>
+        {{ end }}
+
+        {{ if .MsgInfo }}
+        <div class="alert alert-success rounded-3">
+          {{ .MsgInfo }}
+        </div>
+        {{ end }}
 
         <form method="POST" action="/sign-up">
           <div class="mb-3">
-            <label class="form-label fw-semibold">Full Name</label>
+            <label class="form-label fw-semibold">
+              {{ index .T "user.name.label" }}
+            </label>
+
             <input
               type="text"
               name="name"
               value="{{ .Values.Name }}"
-              class="form-control rounded-3 {{if .Errors.Name}}is-invalid{{end}}"
-              placeholder="Enter your full name"
+              class="form-control rounded-3 {{ if .Errors.Name }}is-invalid{{ end }}"
+              placeholder="{{ index .T "user.name.label" }}"
             />
-            {{if .Errors.Name}}
-            <div class="invalid-feedback">{{.Errors.Name}}</div>
-            {{end}}
+
+            {{ if .Errors.Name }}
+            <div class="invalid-feedback">
+              {{ .Errors.Name }}
+            </div>
+            {{ end }}
           </div>
 
           <div class="mb-3">
-            <label class="form-label fw-semibold">Email Address</label>
+            <label class="form-label fw-semibold">
+              {{ index .T "user.email.label" }}
+            </label>
+
             <input
               type="email"
               name="email"
               value="{{ .Values.Email }}"
-              class="form-control rounded-3 {{if .Errors.Email}}is-invalid{{end}}"
-              placeholder="Enter your email"
+              class="form-control rounded-3 {{ if .Errors.Email }}is-invalid{{ end }}"
+              placeholder="{{ index .T "user.email.label" }}"
             />
-            {{if .Errors.Email}}
-            <div class="invalid-feedback">{{.Errors.Email}}</div>
-            {{end}}
+
+            {{ if .Errors.Email }}
+            <div class="invalid-feedback">
+              {{ .Errors.Email }}
+            </div>
+            {{ end }}
           </div>
 
           <div class="mb-3">
-            <label class="form-label fw-semibold">Password</label>
+            <label class="form-label fw-semibold">
+              {{ index .T "user.password.label" }}
+            </label>
+
             <input
               type="password"
               name="password"
-              value="{{ .Values.Password }}"
-              class="form-control rounded-3 {{if .Errors.Password}}is-invalid{{end}}"
-              placeholder="Enter your password"
+              class="form-control rounded-3 {{ if .Errors.Password }}is-invalid{{ end }}"
+              placeholder="{{ index .T "user.password.label" }}"
             />
-            {{if .Errors.Password}}
-            <div class="invalid-feedback">{{.Errors.Password}}</div>
-            {{end}}
+
+            {{ if .Errors.Password }}
+            <div class="invalid-feedback">
+              {{ .Errors.Password }}
+            </div>
+            {{ end }}
           </div>
 
-          <button type="submit" class="btn btn-primary w-100 rounded-4 mt-2">
-            Sign Up
+          <button
+            type="submit"
+            class="btn btn-primary w-100 rounded-4 mt-2"
+          >
+            {{ index .T "auth.signUp.headline" }}
           </button>
 
           <div class="text-center mt-3">
-            <span class="text-secondary">Already have an account?</span>
-            <a href="/sign-in" class="text-decoration-none fw-semibold ms-1"
-              >Sign In</a
+            <span class="text-secondary">
+              {{ index .T "auth.signUp.hasAccount" }}
+            </span>
+
+            <a
+              href="/sign-in"
+              class="text-decoration-none fw-semibold ms-1"
             >
+              {{ index .T "auth.signIn.headline" }}
+            </a>
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
-
 {{ end }}

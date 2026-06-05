@@ -33,8 +33,8 @@ func setupUserRouter(ac *controller.AppController) *gin.Engine {
 	}
 
 	r.GET("/dashboard/users", injectUser, ac.UserListPage)
-	r.GET("/dashboard/users/add", injectUser, ac.UserAddPage)
-	r.POST("/dashboard/users/add", injectUser, ac.UserAdd)
+	r.GET("/dashboard/users/create", injectUser, ac.UserCreate)
+	r.POST("/dashboard/users/create", injectUser, ac.UserCreate)
 	r.GET("/dashboard/users/:id/edit", injectUser, ac.UserEditPage)
 	r.POST("/dashboard/users/:id/edit", injectUser, ac.UserEdit)
 	r.POST("/dashboard/users/:id/delete", injectUser, ac.UserDelete)
@@ -79,7 +79,7 @@ func TestUserController_UserAddPage_Success(t *testing.T) {
 	ac := controller.NewAppController(repo)
 	r := setupUserRouter(ac)
 
-	req := httptest.NewRequest(http.MethodGet, "/dashboard/users/add", nil)
+	req := httptest.NewRequest(http.MethodGet, "/dashboard/users/create", nil)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -99,7 +99,7 @@ func TestUserController_UserAdd_Success(t *testing.T) {
 		"email":    "new@example.com",
 		"password": "password123",
 	})
-	req := httptest.NewRequest(http.MethodPost, "/dashboard/users/add", body)
+	req := httptest.NewRequest(http.MethodPost, "/dashboard/users/create", body)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)

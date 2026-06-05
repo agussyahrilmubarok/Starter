@@ -1,0 +1,25 @@
+{{ define "lang_switcher" }}
+<div class="dropdown">
+    <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-2 py-1 px-2"
+        data-bs-toggle="dropdown" type="button">
+        <span>{{ if eq .Lang "id" }}🇮🇩{{ else }}🇬🇧{{ end }}</span>
+        <span class="small">{{ if eq .Lang "id" }}ID{{ else }}EN{{ end }}</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" style="min-width: 140px;">
+        <li>
+            <a class="dropdown-item d-flex align-items-center gap-2 py-2 {{ if eq .Lang " en" }}active{{ end }}"
+                href="?lang=en">
+                <span>🇬🇧</span>
+                <span>{{ index .T "lang.en" }}</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item d-flex align-items-center gap-2 py-2 {{ if eq .Lang " id" }}active{{ end }}"
+                href="?lang=id">
+                <span>🇮🇩</span>
+                <span>{{ index .T "lang.id" }}</span>
+            </a>
+        </li>
+    </ul>
+</div>
+{{ end }}

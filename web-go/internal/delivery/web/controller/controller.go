@@ -1,9 +1,11 @@
 package controller
 
 import (
+	"html/template"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"agussyahrilmubarok.github.io/web/internal/delivery/web/payload"
 	"agussyahrilmubarok.github.io/web/internal/delivery/web/session"
@@ -25,7 +27,24 @@ func NewAppController(
 	}
 }
 
+var templateFuncMap = template.FuncMap{
+	"hasPrefix": strings.HasPrefix,
+	"not": func(v interface{}) bool {
+		if v == nil {
+			return true
+		}
+		return false
+	},
+}
+
 func render(c *gin.Context, code int, tmpl string, data gin.H) {
+	if lang, exists := c.Get("Lang"); exists {
+		data["Lang"] = lang
+	}
+	if t, exists := c.Get("T"); exists {
+		data["T"] = t
+	}
+	data["RequestURI"] = c.Request.URL.Path
 	c.HTML(code, tmpl, data)
 }
 
@@ -63,10 +82,9 @@ func (h *AppController) LoadTemplate(templateDir string) multitemplate.Renderer 
 	}
 	for _, page := range homePages {
 		if fileInfo, err := os.Stat(page); err == nil && !fileInfo.IsDir() {
-			files := append([]string{filepath.Join(templateDir, "layouts", "default_layout.html")}, page)
+			files := []string{filepath.Join(templateDir, "layouts", "default_layout.html"), page}
 			files = append(files, commons...)
-			templateName := filepath.Base(page)
-			renderer.AddFromFiles(templateName, files...)
+			renderer.AddFromFilesFuncs(filepath.Base(page), templateFuncMap, files...)
 		}
 	}
 
@@ -76,10 +94,9 @@ func (h *AppController) LoadTemplate(templateDir string) multitemplate.Renderer 
 	}
 	for _, page := range authPages {
 		if fileInfo, err := os.Stat(page); err == nil && !fileInfo.IsDir() {
-			files := append([]string{filepath.Join(templateDir, "layouts", "default_layout.html")}, page)
+			files := []string{filepath.Join(templateDir, "layouts", "default_layout.html"), page}
 			files = append(files, commons...)
-			templateName := filepath.Base(page)
-			renderer.AddFromFiles(templateName, files...)
+			renderer.AddFromFilesFuncs(filepath.Base(page), templateFuncMap, files...)
 		}
 	}
 
@@ -87,13 +104,11 @@ func (h *AppController) LoadTemplate(templateDir string) multitemplate.Renderer 
 	if err != nil {
 		panic(err.Error())
 	}
-
 	for _, page := range dashboardPages {
 		if fileInfo, err := os.Stat(page); err == nil && !fileInfo.IsDir() {
-			files := append([]string{filepath.Join(templateDir, "layouts", "dashboard_layout.html")}, page)
+			files := []string{filepath.Join(templateDir, "layouts", "dashboard_layout.html"), page}
 			files = append(files, commons...)
-			templateName := filepath.Base(page)
-			renderer.AddFromFiles(templateName, files...)
+			renderer.AddFromFilesFuncs(filepath.Base(page), templateFuncMap, files...)
 		}
 	}
 

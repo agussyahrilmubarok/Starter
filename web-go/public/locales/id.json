@@ -1,0 +1,123 @@
+{
+    "app": {
+        "title": "Web Go"
+    },
+    "navigation": {
+        "toggle": "Buka navigasi",
+        "home": "Beranda",
+        "dashboard": "Dasbor",
+        "users": "Pengguna",
+        "profile": "Profil Saya",
+        "signOut": "Keluar",
+        "mainMenu": "Menu Utama"
+    },
+    "home": {
+        "index": {
+            "headline": "Selamat Datang di Web Go!",
+            "text": "Aplikasi web sederhana berbasis Go",
+            "getStarted": "Mulai Sekarang",
+            "signIn": "Masuk",
+            "badge": "Go + Template",
+            "footer": "starter.agussyahrilmubarok.github.io"
+        }
+    },
+    "dashboard": {
+        "headline": "Dasbor",
+        "welcome": "Selamat datang kembali,"
+    },
+    "user": {
+        "list": {
+            "headline": "Pengguna",
+            "createNew": "Tambah Pengguna Baru",
+            "empty": "Tidak ada pengguna ditemukan",
+            "edit": "Ubah",
+            "delete": "Hapus",
+            "actions": "Aksi"
+        },
+        "id": {
+            "label": "ID"
+        },
+        "name": {
+            "label": "Nama Lengkap",
+            "placeholder": "Masukkan nama lengkap Anda"
+        },
+        "email": {
+            "label": "Alamat Email",
+            "placeholder": "Masukkan alamat email Anda",
+            "alreadyTaken": "Alamat email sudah digunakan"
+        },
+        "password": {
+            "label": "Kata Sandi",
+            "placeholder": "Masukkan kata sandi",
+            "hint": "Kosongkan jika tidak ingin mengubah kata sandi"
+        },
+        "createdAt": {
+            "label": "Dibuat Pada"
+        },
+        "updatedAt": {
+            "label": "Diperbarui Pada"
+        },
+        "create": {
+            "headline": "Tambah Pengguna",
+            "submit": "Simpan",
+            "back": "Batal",
+            "success": "Pengguna berhasil ditambahkan"
+        },
+        "edit": {
+            "headline": "Ubah Pengguna",
+            "submit": "Perbarui",
+            "back": "Batal",
+            "success": "Pengguna berhasil diperbarui"
+        },
+        "delete": {
+            "success": "Pengguna berhasil dihapus"
+        },
+        "notFound": "Pengguna tidak ditemukan"
+    },
+    "profile": {
+        "headline": "Profil Saya",
+        "fullName": "NAMA LENGKAP",
+        "email": "EMAIL",
+        "userId": "ID PENGGUNA",
+        "memberSince": "BERGABUNG SEJAK",
+        "notFound": "Data pengguna tidak ditemukan. Silakan masuk kembali."
+    },
+    "auth": {
+        "signIn": {
+            "headline": "Masuk",
+            "subtitle": "Selamat datang kembali! Masukkan detail Anda",
+            "noAccount": "Belum punya akun?",
+            "success": "Berhasil masuk",
+            "error": "Email atau kata sandi salah"
+        },
+        "signUp": {
+            "headline": "Daftar",
+            "subtitle": "Daftar untuk melanjutkan",
+            "hasAccount": "Sudah punya akun?",
+            "success": "Pendaftaran berhasil! Silakan masuk"
+        },
+        "signOut": {
+            "success": "Anda telah keluar"
+        },
+        "general": {
+            "error": "Terjadi kesalahan. Silakan coba lagi"
+        }
+    },
+    "error": {
+        "page": {
+            "headline": "Halaman Tidak Ditemukan",
+            "message": "Halaman yang Anda cari tidak ada atau telah dipindahkan"
+        },
+        "backToHome": "Kembali ke Beranda",
+        "general": "Terjadi kesalahan. Silakan coba lagi",
+        "unauthorized": "Anda tidak memiliki akses ke halaman ini"
+    },
+    "delete": {
+        "confirm": "Apakah Anda yakin ingin menghapus ini? Tindakan ini tidak dapat dibatalkan"
+    },
+    "lang": {
+        "switch": "Bahasa",
+        "en": "Inggris",
+        "id": "Indonesia"
+    }
+}

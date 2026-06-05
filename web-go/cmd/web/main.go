@@ -7,6 +7,7 @@ import (
 	"agussyahrilmubarok.github.io/web/internal/infrastructure/config"
 	"agussyahrilmubarok.github.io/web/internal/infrastructure/repository/postgres"
 	"agussyahrilmubarok.github.io/web/internal/infrastructure/server"
+	"agussyahrilmubarok.github.io/web/pkg/i18n"
 	"agussyahrilmubarok.github.io/web/pkg/logger"
 
 	deliveryweb "agussyahrilmubarok.github.io/web/internal/delivery/web"
@@ -26,6 +27,10 @@ func main() {
 	db, err := config.NewPostgres(cfg)
 	if err != nil {
 		log.Fatalf("failed to connect database: %v", err)
+	}
+
+	if err := i18n.Load("./public/locales"); err != nil {
+		log.Fatalf("failed to load i18n: %v", err)
 	}
 
 	userRepo := postgres.NewUserRepository(db)

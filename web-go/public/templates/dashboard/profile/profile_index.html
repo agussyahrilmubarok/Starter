@@ -1,20 +1,18 @@
-{{ define "content" }} 
+{{ define "content" }}
 
-{{if not .UserProfile}}
+{{ if not .UserProfile }}
 <div class="card border-0 rounded-4 shadow-sm">
   <div class="card-body text-center text-muted py-5">
-    User data not found. Please log in again.
+    {{ index .T "profile.notFound" }}
   </div>
 </div>
-{{else}}
+{{ else }}
 <div class="card border-0 rounded-4 shadow-sm">
-  <div class="card-header fw-semibold">MY PROFILE</div>
+  <div class="card-header fw-semibold">{{ index .T "profile.headline" }}</div>
   <div class="card-body">
     <div class="text-center mb-4">
-      <div
-        class="rounded-circle d-inline-flex align-items-center justify-content-center bg-dark text-white fw-bold"
-        style="width: 80px; height: 80px; font-size: 32px"
-      >
+      <div class="rounded-circle d-inline-flex align-items-center justify-content-center bg-dark text-white fw-bold"
+        style="width: 80px; height: 80px; font-size: 32px">
         {{ .UserProfileImg }}
       </div>
       <h5 class="mt-3 mb-0">{{ .UserProfile.Name }}</h5>
@@ -25,30 +23,24 @@
 
     <div class="row g-3">
       <div class="col-12 col-md-6">
-        <label class="form-label text-muted small fw-semibold">FULL NAME</label>
+        <label class="form-label text-muted small fw-semibold">{{ index .T "user.name.label" }}</label>
         <p class="form-control-plaintext fw-medium">{{ .UserProfile.Name }}</p>
       </div>
       <div class="col-12 col-md-6">
-        <label class="form-label text-muted small fw-semibold">EMAIL</label>
+        <label class="form-label text-muted small fw-semibold">{{ index .T "user.email.label" }}</label>
         <p class="form-control-plaintext fw-medium">{{ .UserProfile.Email }}</p>
       </div>
       <div class="col-12 col-md-6">
-        <label class="form-label text-muted small fw-semibold">USER ID</label>
-        <p class="form-control-plaintext text-muted small">
-          {{.UserProfile.ID}}
-        </p>
+        <label class="form-label text-muted small fw-semibold">{{ index .T "user.id.label" }}</label>
+        <p class="form-control-plaintext text-muted small">{{ .UserProfile.ID }}</p>
       </div>
       <div class="col-12 col-md-6">
-        <label class="form-label text-muted small fw-semibold"
-          >MEMBER SINCE</label
-        >
-        <p class="form-control-plaintext fw-medium">
-          {{ .UserProfile.CreatedAt.Format "January 2, 2006" }}
-        </p>
+        <label class="form-label text-muted small fw-semibold">{{ index .T "user.createdAt.label" }}</label>
+        <p class="form-control-plaintext fw-medium">{{ .UserProfile.CreatedAt.Format "02 January 2006" }}</p>
       </div>
     </div>
   </div>
 </div>
-{{end}} 
+{{ end }}
 
 {{ end }}

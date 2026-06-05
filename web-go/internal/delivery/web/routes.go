@@ -11,6 +11,7 @@ func Register(
 	appController *controller.AppController,
 ) {
 	r.Use(middleware.RequestIDMiddleware())
+	r.Use(middleware.LocaleMiddleware())
 
 	r.HTMLRender = appController.LoadTemplate("./public/templates")
 	r.Static("/static", "./public/static")
@@ -44,8 +45,8 @@ func Register(
 		users := private.Group("/dashboard/users")
 		{
 			users.GET("", appController.UserListPage)
-			users.GET("/add", appController.UserAddPage)
-			users.POST("/add", appController.UserAdd)
+			users.GET("/create", appController.UserCreatePage)
+			users.POST("/create", appController.UserCreate)
 			users.GET("/:id/edit", appController.UserEditPage)
 			users.POST("/:id/edit", appController.UserEdit)
 			users.POST("/:id/delete", appController.UserDelete)

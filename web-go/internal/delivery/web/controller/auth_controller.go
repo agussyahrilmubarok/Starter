@@ -8,6 +8,7 @@ import (
 	"agussyahrilmubarok.github.io/web/internal/delivery/web/session"
 	"agussyahrilmubarok.github.io/web/internal/domain"
 	"agussyahrilmubarok.github.io/web/pkg/crypto"
+	"agussyahrilmubarok.github.io/web/pkg/i18n"
 	"agussyahrilmubarok.github.io/web/pkg/logger"
 	"agussyahrilmubarok.github.io/web/pkg/validator"
 	"github.com/gin-contrib/sessions"
@@ -21,6 +22,7 @@ func (h *AppController) SignUp(c *gin.Context) {
 	}
 
 	log := logger.FromCtx(c.Request.Context())
+	lang := getLang(c)
 
 	s := sessions.Default(c)
 	if flashes := s.Flashes("success"); len(flashes) > 0 {
@@ -39,7 +41,6 @@ func (h *AppController) SignUp(c *gin.Context) {
 	if err := c.ShouldBind(&req); err != nil {
 		log.Warn("failed to validate request", zap.Error(err))
 		data["Values"] = req
-		data["Message"] = "Validation error"
 		data["Errors"] = validator.ParseError(err)
 		render(c, http.StatusBadRequest, "sign_up_index.html", data)
 		return
@@ -49,16 +50,13 @@ func (h *AppController) SignUp(c *gin.Context) {
 	if err != nil {
 		log.Error("failed to check email existence", zap.Error(err))
 		data["Values"] = req
-		data["Message"] = "Internal server error"
-		data["MsgError"] = "Something went wrong"
+		data["MsgError"] = i18n.T(lang, "auth.general.error")
 		render(c, http.StatusInternalServerError, "sign_up_index.html", data)
 		return
 	}
 	if exists {
-		log.Warn("email already exists")
 		data["Values"] = req
-		data["Message"] = "Bad request"
-		data["Errors"] = map[string]string{"Email": "Email already exists"}
+		data["Errors"] = map[string]string{"Email": i18n.T(lang, "user.email.alreadyTaken")}
 		render(c, http.StatusBadRequest, "sign_up_index.html", data)
 		return
 	}
@@ -67,8 +65,7 @@ func (h *AppController) SignUp(c *gin.Context) {
 	if err != nil {
 		log.Error("failed to hash password", zap.Error(err))
 		data["Values"] = req
-		data["Message"] = "Internal server error"
-		data["MsgError"] = "Something went wrong"
+		data["MsgError"] = i18n.T(lang, "auth.general.error")
 		render(c, http.StatusInternalServerError, "sign_up_index.html", data)
 		return
 	}
@@ -82,13 +79,12 @@ func (h *AppController) SignUp(c *gin.Context) {
 	if err := h.userRepository.Create(c.Request.Context(), &user); err != nil {
 		log.Error("failed to create user", zap.Error(err))
 		data["Values"] = req
-		data["Message"] = "Internal server error"
-		data["MsgError"] = "Something went wrong"
+		data["MsgError"] = i18n.T(lang, "auth.general.error")
 		render(c, http.StatusInternalServerError, "sign_up_index.html", data)
 		return
 	}
 
-	s.AddFlash("Sign up successfully!", "success")
+	s.AddFlash(i18n.T(lang, "auth.signUp.success"), "success")
 	s.Save()
 
 	c.Redirect(http.StatusFound, "/sign-in")
@@ -100,6 +96,7 @@ func (h *AppController) SignIn(c *gin.Context) {
 	}
 
 	log := logger.FromCtx(c.Request.Context())
+	lang := getLang(c)
 
 	s := sessions.Default(c)
 	if flashes := s.Flashes("success"); len(flashes) > 0 {
@@ -118,7 +115,6 @@ func (h *AppController) SignIn(c *gin.Context) {
 	if err := c.ShouldBind(&req); err != nil {
 		log.Warn("failed to validate request", zap.Error(err))
 		data["Values"] = req
-		data["Message"] = "Validation error"
 		data["Errors"] = validator.ParseError(err)
 		render(c, http.StatusBadRequest, "sign_in_index.html", data)
 		return
@@ -128,32 +124,27 @@ func (h *AppController) SignIn(c *gin.Context) {
 	if err != nil {
 		log.Error("failed to find user", zap.Error(err))
 		data["Values"] = req
-		data["Message"] = "Internal server error"
-		data["MsgError"] = "Something went wrong"
+		data["MsgError"] = i18n.T(lang, "user.general.error")
 		render(c, http.StatusInternalServerError, "sign_in_index.html", data)
 		return
 	}
 	if user == nil {
-		log.Warn("invalid email")
 		data["Values"] = req
-		data["Message"] = "Bad request"
-		data["Errors"] = map[string]string{"Email": "Invalid email"}
+		data["Errors"] = map[string]string{"Email": i18n.T(lang, "auth.signIn.error")}
 		render(c, http.StatusBadRequest, "sign_in_index.html", data)
 		return
 	}
 
 	if !crypto.CheckPassword(user.Password, req.Password) {
-		log.Warn("invalid password")
 		data["Values"] = req
-		data["Message"] = "Bad request"
-		data["Errors"] = map[string]string{"Password": "Invalid password"}
+		data["Errors"] = map[string]string{"Password": i18n.T(lang, "auth.signIn.error")}
 		render(c, http.StatusBadRequest, "sign_in_index.html", data)
 		return
 	}
 
 	session.SaveUser(s, payload.ToUserResponse(user))
 
-	s.AddFlash("Sign in successfully!", "success")
+	s.AddFlash(i18n.T(lang, "auth.signIn.success"), "success")
 	s.Save()
 
 	c.Redirect(http.StatusFound, "/dashboard")
@@ -161,8 +152,6 @@ func (h *AppController) SignIn(c *gin.Context) {
 
 func (h *AppController) SignOut(c *gin.Context) {
 	s := sessions.Default(c)
-
 	session.DeleteUser(s)
-
 	c.Redirect(http.StatusFound, "/sign-in")
 }
