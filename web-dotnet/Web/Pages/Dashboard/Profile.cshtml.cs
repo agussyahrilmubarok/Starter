@@ -1,30 +1,44 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Web.Domain.User;
+using Web.Application.DTO.User;
+using Web.Application.Service;
+using Web.Common.Exceptions;
+using Web.Common.Utils;
 
 namespace Web.Pages.Dashboard;
 
 public class ProfileModel : PageModel
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IUserService _userService;
 
-    public ProfileModel(IUserRepository userRepository)
+    public ProfileModel(IUserService userService)
     {
-        _userRepository = userRepository;
+        _userService = userService;
     }
 
-    public User? User { get; private set; }
+    public UserResponse? User { get; private set; }
     public string UserEmail { get; private set; } = string.Empty;
 
     public async Task<IActionResult> OnGetAsync(CancellationToken ct)
     {
-        var userId = HttpContext.Session.GetString("UserId");
-        if (string.IsNullOrEmpty(userId)) return RedirectToPage("/SignIn");
+        if (!SessionHelper.IsAuthenticated(HttpContext.Session))
+            return RedirectToPage("/SignIn");
 
-        UserEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
+        UserEmail = SessionHelper.GetUserEmail(HttpContext.Session);
 
-        if (Guid.TryParse(userId, out var guid))
-            User = await _userRepository.FindByIdAsync(guid, ct);
+        var userId = SessionHelper.GetUserId(HttpContext.Session);
+        if (userId is null)
+            return RedirectToPage("/SignIn");
+
+        try
+        {
+            User = await _userService.GetByIdAsync(userId.Value, ct);
+        }
+        catch (NotFoundException)
+        {
+            TempData[WebUtils.MsgError] = "User not found";
+            return RedirectToPage("/SignIn");
+        }
 
         return Page();
     }

@@ -1,21 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
-using Web.Domain.User;
+using Web.Application.DTO.Auth;
+using Web.Application.Service;
+using Web.Common.Exceptions;
+using Web.Common.Utils;
 
 namespace Web.Pages;
 
 public class SignInModel : PageModel
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IAuthService _authService;
 
-    public SignInModel(IUserRepository userRepository)
+    public SignInModel(IAuthService authService)
     {
-        _userRepository = userRepository;
+        _authService = authService;
     }
 
     [BindProperty]
-    public SignInInput Input { get; set; } = new();
+    public SignInRequest Input { get; set; } = new();
 
     public string? ErrorMessage { get; set; }
 
@@ -30,30 +32,23 @@ public class SignInModel : PageModel
     {
         if (!ModelState.IsValid) return Page();
 
-        var user = await _userRepository.FindByEmailAsync(Input.Email.ToLower(), ct);
-        if (user == null || !BCrypt.Net.BCrypt.Verify(Input.Password, user.Password))
+        try
+        {
+            var user = await _authService.SignInAsync(Input, ct);
+            SessionHelper.SetUser(HttpContext.Session, user);
+        }
+        catch (InvalidCredentialsException)
         {
             ErrorMessage = "Invalid email or password";
             return Page();
         }
+        catch (Exception)
+        {
+            ErrorMessage = "Something went wrong. Please try again";
+            return Page();
+        }
 
-        HttpContext.Session.SetString("UserId", user.Id.ToString());
-        HttpContext.Session.SetString("UserName", user.Name);
-        HttpContext.Session.SetString("UserEmail", user.Email);
-
-        TempData["MSG_SUCCESS"] = "Signed in successfully!";
+        TempData[WebUtils.MsgSuccess] = "Signed in successfully";
         return RedirectToPage("/Dashboard/Index");
-    }
-
-    public class SignInInput
-    {
-        [Required(ErrorMessage = "Email is required")]
-        [EmailAddress(ErrorMessage = "Email is not valid")]
-        [StringLength(150)]
-        public string Email { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "Password is required")]
-        [StringLength(72, MinimumLength = 8, ErrorMessage = "Password must be between 8 and 72 characters")]
-        public string Password { get; set; } = string.Empty;
     }
 }

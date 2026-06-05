@@ -1,21 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
-using Web.Domain.User;
+using Web.Application.DTO.Auth;
+using Web.Application.Service;
+using Web.Common.Exceptions;
+using Web.Common.Utils;
 
 namespace Web.Pages;
 
 public class SignUpModel : PageModel
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IAuthService _authService;
 
-    public SignUpModel(IUserRepository userRepository)
+    public SignUpModel(IAuthService authService)
     {
-        _userRepository = userRepository;
+        _authService = authService;
     }
 
     [BindProperty]
-    public SignUpInput Input { get; set; } = new();
+    public SignUpRequest Input { get; set; } = new();
 
     public string? ErrorMessage { get; set; }
 
@@ -30,17 +32,14 @@ public class SignUpModel : PageModel
     {
         if (!ModelState.IsValid) return Page();
 
-        if (await _userRepository.ExistsByEmailAsync(Input.Email.ToLower(), ct))
-        {
-            ModelState.AddModelError("Input.Email", "The email has already been taken");
-            return Page();
-        }
-
         try
         {
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(Input.Password);
-            var user = Domain.User.User.Create(Input.Name, Input.Email.ToLowerInvariant(), hashedPassword);
-            await _userRepository.CreateAsync(user, ct);
+            await _authService.SignUpAsync(Input, ct);
+        }
+        catch (EmailAlreadyExistsException)
+        {
+            ModelState.AddModelError("Input.Email", "This email is already registered");
+            return Page();
         }
         catch (Exception)
         {
@@ -48,23 +47,7 @@ public class SignUpModel : PageModel
             return Page();
         }
 
-        TempData["MSG_SUCCESS"] = "Signed up successfully! Please sign in";
+        TempData[WebUtils.MsgSuccess] = "Sign up successfully! Please sign in";
         return RedirectToPage("/SignIn");
-    }
-
-    public class SignUpInput
-    {
-        [Required(ErrorMessage = "Name is required")]
-        [StringLength(100, MinimumLength = 2, ErrorMessage = "Name must be between 2 and 100 characters")]
-        public string Name { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "Email is required")]
-        [EmailAddress(ErrorMessage = "Email is not valid")]
-        [StringLength(150)]
-        public string Email { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "Password is required")]
-        [StringLength(72, MinimumLength = 8, ErrorMessage = "Password must be between 8 and 72 characters")]
-        public string Password { get; set; } = string.Empty;
     }
 }

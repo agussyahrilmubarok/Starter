@@ -1,45 +1,49 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Web.Domain.User;
+using Web.Application.DTO.User;
+using Web.Application.Service;
+using Web.Common.Exceptions;
+using Web.Common.Utils;
 
 namespace Web.Pages.Dashboard.Users;
 
 public class IndexModel : PageModel
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IUserService _userService;
 
-    public IndexModel(IUserRepository userRepository)
+    public IndexModel(IUserService userService)
     {
-        _userRepository = userRepository;
+        _userService = userService;
     }
 
-    public IEnumerable<User> Users { get; private set; } = [];
+    public IEnumerable<UserResponse> Users { get; private set; } = [];
     public string UserEmail { get; private set; } = string.Empty;
 
     public async Task<IActionResult> OnGetAsync(CancellationToken ct)
     {
-        if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+        if (!SessionHelper.IsAuthenticated(HttpContext.Session))
             return RedirectToPage("/SignIn");
 
-        UserEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
-        Users = await _userRepository.FindAllAsync(ct);
+        UserEmail = SessionHelper.GetUserEmail(HttpContext.Session);
+        Users = await _userService.GetAllAsync(ct);
         return Page();
     }
 
     public async Task<IActionResult> OnPostDeleteAsync(Guid id, CancellationToken ct)
     {
-        if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+        if (!SessionHelper.IsAuthenticated(HttpContext.Session))
             return RedirectToPage("/SignIn");
 
-        var user = await _userRepository.FindByIdAsync(id, ct);
-        if (user == null)
+        try
         {
-            TempData["MSG_ERROR"] = "User not found";
-            return RedirectToPage();
+            await _userService.DeleteAsync(id, ct);
+            TempData[WebUtils.MsgSuccess] = "User deleted successfully";
+        }
+        catch (NotFoundException)
+        {
+            TempData[WebUtils.MsgError] = "User not found";
         }
 
-        await _userRepository.DeleteAsync(id, ct);
-        TempData["MSG_SUCCESS"] = "User deleted successfully";
         return RedirectToPage();
     }
 }

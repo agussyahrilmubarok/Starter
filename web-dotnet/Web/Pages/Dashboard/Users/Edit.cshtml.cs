@@ -1,80 +1,70 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
-using Web.Domain.User;
+using Web.Application.DTO.User;
+using Web.Application.Service;
+using Web.Common.Exceptions;
+using Web.Common.Utils;
 
 namespace Web.Pages.Dashboard.Users;
 
 public class EditModel : PageModel
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IUserService _userService;
 
-    public EditModel(IUserRepository userRepository)
+    public EditModel(IUserService userService)
     {
-        _userRepository = userRepository;
+        _userService = userService;
     }
 
     [BindProperty(SupportsGet = true)]
     public Guid Id { get; set; }
 
     [BindProperty]
-    public EditInput Input { get; set; } = new();
+    public UpdateUserRequest Input { get; set; } = new();
 
     public string? ErrorMessage { get; set; }
     public string UserEmail { get; private set; } = string.Empty;
 
     public async Task<IActionResult> OnGetAsync(CancellationToken ct)
     {
-        if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+        if (!SessionHelper.IsAuthenticated(HttpContext.Session))
             return RedirectToPage("/SignIn");
 
-        UserEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
+        UserEmail = SessionHelper.GetUserEmail(HttpContext.Session);
 
-        var user = await _userRepository.FindByIdAsync(Id, ct);
-        if (user == null)
+        try
         {
-            TempData["MSG_ERROR"] = "User not found";
+            var user = await _userService.GetByIdAsync(Id, ct);
+            Input = new UpdateUserRequest(user.Name, user.Email);
+        }
+        catch (NotFoundException)
+        {
+            TempData[WebUtils.MsgError] = "User not found";
             return RedirectToPage("/Dashboard/Users/Index");
         }
 
-        Input.Name = user.Name;
-        Input.Email = user.Email;
         return Page();
     }
 
     public async Task<IActionResult> OnPostAsync(CancellationToken ct)
     {
-        UserEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
+        UserEmail = SessionHelper.GetUserEmail(HttpContext.Session);
 
         if (!ModelState.IsValid) return Page();
 
-        var user = await _userRepository.FindByIdAsync(Id, ct);
-        if (user == null)
-        {
-            TempData["MSG_ERROR"] = "User not found";
-            return RedirectToPage("/Dashboard/Users/Index");
-        }
-
         try
         {
-            if (!string.IsNullOrWhiteSpace(Input.Name))
-                user.UpdateName(Input.Name);
-
-            if (!string.IsNullOrWhiteSpace(Input.Email) &&
-                !user.Email.Equals(Input.Email, StringComparison.OrdinalIgnoreCase))
-            {
-                if (await _userRepository.ExistsByEmailAsync(Input.Email.ToLowerInvariant(), ct))
-                {
-                    ModelState.AddModelError("Input.Email", "The email has already been taken");
-                    return Page();
-                }
-                user.UpdateEmail(Input.Email.ToLowerInvariant());
-            }
-
-            if (!string.IsNullOrWhiteSpace(Input.Password))
-                user.UpdatePassword(BCrypt.Net.BCrypt.HashPassword(Input.Password));
-
-            await _userRepository.UpdateAsync(user, ct);
+            await _userService.UpdateAsync(Id, Input, ct);
+        }
+        catch (EmailAlreadyExistsException)
+        {
+            ModelState.AddModelError("Input.Email", "This email is already registered");
+            return Page();
+        }
+        catch (NotFoundException)
+        {
+            TempData[WebUtils.MsgError] = "User not found";
+            return RedirectToPage("/Dashboard/Users/Index");
         }
         catch (Exception)
         {
@@ -82,20 +72,7 @@ public class EditModel : PageModel
             return Page();
         }
 
-        TempData["MSG_SUCCESS"] = "User updated successfully";
+        TempData[WebUtils.MsgSuccess] = "User updated successfully";
         return RedirectToPage("/Dashboard/Users/Index");
-    }
-
-    public class EditInput
-    {
-        [StringLength(100, MinimumLength = 2, ErrorMessage = "Name must be between 2 and 100 characters")]
-        public string? Name { get; set; }
-
-        [EmailAddress(ErrorMessage = "Email is not valid")]
-        [StringLength(150)]
-        public string? Email { get; set; }
-
-        [StringLength(72, MinimumLength = 8, ErrorMessage = "Password must be between 8 and 72 characters")]
-        public string? Password { get; set; }
     }
 }
