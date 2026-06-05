@@ -38,8 +38,9 @@
                             <div class="invalid-feedback" th:errors="*{password}"
                                  th:if="${#fields.hasErrors('password')}"></div>
                         </div>
-                        <button class="btn btn-primary w-100 rounded-4 mt-2" type="submit"
-                                th:text="#{auth.signIn.headline}">Sign In</button>
+                        <button class="btn btn-primary w-100 rounded-4 mt-2" th:text="#{auth.signIn.headline}"
+                                type="submit">Sign In
+                        </button>
                         <div class="text-center mt-3">
                             <span class="text-secondary">Don't have an account?</span>
                             <a class="text-decoration-none fw-semibold ms-1" th:href="@{/sign-up}">Sign Up</a>

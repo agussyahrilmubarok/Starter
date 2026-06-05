@@ -1,51 +1,51 @@
 <!DOCTYPE HTML>
 <html layout:decorate="~{dashboard-layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Create User</title>
 </head>
 
 <body>
-    <div layout:fragment="content">
-        <div class="card border-0 rounded-4 shadow-sm">
-            <div class="card-header" th:text="#{user.add.headline}">Add User</div>
-            <div class="card-body">
+<div layout:fragment="content">
+    <div class="card border-0 rounded-4 shadow-sm">
+        <div class="card-header" th:text="#{user.add.headline}">Add User</div>
+        <div class="card-body">
 
-                <div class="alert alert-danger rounded-3" th:if="${MSG_ERROR}" th:text="${MSG_ERROR}"></div>
-                <div class="alert alert-success rounded-3" th:if="${MSG_SUCCESS}" th:text="${MSG_SUCCESS}"></div>
+            <div class="alert alert-danger rounded-3" th:if="${MSG_ERROR}" th:text="${MSG_ERROR}"></div>
+            <div class="alert alert-success rounded-3" th:if="${MSG_SUCCESS}" th:text="${MSG_SUCCESS}"></div>
 
-                <form method="post" novalidate th:action="@{/dashboard/users/create}" th:object="${createUser}">
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold" th:text="#{user.name.label}">Full Name</label>
-                        <input class="form-control rounded-3" placeholder="Full Name"
-                            th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'" th:field="*{name}"
-                            type="text" />
-                        <div class="invalid-feedback" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold" th:text="#{user.email.label}">Email Address</label>
-                        <input class="form-control rounded-3" placeholder="Email Address"
-                            th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'" th:field="*{email}"
-                            type="email" />
-                        <div class="invalid-feedback" th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold" th:text="#{user.password.label}">Password</label>
-                        <input class="form-control rounded-3" placeholder="Password"
-                            th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'" th:field="*{password}"
-                            type="password" />
-                        <div class="invalid-feedback" th:errors="*{password}"
-                            th:if="${#fields.hasErrors('password')}"></div>
-                    </div>
-                    <button class="btn btn-md btn-primary rounded-4 shadow-sm border-0" type="submit">Save</button>
-                    <a class="btn btn-md btn-secondary rounded-4 shadow-sm border-0 ms-2"
-                        th:href="@{/dashboard/users}"
-                        th:text="#{user.add.back}">Cancel</a>
-                </form>
-            </div>
+            <form method="post" novalidate th:action="@{/dashboard/users/create}" th:object="${createUser}">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" th:text="#{user.name.label}">Full Name</label>
+                    <input class="form-control rounded-3" placeholder="Full Name"
+                           th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'" th:field="*{name}"
+                           type="text"/>
+                    <div class="invalid-feedback" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" th:text="#{user.email.label}">Email Address</label>
+                    <input class="form-control rounded-3" placeholder="Email Address"
+                           th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'" th:field="*{email}"
+                           type="email"/>
+                    <div class="invalid-feedback" th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" th:text="#{user.password.label}">Password</label>
+                    <input class="form-control rounded-3" placeholder="Password"
+                           th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'" th:field="*{password}"
+                           type="password"/>
+                    <div class="invalid-feedback" th:errors="*{password}"
+                         th:if="${#fields.hasErrors('password')}"></div>
+                </div>
+                <button class="btn btn-md btn-primary rounded-4 shadow-sm border-0" type="submit">Save</button>
+                <a class="btn btn-md btn-secondary rounded-4 shadow-sm border-0 ms-2"
+                   th:href="@{/dashboard/users}"
+                   th:text="#{user.add.back}">Cancel</a>
+            </form>
         </div>
     </div>
+</div>
 </body>
 
 </html>
