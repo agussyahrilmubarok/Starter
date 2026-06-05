@@ -23,7 +23,7 @@
                     <input class="form-control rounded-3"
                            th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
                            th:field="*{name}"
-                           th:placeholder="#{user.name.label}"
+                           th:placeholder="#{user.name.placeholder}"
                            type="text"/>
                     <div class="invalid-feedback" th:errors="*{name}"
                          th:if="${#fields.hasErrors('name')}"></div>
@@ -33,7 +33,7 @@
                     <input class="form-control rounded-3"
                            th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
                            th:field="*{email}"
-                           th:placeholder="#{user.email.label}"
+                           th:placeholder="#{user.email.placeholder}"
                            type="email"/>
                     <div class="invalid-feedback" th:errors="*{email}"
                          th:if="${#fields.hasErrors('email')}"></div>
@@ -43,7 +43,7 @@
                     <input class="form-control rounded-3"
                            th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
                            th:field="*{password}"
-                           th:placeholder="#{user.password.label}"
+                           th:placeholder="#{user.password.placeholder}"
                            type="password"/>
                     <div class="invalid-feedback" th:errors="*{password}"
                          th:if="${#fields.hasErrors('password')}"></div>

@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{auth.signUp.headline}">Sign Up</title>
+    <title th:text="#{auth.signUp.title}">Sign Up</title>
 </head>
 <body>
 <div layout:fragment="content">
@@ -29,7 +29,7 @@
                             <input class="form-control rounded-3"
                                    th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
                                    th:field="*{name}"
-                                   th:placeholder="#{user.name.label}"
+                                   th:placeholder="#{user.name.placeholder}"
                                    type="text"/>
                             <div class="invalid-feedback" th:errors="*{name}"
                                  th:if="${#fields.hasErrors('name')}"></div>
@@ -39,7 +39,7 @@
                             <input class="form-control rounded-3"
                                    th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
                                    th:field="*{email}"
-                                   th:placeholder="#{user.email.label}"
+                                   th:placeholder="#{user.email.placeholder}"
                                    type="email"/>
                             <div class="invalid-feedback" th:errors="*{email}"
                                  th:if="${#fields.hasErrors('email')}"></div>
@@ -49,13 +49,13 @@
                             <input class="form-control rounded-3"
                                    th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
                                    th:field="*{password}"
-                                   th:placeholder="#{user.password.label}"
+                                   th:placeholder="#{user.password.placeholder}"
                                    type="password"/>
                             <div class="invalid-feedback" th:errors="*{password}"
                                  th:if="${#fields.hasErrors('password')}"></div>
                         </div>
                         <button class="btn btn-primary w-100 rounded-4 mt-2"
-                                th:text="#{auth.signUp.headline}"
+                                th:text="#{auth.signUp.submit}"
                                 type="submit">Sign Up
                         </button>
                         <div class="text-center mt-3">

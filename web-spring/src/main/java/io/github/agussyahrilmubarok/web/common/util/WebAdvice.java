@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-/**
- * Provide attributes available in all templates.
- */
 @ControllerAdvice
 public class WebAdvice {
 

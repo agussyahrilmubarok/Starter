@@ -9,9 +9,6 @@ import org.thymeleaf.templateresolver.FileTemplateResolver;
 
 import java.io.File;
 
-/**
- * Load Thymeleaf files from the file system during development, without any caching.
- */
 @Configuration
 @Profile("local")
 public class LocalDevConfig {

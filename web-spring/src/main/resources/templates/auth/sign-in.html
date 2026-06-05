@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{auth.signIn.headline}">Sign In</title>
+    <title th:text="#{auth.signIn.title}">Sign In</title>
 </head>
 <body>
 <div layout:fragment="content">
@@ -29,7 +29,7 @@
                             <input class="form-control rounded-3"
                                    th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
                                    th:field="*{email}"
-                                   th:placeholder="#{user.email.label}"
+                                   th:placeholder="#{user.email.placeholder}"
                                    type="email"/>
                             <div class="invalid-feedback" th:errors="*{email}"
                                  th:if="${#fields.hasErrors('email')}"></div>
@@ -39,13 +39,13 @@
                             <input class="form-control rounded-3"
                                    th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
                                    th:field="*{password}"
-                                   th:placeholder="#{user.password.label}"
+                                   th:placeholder="#{user.password.placeholder}"
                                    type="password"/>
                             <div class="invalid-feedback" th:errors="*{password}"
                                  th:if="${#fields.hasErrors('password')}"></div>
                         </div>
                         <button class="btn btn-primary w-100 rounded-4 mt-2"
-                                th:text="#{auth.signIn.headline}"
+                                th:text="#{auth.signIn.submit}"
                                 type="submit">Sign In
                         </button>
                         <div class="text-center mt-3">

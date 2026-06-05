@@ -12,7 +12,6 @@ public class ServletConfig {
 
     @Bean
     public ServletContextInitializer servletContextInitializer() {
-        // don't append the session id to resources
         return servletContext -> servletContext.setSessionTrackingModes(Set.of(SessionTrackingMode.COOKIE));
     }
 }
