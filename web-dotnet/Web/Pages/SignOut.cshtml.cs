@@ -8,9 +8,7 @@ public class SignOutModel : PageModel
 {
     public IActionResult OnGet()
     {
-        HttpContext.Session.Clear();
-        TempData["MSG_SUCCESS"] = "You have signed out";
-        return RedirectToPage("/SignIn");
+        return RedirectToPage("/Dashboard/Index");
     }
 
     public IActionResult OnPost()
