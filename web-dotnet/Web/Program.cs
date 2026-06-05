@@ -6,6 +6,8 @@ using Web.Common.Logging;
 using Serilog;
 using Web.Common.Middleware;
 using Web.Application.Service;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 AppLogger.Initialize();
 
@@ -13,7 +15,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog();
 
-builder.Services.AddRazorPages();
+builder.Services.AddLocalization(options => options.ResourcesPath = "");
+
+builder.Services.AddRazorPages()
+    .AddViewLocalization();
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
@@ -30,11 +35,30 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IUserService, UserService>(); 
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<Web.Resources.Lang.MessageHelper>();
 
 builder.Services.AddTransient<RequestIdMiddleware>();
 
 var app = builder.Build();
+
+var supportedCultures = new[]
+{
+    new CultureInfo("en")
+};
+
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("en"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures,
+    RequestCultureProviders = new List<IRequestCultureProvider>
+    {
+        new QueryStringRequestCultureProvider(),
+        new CookieRequestCultureProvider(),
+        new AcceptLanguageHeaderRequestCultureProvider()
+    }
+});
 
 using (var scope = app.Services.CreateScope())
 {

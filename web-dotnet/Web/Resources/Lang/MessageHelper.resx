@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="app.title"><value>Web DotNet</value></data>
+
+  <data name="navigation.home"><value>Home</value></data>
+  <data name="navigation.mainMenu"><value>Main Menu</value></data>
+  <data name="navigation.dashboard"><value>Dashboard</value></data>
+  <data name="navigation.users"><value>Users</value></data>
+  <data name="navigation.profile"><value>My Profile</value></data>
+  <data name="navigation.signOut"><value>Sign Out</value></data>
+
+  <data name="home.index.headline"><value>Welcome to Web DotNet!</value></data>
+
+  <data name="dashboard.headline"><value>Dashboard</value></data>
+  <data name="dashboard.welcome"><value>Welcome back,</value></data>
+
+  <data name="user.list.headline"><value>Users</value></data>
+  <data name="user.list.createNew"><value>Create New User</value></data>
+  <data name="user.list.empty"><value>No users found</value></data>
+  <data name="user.list.edit"><value>Edit</value></data>
+  <data name="user.list.delete"><value>Delete</value></data>
+
+  <data name="user.name.label"><value>Full Name</value></data>
+  <data name="user.email.label"><value>Email Address</value></data>
+  <data name="user.password.label"><value>Password</value></data>
+  <data name="user.createdAt.label"><value>Created At</value></data>
+
+  <data name="user.list.actions"><value>Actions</value></data>
+  <data name="user.create.headline"><value>Add User</value></data>
+  <data name="user.create.save"><value>Save</value></data>
+  <data name="user.create.back"><value>Cancel</value></data>
+  <data name="user.edit.headline"><value>Edit User</value></data>
+  <data name="user.edit.save"><value>Update</value></data>
+  <data name="user.edit.back"><value>Cancel</value></data>
+
+  <data name="user.create.success"><value>User created successfully</value></data>
+  <data name="user.update.success"><value>User updated successfully</value></data>
+  <data name="user.delete.success"><value>User deleted successfully</value></data>
+  <data name="user.notFound"><value>User not found</value></data>
+
+  <data name="auth.signUp.headline"><value>Sign Up</value></data>
+  <data name="auth.signUp.hasAccount"><value>Already have an account?</value></data>
+  <data name="auth.signUp.success"><value>Sign up successfully! Please sign in</value></data>
+  <data name="auth.signIn.headline"><value>Sign In</value></data>
+  <data name="auth.signIn.success"><value>Signed in successfully</value></data>
+  <data name="auth.signIn.error"><value>Invalid email or password</value></data>
+  <data name="auth.signOut.success"><value>You have been signed out</value></data>
+  <data name="auth.general.error"><value>Something went wrong. Please try again</value></data>
+
+  <data name="error.page.headline"><value>Page Not Found</value></data>
+  <data name="error.page.message"><value>The page you are looking for does not exist or has been moved</value></data>
+  <data name="error.general"><value>Something went wrong. Please try again</value></data>
+
+  <data name="delete.confirm"><value>Are you sure you want to delete this? This action cannot be undone</value></data>
+
+  <data name="profile.headline"><value>My Profile</value></data>
+  <data name="profile.fullName"><value>Full Name</value></data>
+  <data name="profile.email"><value>Email</value></data>
+  <data name="profile.userId"><value>User ID</value></data>
+  <data name="profile.memberSince"><value>Member Since</value></data>
+  <data name="profile.notFound"><value>User data not found. Please log in again.</value></data>
+
+  <data name="error.backToHome"><value>Back to Home</value></data>
+  <data name="error.somethingWrong"><value>Something went wrong</value></data>
+</root>

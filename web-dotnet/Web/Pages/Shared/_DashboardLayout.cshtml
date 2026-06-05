@@ -1,3 +1,6 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<Web.Resources.Lang.MessageHelper> L
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,14 +37,17 @@
                         👤 @ViewData["UserEmail"]
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="/dashboard/profile">My Profile</a></li>
+                        <li>
+                            <a class="dropdown-item" href="/dashboard/profile">@L["navigation.profile"]</a>
+                        </li>
                         <li>
                             <hr class="dropdown-divider" />
                         </li>
                         <form method="post" action="/sign-out" class="d-inline">
                             @Html.AntiForgeryToken()
-                            <button type="submit" class="dropdown-item text-danger border-0 bg-transparent w-100 text-start">
-                                Sign Out
+                            <button type="submit"
+                                    class="dropdown-item text-danger border-0 bg-transparent w-100 text-start">
+                                @L["navigation.signOut"]
                             </button>
                         </form>
                     </ul>
@@ -54,12 +60,15 @@
         <div class="row g-4">
             <div class="col-12 col-md-3">
                 <div class="card border-0 rounded-4 shadow-sm">
-                    <div class="card-header">MAIN MENU</div>
+                    <div class="card-header">@L["navigation.mainMenu"]</div>
                     <div class="card-body p-2">
                         <div class="list-group list-group-flush">
-                            <a class="list-group-item list-group-item-action rounded-3" href="/dashboard">Dashboard</a>
-                            <a class="list-group-item list-group-item-action rounded-3"
-                               href="/dashboard/users">Users</a>
+                            <a class="list-group-item list-group-item-action rounded-3" href="/dashboard">
+                                @L["navigation.dashboard"]
+                            </a>
+                            <a class="list-group-item list-group-item-action rounded-3" href="/dashboard/users">
+                                @L["navigation.users"]
+                            </a>
                         </div>
                     </div>
                 </div>

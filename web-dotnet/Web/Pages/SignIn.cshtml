@@ -2,15 +2,14 @@
 @model Web.Pages.SignInModel
 @{
     Layout = "_DefaultLayout";
-    ViewData["Title"] = "Sign In";
+    ViewData["Title"] = L["auth.signIn.headline"].Value;
 }
 
 <div class="min-vh-100 d-flex align-items-center justify-content-center">
     <div class="col-11 col-sm-10 col-md-8 col-lg-5">
         <div class="card border-0 rounded-4 shadow-lg">
             <div class="card-body p-4 p-md-5">
-                <h3 class="fw-bold text-center mb-2">Sign In</h3>
-                <p class="text-secondary text-center mb-4">Welcome back! Please enter your details</p>
+                <h3 class="fw-bold text-center mb-2">@L["auth.signIn.headline"]</h3>
 
                 @if (!string.IsNullOrEmpty(Model.ErrorMessage))
                 {
@@ -23,21 +22,20 @@
 
                 <form method="post">
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Email Address</label>
-                        <input asp-for="Input.Email" class="form-control rounded-3" placeholder="Enter your email"
-                               type="email" />
+                        <label class="form-label fw-semibold">@L["user.email.label"]</label>
+                        <input asp-for="Input.Email" class="form-control rounded-3" type="email" />
                         <span asp-validation-for="Input.Email" class="text-danger small"></span>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Password</label>
-                        <input asp-for="Input.Password" class="form-control rounded-3" placeholder="Enter your password"
-                               type="password" />
+                        <label class="form-label fw-semibold">@L["user.password.label"]</label>
+                        <input asp-for="Input.Password" class="form-control rounded-3" type="password" />
                         <span asp-validation-for="Input.Password" class="text-danger small"></span>
                     </div>
-                    <button class="btn btn-primary w-100 rounded-4 mt-2" type="submit">Sign In</button>
+                    <button class="btn btn-primary w-100 rounded-4 mt-2" type="submit">
+                        @L["auth.signIn.headline"]
+                    </button>
                     <div class="text-center mt-3">
-                        <span class="text-secondary">Don't have an account?</span>
-                        <a class="text-decoration-none fw-semibold ms-1" href="/sign-up">Sign Up</a>
+                        <a class="text-decoration-none fw-semibold ms-1" href="/sign-up">@L["auth.signUp.headline"]</a>
                     </div>
                 </form>
             </div>

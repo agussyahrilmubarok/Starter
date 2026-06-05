@@ -1,20 +1,27 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Web.Common.Utils;
+using Web.Resources.Lang;
 
 namespace Web.Pages;
 
 [IgnoreAntiforgeryToken]
 public class SignOutModel : PageModel
 {
-    public IActionResult OnGet()
+    private readonly MessageHelper _msg;
+
+    public SignOutModel(MessageHelper msg)
     {
-        return RedirectToPage("/Dashboard/Index");
+        _msg = msg;
     }
+
+    public IActionResult OnGet()
+        => RedirectToPage("/Dashboard/Index");
 
     public IActionResult OnPost()
     {
         HttpContext.Session.Clear();
-        TempData["MSG_SUCCESS"] = "You have signed out";
+        TempData[WebUtils.MsgSuccess] = _msg.Get("auth.signOut.success");
         return RedirectToPage("/SignIn");
     }
 }

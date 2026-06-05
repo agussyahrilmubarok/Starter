@@ -16,7 +16,6 @@ public class IndexModel : PageModel
 
         UserName  = SessionHelper.GetUserName(HttpContext.Session);
         UserEmail = SessionHelper.GetUserEmail(HttpContext.Session);
-
         return Page();
     }
 }

@@ -1,6 +1,8 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<Web.Resources.Lang.MessageHelper> L
+  
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,12 +15,11 @@
   <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet" />
   <style>
     body {
-    background-color: lightgray;
-    font-family: 'Quicksand', sans-serif;
+      background-color: lightgray;
+      font-family: 'Quicksand', sans-serif;
     }
   </style>
 </head>
-
 <body>
 
   @RenderBody()
@@ -29,5 +30,4 @@
 
   @await RenderSectionAsync("Scripts", required: false)
 </body>
-
 </html>

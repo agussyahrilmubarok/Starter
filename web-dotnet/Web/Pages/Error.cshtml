@@ -2,14 +2,14 @@
 @model Web.Pages.ErrorModel
 @{
     Layout = "_DefaultLayout";
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = L["error.page.headline"].Value;
 }
 
 <div class="min-vh-100 d-flex align-items-center justify-content-center">
     <div class="text-center">
         <h1 class="display-1 fw-bold text-secondary">@Model.StatusCode</h1>
-        <h4 class="fw-semibold mb-2">Something went wrong</h4>
+        <h4 class="fw-semibold mb-2">@L["error.somethingWrong"]</h4>
         <p class="text-muted mb-4">@Model.Message</p>
-        <a class="btn btn-primary rounded-4 px-4" href="/">Back to Home</a>
+        <a class="btn btn-primary rounded-4 px-4" href="/">@L["error.backToHome"]</a>
     </div>
 </div>

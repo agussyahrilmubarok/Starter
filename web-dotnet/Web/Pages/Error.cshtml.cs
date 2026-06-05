@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics;
+using Web.Resources.Lang;
 
 namespace Web.Pages;
 
@@ -8,26 +9,29 @@ namespace Web.Pages;
 [IgnoreAntiforgeryToken]
 public class ErrorModel : PageModel
 {
+    private readonly MessageHelper _msg;
+
+    public ErrorModel(MessageHelper msg)
+    {
+        _msg = msg;
+    }
+
     public string RequestId { get; set; } = string.Empty;
     public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     public new int StatusCode { get; set; } = 500;
-    public string Message { get; set; } = "An unexpected error occurred. Please try again.";
+    public string Message { get; set; } = string.Empty;
 
     public void OnGet(int? statusCode = null)
     {
         RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
 
-        if (statusCode.HasValue)
+        StatusCode = statusCode ?? 500;
+        Message = StatusCode switch
         {
-            StatusCode = statusCode.Value;
-            Message = statusCode switch
-            {
-                404 => "The page you are looking for does not exist or has been moved.",
-                403 => "You do not have permission to access this page.",
-                401 => "You are not authorized to access this page.",
-                500 => "An unexpected error occurred. Please try again.",
-                _ => "An unexpected error occurred. Please try again."
-            };
-        }
+            404 => _msg.Get("error.page.message"),
+            403 => _msg.Get("error.unauthorized"),
+            401 => _msg.Get("error.unauthorized"),
+            _   => _msg.Get("error.general")
+        };
     }
 }

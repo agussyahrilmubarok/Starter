@@ -4,16 +4,19 @@ using Web.Application.DTO.User;
 using Web.Application.Service;
 using Web.Common.Exceptions;
 using Web.Common.Utils;
+using Web.Resources.Lang;
 
 namespace Web.Pages.Dashboard;
 
 public class ProfileModel : PageModel
 {
     private readonly IUserService _userService;
+    private readonly MessageHelper _msg;
 
-    public ProfileModel(IUserService userService)
+    public ProfileModel(IUserService userService, MessageHelper msg)
     {
         _userService = userService;
+        _msg = msg;
     }
 
     public UserResponse? User { get; private set; }
@@ -36,7 +39,7 @@ public class ProfileModel : PageModel
         }
         catch (NotFoundException)
         {
-            TempData[WebUtils.MsgError] = "User not found";
+            TempData[WebUtils.MsgError] = _msg.Get("user.notFound");
             return RedirectToPage("/SignIn");
         }
 

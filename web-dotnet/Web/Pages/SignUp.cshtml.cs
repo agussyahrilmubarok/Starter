@@ -4,16 +4,19 @@ using Web.Application.DTO.Auth;
 using Web.Application.Service;
 using Web.Common.Exceptions;
 using Web.Common.Utils;
+using Web.Resources.Lang;
 
 namespace Web.Pages;
 
 public class SignUpModel : PageModel
 {
     private readonly IAuthService _authService;
+    private readonly MessageHelper _msg;
 
-    public SignUpModel(IAuthService authService)
+    public SignUpModel(IAuthService authService, MessageHelper msg)
     {
         _authService = authService;
+        _msg = msg;
     }
 
     [BindProperty]
@@ -23,7 +26,7 @@ public class SignUpModel : PageModel
 
     public IActionResult OnGet()
     {
-        if (!string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+        if (SessionHelper.IsAuthenticated(HttpContext.Session))
             return RedirectToPage("/Dashboard/Index");
         return Page();
     }
@@ -38,16 +41,16 @@ public class SignUpModel : PageModel
         }
         catch (EmailAlreadyExistsException)
         {
-            ModelState.AddModelError("Input.Email", "This email is already registered");
+            ModelState.AddModelError("Input.Email", _msg.Get("user.notFound"));
             return Page();
         }
         catch (Exception)
         {
-            ErrorMessage = "Something went wrong. Please try again";
+            ErrorMessage = _msg.Get("auth.general.error");
             return Page();
         }
 
-        TempData[WebUtils.MsgSuccess] = "Sign up successfully! Please sign in";
+        TempData[WebUtils.MsgSuccess] = _msg.Get("auth.signUp.success");
         return RedirectToPage("/SignIn");
     }
 }

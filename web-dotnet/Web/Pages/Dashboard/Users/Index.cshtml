@@ -2,31 +2,33 @@
 @model Web.Pages.Dashboard.Users.IndexModel
 @{
     Layout = "_DashboardLayout";
-    ViewData["Title"] = "Users";
+    ViewData["Title"] = L["user.list.headline"].Value;
     ViewData["UserEmail"] = Model.UserEmail;
 }
 
 <div class="card border-0 rounded-4 shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <span>USERS</span>
-        <a class="btn btn-sm btn-success rounded-4 shadow-sm border-0" href="/dashboard/users/create">ADD USER</a>
+        <span>@L["user.list.headline"]</span>
+        <a class="btn btn-sm btn-success rounded-4 shadow-sm border-0" href="/dashboard/users/create">
+            @L["user.list.createNew"]
+        </a>
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead class="table-dark">
                     <tr>
-                        <th>Full Name</th>
-                        <th>Email Address</th>
-                        <th>Created At</th>
-                        <th style="width:20%">Actions</th>
+                        <th>@L["user.name.label"]</th>
+                        <th>@L["user.email.label"]</th>
+                        <th>@L["user.createdAt.label"]</th>
+                        <th style="width:20%">@L["user.list.actions"]</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (!Model.Users.Any())
                     {
                         <tr>
-                            <td class="text-center text-muted py-4" colspan="4">No users found</td>
+                            <td class="text-center text-muted py-4" colspan="4">@L["user.list.empty"]</td>
                         </tr>
                     }
                     else
@@ -39,11 +41,12 @@
                                 <td>@u.CreatedAt.ToString("dd MMM yyyy")</td>
                                 <td class="text-center text-nowrap">
                                     <a class="btn btn-sm btn-primary rounded-4 shadow-sm border-0 me-1"
-                                       href="/dashboard/users/edit/@u.Id">EDIT</a>
+                                       href="/dashboard/users/edit/@u.Id">@L["user.list.edit"]</a>
                                     <form class="d-inline" method="post" asp-page-handler="Delete" asp-route-id="@u.Id"
-                                          onsubmit="return confirm('Are you sure you want to delete this user?')">
-                                        <button class="btn btn-sm btn-danger rounded-4 shadow-sm border-0"
-                                                type="submit">DELETE</button>
+                                          onsubmit="return confirm('@L["delete.confirm"]')">
+                                        <button class="btn btn-sm btn-danger rounded-4 shadow-sm border-0" type="submit">
+                                            @L["user.list.delete"]
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
