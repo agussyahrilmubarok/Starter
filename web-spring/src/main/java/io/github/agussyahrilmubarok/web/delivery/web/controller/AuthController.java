@@ -80,6 +80,7 @@ public class AuthController {
             @ModelAttribute("signIn") @Valid final SignInRequest signInRequest,
             final BindingResult bindingResult,
             final HttpServletRequest request,
+            final RedirectAttributes redirectAttributes,
             final Model model) {
         if (bindingResult.hasErrors())
             return "auth/sign-in";
@@ -106,6 +107,8 @@ public class AuthController {
             return "auth/sign-in";
         }
 
+        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS,
+                WebUtils.getMessage("auth.signIn.success"));
         return "redirect:/dashboard";
     }
 

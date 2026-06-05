@@ -4,7 +4,7 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Dashboard</title>
+    <title th:text="#{dashboard.headline}">Dashboard</title>
 </head>
 
 <body>
@@ -13,7 +13,7 @@
         <div class="card-header" th:text="#{dashboard.headline}">Dashboard</div>
         <div class="card-body">
             <span th:text="#{dashboard.welcome}">Welcome back,</span>
-            <strong th:text="${userProfile.name}">User</strong>
+            <strong th:text="${userProfile?.name ?: ''}">User</strong>
         </div>
     </div>
 </div>

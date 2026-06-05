@@ -11,8 +11,8 @@ public class UserMapper {
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
-                user.getCreatedAt() != null ? user.getCreatedAt().toLocalDateTime() : null,
-                user.getUpdatedAt() != null ? user.getUpdatedAt().toLocalDateTime() : null
+                user.getCreatedAt(),
+                user.getUpdatedAt()
         );
     }
 }

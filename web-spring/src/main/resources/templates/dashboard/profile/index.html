@@ -1,23 +1,25 @@
 <!DOCTYPE HTML>
-<html
-        layout:decorate="~{dashboard-layout}"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html layout:decorate="~{dashboard-layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>Dashboard</title>
+    <title th:text="#{profile.headline}">Profile</title>
 </head>
+
 <body>
 <div layout:fragment="content">
+
     <div class="card border-0 rounded-4 shadow-sm" th:if="${userProfile == null}">
-        <div class="card-body text-center text-muted py-5">
+        <div class="card-body text-center text-muted py-5" th:text="#{profile.notFound}">
             User data not found. Please log in again.
         </div>
     </div>
 
     <div class="card border-0 rounded-4 shadow-sm" th:if="${userProfile != null}">
-        <div class="card-header fw-semibold">MY PROFILE</div>
+        <div class="card-header fw-semibold" th:text="#{profile.headline}">My Profile</div>
         <div class="card-body">
 
-            <!-- Avatar & name -->
             <div class="text-center mb-4">
                 <div class="rounded-circle d-inline-flex align-items-center justify-content-center bg-dark text-white fw-bold"
                      style="width: 80px; height: 80px; font-size: 32px;"
@@ -31,19 +33,23 @@
 
             <div class="row g-3">
                 <div class="col-12 col-md-6">
-                    <label class="form-label text-muted small fw-semibold">FULL NAME</label>
+                    <label class="form-label text-muted small fw-semibold"
+                           th:text="#{user.name.label}">Full Name</label>
                     <p class="form-control-plaintext fw-medium" th:text="${userProfile.name}"></p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <label class="form-label text-muted small fw-semibold">EMAIL</label>
+                    <label class="form-label text-muted small fw-semibold"
+                           th:text="#{user.email.label}">Email</label>
                     <p class="form-control-plaintext fw-medium" th:text="${userProfile.email}"></p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <label class="form-label text-muted small fw-semibold">USER ID</label>
+                    <label class="form-label text-muted small fw-semibold"
+                           th:text="#{user.id.label}">User ID</label>
                     <p class="form-control-plaintext text-muted small" th:text="${userProfile.id}"></p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <label class="form-label text-muted small fw-semibold">MEMBER SINCE</label>
+                    <label class="form-label text-muted small fw-semibold"
+                           th:text="#{user.createdAt.label}">Member Since</label>
                     <p class="form-control-plaintext fw-medium"
                        th:text="${#temporals.format(userProfile.createdAt, 'dd MMMM yyyy')}"></p>
                 </div>
@@ -53,4 +59,5 @@
     </div>
 </div>
 </body>
+
 </html>

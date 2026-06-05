@@ -47,9 +47,6 @@ public class SecurityConfig {
         http
                 .authenticationProvider(authProvider)
                 .securityContext(ctx -> ctx.securityContextRepository(securityContextRepository()))
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/sign-in", "/sign-up", "/sign-out")
-                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/static/**", "/webjars/**",
