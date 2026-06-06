@@ -14,8 +14,8 @@ import (
 )
 
 var (
-	ErrUserNotFound       = errors.New("user not found")
-	ErrEmailAlreadyExists = errors.New("email already exists")
+	ErrUserNotFound      = errors.New("user not found")
+	ErrEmailAlreadyInUse = errors.New("email is already in use")
 )
 
 //go:generate mockery --name=UserUseCase
@@ -81,7 +81,7 @@ func (uc *userUseCase) Create(ctx context.Context, req dto.CreateUserRequest) (*
 	}
 	if exists {
 		log.Warn("email already exists")
-		return nil, ErrEmailAlreadyExists
+		return nil, ErrEmailAlreadyInUse
 	}
 
 	hashed, err := crypto.HashPassword(req.Password)
@@ -112,11 +112,11 @@ func (uc *userUseCase) Update(ctx context.Context, id uuid.UUID, req dto.UpdateU
 
 	user, err := uc.userRepository.FindByID(ctx, id)
 	if err != nil {
-		log.Error("failed to get user", zap.Error(err))
+		log.Error("failed to get user", zap.String("user_id", id.String()), zap.Error(err))
 		return nil, err
 	}
 	if user == nil {
-		log.Warn("user not found")
+		log.Warn("user not found", zap.String("user_id", id.String()))
 		return nil, ErrUserNotFound
 	}
 
@@ -132,7 +132,7 @@ func (uc *userUseCase) Update(ctx context.Context, id uuid.UUID, req dto.UpdateU
 		}
 		if exists {
 			log.Warn("email already exists", zap.String("email", req.Email))
-			return nil, ErrEmailAlreadyExists
+			return nil, ErrEmailAlreadyInUse
 		}
 		user.Email = strings.ToLower(req.Email)
 	}
@@ -166,7 +166,7 @@ func (uc *userUseCase) Delete(ctx context.Context, id uuid.UUID) error {
 		return err
 	}
 	if user == nil {
-		log.Warn("user not found")
+		log.Warn("user not found", zap.String("user_id", id.String()))
 		return ErrUserNotFound
 	}
 

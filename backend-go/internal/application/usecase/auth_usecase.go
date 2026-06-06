@@ -14,8 +14,8 @@ import (
 )
 
 var (
-	ErrInvalidEmail    = errors.New("invalid email")
-	ErrInvalidPassword = errors.New("invalid password")
+	ErrEmailNotRegistered = errors.New("email is not registered")
+	ErrPasswordMismatch   = errors.New("password do not match")
 )
 
 //go:generate mockery --name=AuthUseCase
@@ -46,8 +46,8 @@ func (uc *authUseCase) SignUp(ctx context.Context, req dto.SignUpRequest) (*dto.
 		return nil, err
 	}
 	if exists {
-		log.Warn("email already exists")
-		return nil, ErrEmailAlreadyExists
+		log.Warn("email is already in use")
+		return nil, ErrEmailAlreadyInUse
 	}
 
 	hashed, err := crypto.HashPassword(req.Password)
@@ -90,13 +90,13 @@ func (uc *authUseCase) SignIn(ctx context.Context, req dto.SignInRequest) (*dto.
 		return nil, err
 	}
 	if user == nil {
-		log.Warn("invalid email")
-		return nil, ErrInvalidEmail
+		log.Warn("email is not registered")
+		return nil, ErrEmailNotRegistered
 	}
 
 	if !crypto.CheckPassword(user.Password, req.Password) {
-		log.Warn("invalid password")
-		return nil, ErrInvalidPassword
+		log.Warn("passwords do not match")
+		return nil, ErrPasswordMismatch
 	}
 
 	token, err := uc.jwtManager.GenerateToken(user.ID)

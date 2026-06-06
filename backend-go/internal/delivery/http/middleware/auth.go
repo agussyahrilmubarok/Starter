@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"agussyahrilmubarok.github.io/backend/internal/delivery/http/payload"
+	"agussyahrilmubarok.github.io/backend/internal/delivery/http/model"
 	"agussyahrilmubarok.github.io/backend/internal/infrastructure/security"
 	"github.com/gin-gonic/gin"
 )
@@ -14,7 +14,7 @@ func Auth(jwtManager security.JWTManager) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, payload.ErrorResponse{
+			c.AbortWithStatusJSON(http.StatusUnauthorized, model.ErrorResponse{
 				Message: "Unauthorized",
 				Errors:  map[string]string{"error": "Authorization header is required"},
 			})
@@ -23,7 +23,7 @@ func Auth(jwtManager security.JWTManager) gin.HandlerFunc {
 
 		parts := strings.SplitN(authHeader, " ", 2)
 		if len(parts) != 2 || !strings.EqualFold(parts[0], "bearer") {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, payload.ErrorResponse{
+			c.AbortWithStatusJSON(http.StatusUnauthorized, model.ErrorResponse{
 				Message: "Unauthorized",
 				Errors:  map[string]string{"error": "Invalid authorization format, expected: Bearer {token}"},
 			})
@@ -36,7 +36,7 @@ func Auth(jwtManager security.JWTManager) gin.HandlerFunc {
 			if errors.Is(err, security.ErrExpiredToken) {
 				msg = "Token has expired"
 			}
-			c.AbortWithStatusJSON(http.StatusUnauthorized, payload.ErrorResponse{
+			c.AbortWithStatusJSON(http.StatusUnauthorized, model.ErrorResponse{
 				Message: "Unauthorized",
 				Errors:  map[string]string{"error": msg},
 			})

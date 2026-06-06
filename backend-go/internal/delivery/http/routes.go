@@ -43,7 +43,7 @@ func Register(
 }
 
 func RegisterSwaggerUI(r *gin.Engine) {
-	r.GET("/swagger-ui/*any", ginSwagger.WrapHandler(
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(
 		swaggerFiles.Handler,
 		ginSwagger.InstanceName("swagger"),
 		ginSwagger.URL("/swagger-ui/doc.json"),

@@ -180,7 +180,7 @@ func TestUserHandler_Create_InvalidBody(t *testing.T) {
 	h := handler.NewUserHandler(userUC)
 	r := setupUserRouter(h)
 
-	body := []byte(`{"name":"J"}`) // name terlalu pendek, email & password missing
+	body := []byte(`{"name":"J"}`)
 	req := httptest.NewRequest(http.MethodPost, "/v1/users", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
@@ -199,7 +199,7 @@ func TestUserHandler_Create_EmailAlreadyExist(t *testing.T) {
 		Email:    "john@example.com",
 		Password: "password123",
 	}
-	userUC.On("Create", mock.Anything, reqBody).Return(nil, usecase.ErrEmailAlreadyExists)
+	userUC.On("Create", mock.Anything, reqBody).Return(nil, usecase.ErrEmailAlreadyInUse)
 
 	body, _ := json.Marshal(reqBody)
 	req := httptest.NewRequest(http.MethodPost, "/v1/users", bytes.NewBuffer(body))
@@ -301,7 +301,7 @@ func TestUserHandler_Update_EmailAlreadyExist(t *testing.T) {
 	id := uuid.New()
 	reqBody := dto.UpdateUserRequest{Email: "taken@example.com"}
 
-	userUC.On("Update", mock.Anything, id, reqBody).Return(nil, usecase.ErrEmailAlreadyExists)
+	userUC.On("Update", mock.Anything, id, reqBody).Return(nil, usecase.ErrEmailAlreadyInUse)
 
 	body, _ := json.Marshal(reqBody)
 	req := httptest.NewRequest(http.MethodPut, fmt.Sprintf("/v1/users/%s", id), bytes.NewBuffer(body))

@@ -6,7 +6,7 @@ import (
 
 	"agussyahrilmubarok.github.io/backend/internal/application/dto"
 	"agussyahrilmubarok.github.io/backend/internal/application/usecase"
-	"agussyahrilmubarok.github.io/backend/internal/delivery/http/payload"
+	"agussyahrilmubarok.github.io/backend/internal/delivery/http/model"
 	"agussyahrilmubarok.github.io/backend/pkg/validator"
 
 	"github.com/gin-gonic/gin"
@@ -27,15 +27,15 @@ func NewAuthHandler(authUC usecase.AuthUseCase) *AuthHandler {
 // @Accept       json
 // @Produce      json
 // @Param        request  body      dto.SignUpRequest  true  "Sign up request"
-// @Success      201      {object}  payload.SuccessResponse
-// @Failure      400      {object}  payload.ErrorResponse
-// @Failure      409      {object}  payload.ErrorResponse
-// @Failure      500      {object}  payload.ErrorResponse
+// @Success      201      {object}  model.SuccessResponse
+// @Failure      400      {object}  model.ErrorResponse
+// @Failure      409      {object}  model.ErrorResponse
+// @Failure      500      {object}  model.ErrorResponse
 // @Router       /v1/auth/sign-up [post]
 func (h *AuthHandler) SignUp(c *gin.Context) {
 	var req dto.SignUpRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, payload.ErrorResponse{
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
 			Message: "Bad request",
 			Errors:  validator.ParseError(err),
 		})
@@ -44,21 +44,21 @@ func (h *AuthHandler) SignUp(c *gin.Context) {
 
 	res, err := h.authUC.SignUp(c.Request.Context(), req)
 	if err != nil {
-		if errors.Is(err, usecase.ErrEmailAlreadyExists) {
-			c.JSON(http.StatusConflict, payload.ErrorResponse{
+		if errors.Is(err, usecase.ErrEmailAlreadyInUse) {
+			c.JSON(http.StatusConflict, model.ErrorResponse{
 				Message: "Conflict",
-				Errors:  map[string]string{"email": "The email has already been taken"},
+				Errors:  map[string]string{"email": "Email is already in use"},
 			})
 			return
 		}
-		c.JSON(http.StatusInternalServerError, payload.ErrorResponse{
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{
 			Message: "Internal server error",
 			Errors:  map[string]string{"error": "Something went wrong"},
 		})
 		return
 	}
 
-	c.JSON(http.StatusCreated, payload.SuccessResponse{
+	c.JSON(http.StatusCreated, model.SuccessResponse{
 		Message: "Signed up successfully",
 		Data:    res,
 	})
@@ -71,15 +71,15 @@ func (h *AuthHandler) SignUp(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        request  body      dto.SignInRequest  true  "Sign in request"
-// @Success      200      {object}  payload.SuccessResponse
-// @Failure      400      {object}  payload.ErrorResponse
-// @Failure      401      {object}  payload.ErrorResponse
-// @Failure      500      {object}  payload.ErrorResponse
+// @Success      200      {object}  model.SuccessResponse
+// @Failure      400      {object}  model.ErrorResponse
+// @Failure      401      {object}  model.ErrorResponse
+// @Failure      500      {object}  model.ErrorResponse
 // @Router       /v1/auth/sign-in [post]
 func (h *AuthHandler) SignIn(c *gin.Context) {
 	var req dto.SignInRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, payload.ErrorResponse{
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
 			Message: "Bad request",
 			Errors:  validator.ParseError(err),
 		})
@@ -88,28 +88,28 @@ func (h *AuthHandler) SignIn(c *gin.Context) {
 
 	res, err := h.authUC.SignIn(c.Request.Context(), req)
 	if err != nil {
-		if errors.Is(err, usecase.ErrInvalidEmail) {
-			c.JSON(http.StatusUnauthorized, payload.ErrorResponse{
+		if errors.Is(err, usecase.ErrEmailNotRegistered) {
+			c.JSON(http.StatusUnauthorized, model.ErrorResponse{
 				Message: "Unauthorized",
-				Errors:  map[string]string{"email": "The email address is not registered"},
+				Errors:  map[string]string{"email": "Email is not registered"},
 			})
 			return
 		}
-		if errors.Is(err, usecase.ErrInvalidPassword) {
-			c.JSON(http.StatusUnauthorized, payload.ErrorResponse{
+		if errors.Is(err, usecase.ErrPasswordMismatch) {
+			c.JSON(http.StatusUnauthorized, model.ErrorResponse{
 				Message: "Unauthorized",
-				Errors:  map[string]string{"password": "The password is incorrect"},
+				Errors:  map[string]string{"password": "Password do not match"},
 			})
 			return
 		}
-		c.JSON(http.StatusInternalServerError, payload.ErrorResponse{
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{
 			Message: "Internal server error",
 			Errors:  map[string]string{"error": "Something went wrong"},
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, payload.SuccessResponse{
+	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "Signed in successfully",
 		Data:    res,
 	})

@@ -78,7 +78,7 @@ func TestAuth_SignUp(t *testing.T) {
 			mockSetup: func(repo *mocks.UserRepository) {
 				repo.On("ExistsByEmail", mock.Anything, "alice@mail.com").Return(true, nil)
 			},
-			wantErr: usecase.ErrEmailAlreadyExists,
+			wantErr: usecase.ErrEmailAlreadyInUse,
 		},
 		{
 			name: "exists by email error",
@@ -169,7 +169,7 @@ func TestAuth_SignIn(t *testing.T) {
 			mockSetup: func(repo *mocks.UserRepository) {
 				repo.On("FindByEmail", mock.Anything, "notfound@mail.com").Return(nil, nil)
 			},
-			wantErr: usecase.ErrInvalidEmail,
+			wantErr: usecase.ErrEmailNotRegistered,
 		},
 		{
 			name: "wrong password",
@@ -180,7 +180,7 @@ func TestAuth_SignIn(t *testing.T) {
 			mockSetup: func(repo *mocks.UserRepository) {
 				repo.On("FindByEmail", mock.Anything, "alice@mail.com").Return(user, nil)
 			},
-			wantErr: usecase.ErrInvalidPassword,
+			wantErr: usecase.ErrPasswordMismatch,
 		},
 		{
 			name: "repo error",

@@ -94,7 +94,7 @@ func TestAuthHandler_SignUp_EmailAlreadyExist(t *testing.T) {
 		Password: "password123",
 	}
 
-	authUC.On("SignUp", mock.Anything, reqBody).Return(nil, usecase.ErrEmailAlreadyExists)
+	authUC.On("SignUp", mock.Anything, reqBody).Return(nil, usecase.ErrEmailAlreadyInUse)
 
 	body, _ := json.Marshal(reqBody)
 	req := httptest.NewRequest(http.MethodPost, "/v1/auth/sign-up", bytes.NewBuffer(body))
@@ -175,7 +175,7 @@ func TestAuthHandler_SignIn_InvalidBody(t *testing.T) {
 	h := handler.NewAuthHandler(authUC)
 	r := setupAuthRouter(h)
 
-	body := []byte(`{}`) // missing email & password
+	body := []byte(`{}`)
 	req := httptest.NewRequest(http.MethodPost, "/v1/auth/sign-in", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
@@ -195,7 +195,7 @@ func TestAuthHandler_SignIn_InvalidEmail(t *testing.T) {
 		Password: "password123",
 	}
 
-	authUC.On("SignIn", mock.Anything, reqBody).Return(nil, usecase.ErrInvalidEmail)
+	authUC.On("SignIn", mock.Anything, reqBody).Return(nil, usecase.ErrEmailNotRegistered)
 
 	body, _ := json.Marshal(reqBody)
 	req := httptest.NewRequest(http.MethodPost, "/v1/auth/sign-in", bytes.NewBuffer(body))
@@ -210,7 +210,7 @@ func TestAuthHandler_SignIn_InvalidEmail(t *testing.T) {
 	json.Unmarshal(w.Body.Bytes(), &resp)
 	assert.Equal(t, "Unauthorized", resp["message"])
 	errs := resp["errors"].(map[string]any)
-	assert.Equal(t, "The email address is not registered", errs["email"])
+	assert.Equal(t, "Email is not registered", errs["email"])
 }
 
 func TestAuthHandler_SignIn_InvalidPassword(t *testing.T) {
@@ -223,7 +223,7 @@ func TestAuthHandler_SignIn_InvalidPassword(t *testing.T) {
 		Password: "wrongpass",
 	}
 
-	authUC.On("SignIn", mock.Anything, reqBody).Return(nil, usecase.ErrInvalidPassword)
+	authUC.On("SignIn", mock.Anything, reqBody).Return(nil, usecase.ErrPasswordMismatch)
 
 	body, _ := json.Marshal(reqBody)
 	req := httptest.NewRequest(http.MethodPost, "/v1/auth/sign-in", bytes.NewBuffer(body))
@@ -237,7 +237,7 @@ func TestAuthHandler_SignIn_InvalidPassword(t *testing.T) {
 	var resp map[string]any
 	json.Unmarshal(w.Body.Bytes(), &resp)
 	errs := resp["errors"].(map[string]any)
-	assert.Equal(t, "The password is incorrect", errs["password"])
+	assert.Equal(t, "Password do not match", errs["password"])
 }
 
 func TestAuthHandler_SignIn_InternalError(t *testing.T) {
