@@ -1,15 +1,14 @@
 package io.github.agussyahrilmubarok.backend.application.dto.user;
 
-import io.github.agussyahrilmubarok.backend.domain.User;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import io.github.agussyahrilmubarok.backend.domain.User;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class UserMapperTest {
 
@@ -44,8 +43,8 @@ class UserMapperTest {
         assertThat(response.id()).isEqualTo(id);
         assertThat(response.name()).isEqualTo("Alice");
         assertThat(response.email()).isEqualTo("alice@example.com");
-        assertThat(response.createdAt()).isEqualTo(now.toLocalDateTime());
-        assertThat(response.updatedAt()).isEqualTo(now.toLocalDateTime());
+        assertThat(response.createdAt()).isEqualTo(now);
+        assertThat(response.updatedAt()).isEqualTo(now);
     }
 
     @Test

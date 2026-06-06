@@ -1,16 +1,25 @@
 package io.github.agussyahrilmubarok.backend.application.service.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+
 import io.github.agussyahrilmubarok.backend.application.dto.auth.AuthResponse;
 import io.github.agussyahrilmubarok.backend.application.dto.auth.SignInRequest;
 import io.github.agussyahrilmubarok.backend.application.dto.auth.SignUpRequest;
 import io.github.agussyahrilmubarok.backend.application.dto.user.UserMapper;
 import io.github.agussyahrilmubarok.backend.application.dto.user.UserResponse;
-import io.github.agussyahrilmubarok.backend.common.exception.EmailAlreadyExistsException;
+import io.github.agussyahrilmubarok.backend.common.exception.EmailAlreadyInUseException;
 import io.github.agussyahrilmubarok.backend.common.exception.EmailNotRegisteredException;
-import io.github.agussyahrilmubarok.backend.common.exception.WrongPasswordException;
+import io.github.agussyahrilmubarok.backend.common.exception.PasswordMismatchException;
 import io.github.agussyahrilmubarok.backend.domain.User;
 import io.github.agussyahrilmubarok.backend.infrastructure.persistence.repository.UserRepository;
 import io.github.agussyahrilmubarok.backend.infrastructure.security.JwtManager;
+import java.time.OffsetDateTime;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -22,26 +31,18 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
-
 @ExtendWith(MockitoExtension.class)
 class AuthServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
+
     @Mock
     private UserMapper userMapper;
+
     @Mock
     private PasswordEncoder passwordEncoder;
+
     @Mock
     private JwtManager jwtManager;
 
@@ -61,12 +62,7 @@ class AuthServiceImplTest {
 
     private UserResponse buildUserResponse(User user) {
         return new UserResponse(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                LocalDateTime.now(),
-                LocalDateTime.now()
-        );
+                user.getId(), user.getName(), user.getEmail(), user.getCreatedAt(), user.getUpdatedAt());
     }
 
     @Nested
@@ -93,8 +89,7 @@ class AuthServiceImplTest {
                 return u;
             });
             when(jwtManager.generateToken(aliceId.toString())).thenReturn("alice-token");
-            when(userMapper.toResponse(any(User.class))).thenAnswer(inv ->
-                    buildUserResponse(inv.getArgument(0)));
+            when(userMapper.toResponse(any(User.class))).thenAnswer(inv -> buildUserResponse(inv.getArgument(0)));
 
             AuthResponse response = authService.signUp(request);
 
@@ -113,8 +108,7 @@ class AuthServiceImplTest {
                 return u;
             });
             when(jwtManager.generateToken(anyString())).thenReturn("alice-token");
-            when(userMapper.toResponse(any(User.class))).thenAnswer(inv ->
-                    buildUserResponse(inv.getArgument(0)));
+            when(userMapper.toResponse(any(User.class))).thenAnswer(inv -> buildUserResponse(inv.getArgument(0)));
 
             authService.signUp(request);
 
@@ -134,8 +128,7 @@ class AuthServiceImplTest {
                 return u;
             });
             when(jwtManager.generateToken(anyString())).thenReturn("alice-token");
-            when(userMapper.toResponse(any(User.class))).thenAnswer(inv ->
-                    buildUserResponse(inv.getArgument(0)));
+            when(userMapper.toResponse(any(User.class))).thenAnswer(inv -> buildUserResponse(inv.getArgument(0)));
 
             authService.signUp(request);
 
@@ -146,13 +139,13 @@ class AuthServiceImplTest {
         }
 
         @Test
-        @DisplayName("should throw EmailAlreadyExistsException when email is taken")
+        @DisplayName("should throw EmailAlreadyInUseException when email is taken")
         void shouldThrowWhenEmailAlreadyExists() {
             when(userRepository.existsByEmail("alice@example.com")).thenReturn(true);
 
             assertThatThrownBy(() -> authService.signUp(request))
-                    .isInstanceOf(EmailAlreadyExistsException.class)
-                    .hasMessage("The email has already been taken");
+                    .isInstanceOf(EmailAlreadyInUseException.class)
+                    .hasMessage("Email is already in use");
 
             verify(userRepository, never()).save(any());
             verifyNoInteractions(passwordEncoder);
@@ -209,21 +202,21 @@ class AuthServiceImplTest {
 
             assertThatThrownBy(() -> authService.signIn(request))
                     .isInstanceOf(EmailNotRegisteredException.class)
-                    .hasMessage("The email address is not registered");
+                    .hasMessage("Email is not registered");
 
             verifyNoInteractions(passwordEncoder);
             verifyNoInteractions(jwtManager);
         }
 
         @Test
-        @DisplayName("should throw WrongPasswordException when password does not match")
+        @DisplayName("should throw PasswordMismatchException when password does not match")
         void shouldThrowWhenPasswordDoesNotMatch() {
             when(userRepository.findByEmail("alice@example.com")).thenReturn(Optional.of(alice));
             when(passwordEncoder.matches("password123", "hashed_password")).thenReturn(false);
 
             assertThatThrownBy(() -> authService.signIn(request))
-                    .isInstanceOf(WrongPasswordException.class)
-                    .hasMessage("The password is incorrect");
+                    .isInstanceOf(PasswordMismatchException.class)
+                    .hasMessage("Passwords do not match");
 
             verifyNoInteractions(jwtManager);
         }

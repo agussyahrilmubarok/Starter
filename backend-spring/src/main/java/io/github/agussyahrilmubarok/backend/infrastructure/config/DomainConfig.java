@@ -1,5 +1,7 @@
 package io.github.agussyahrilmubarok.backend.infrastructure.config;
 
+import java.time.OffsetDateTime;
+import java.util.Optional;
 import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,9 +9,6 @@ import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import java.time.OffsetDateTime;
-import java.util.Optional;
 
 @Configuration
 @EntityScan("io.github.agussyahrilmubarok.backend.domain")

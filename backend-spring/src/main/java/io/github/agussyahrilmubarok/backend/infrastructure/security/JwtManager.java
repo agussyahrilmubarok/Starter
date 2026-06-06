@@ -7,13 +7,12 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.UUID;
+import javax.crypto.SecretKey;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Component
 public class JwtManager {
@@ -24,9 +23,8 @@ public class JwtManager {
     private final SecretKey signingKey;
     private final long expMillis;
 
-    public JwtManager(@Value("${jwt.secret-key}") String secretKey,
-                      @Value("${jwt.exp-time-ms:86400000}") long expMillis
-    ) {
+    public JwtManager(
+            @Value("${jwt.secret-key}") String secretKey, @Value("${jwt.exp-time-ms:86400000}") long expMillis) {
         this.signingKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.expMillis = expMillis;
     }

@@ -1,21 +1,20 @@
 package io.github.agussyahrilmubarok.backend.infrastructure.security;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import io.github.agussyahrilmubarok.backend.common.exception.JwtExpiredTokenException;
 import io.github.agussyahrilmubarok.backend.common.exception.JwtInvalidTokenException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.UUID;
+import javax.crypto.SecretKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class JwtManagerTest {
 
@@ -108,15 +107,15 @@ class JwtManagerTest {
         @Test
         @DisplayName("should throw JwtInvalidTokenException for empty token")
         void shouldThrowWhenTokenEmpty() {
-            assertThatThrownBy(() -> jwtManager.validateToken(""))
-                    .isInstanceOf(JwtInvalidTokenException.class);
+            assertThatThrownBy(() -> jwtManager.validateToken("")).isInstanceOf(JwtInvalidTokenException.class);
         }
 
         @Test
         @DisplayName("should throw JwtInvalidTokenException when signed with different key")
         void shouldThrowWhenSignedWithDifferentKey() {
             JwtManager otherManager = new JwtManager("other-secret-key-that-is-long-enough!!", EXP_MILLIS);
-            String tokenFromOtherKey = otherManager.generateToken(UUID.randomUUID().toString());
+            String tokenFromOtherKey =
+                    otherManager.generateToken(UUID.randomUUID().toString());
 
             assertThatThrownBy(() -> jwtManager.validateToken(tokenFromOtherKey))
                     .isInstanceOf(JwtInvalidTokenException.class);

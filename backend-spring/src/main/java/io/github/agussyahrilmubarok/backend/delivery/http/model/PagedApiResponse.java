@@ -1,4 +1,4 @@
-package io.github.agussyahrilmubarok.backend.delivery.http.payload;
+package io.github.agussyahrilmubarok.backend.delivery.http.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;

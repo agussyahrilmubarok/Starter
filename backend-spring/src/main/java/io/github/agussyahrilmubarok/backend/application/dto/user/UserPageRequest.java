@@ -1,11 +1,6 @@
 package io.github.agussyahrilmubarok.backend.application.dto.user;
 
-public record UserPageRequest(
-        int page,
-        int size,
-        String sort,
-        String search
-) {
+public record UserPageRequest(int page, int size, String sort, String search) {
     public UserPageRequest {
         if (page <= 0) page = 1;
         if (size <= 0) size = 10;

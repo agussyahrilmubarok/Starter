@@ -2,10 +2,9 @@ package io.github.agussyahrilmubarok.backend.infrastructure.persistence.specific
 
 import io.github.agussyahrilmubarok.backend.domain.User;
 import jakarta.persistence.criteria.Predicate;
-import org.springframework.data.jpa.domain.Specification;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.data.jpa.domain.Specification;
 
 public class UserSpecification {
 

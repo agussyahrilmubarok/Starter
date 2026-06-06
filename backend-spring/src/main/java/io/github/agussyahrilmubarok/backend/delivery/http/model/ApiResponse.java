@@ -1,10 +1,9 @@
-package io.github.agussyahrilmubarok.backend.delivery.http.payload;
+package io.github.agussyahrilmubarok.backend.delivery.http.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Map;
 
 @Getter
 @Setter

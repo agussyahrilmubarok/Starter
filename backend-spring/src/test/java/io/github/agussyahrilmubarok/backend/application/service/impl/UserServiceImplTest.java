@@ -1,10 +1,25 @@
 package io.github.agussyahrilmubarok.backend.application.service.impl;
 
-import io.github.agussyahrilmubarok.backend.application.dto.user.*;
-import io.github.agussyahrilmubarok.backend.common.exception.EmailAlreadyExistsException;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.*;
+
+import io.github.agussyahrilmubarok.backend.application.dto.user.CreateUserRequest;
+import io.github.agussyahrilmubarok.backend.application.dto.user.UpdateUserRequest;
+import io.github.agussyahrilmubarok.backend.application.dto.user.UserMapper;
+import io.github.agussyahrilmubarok.backend.application.dto.user.UserPageRequest;
+import io.github.agussyahrilmubarok.backend.application.dto.user.UserResponse;
+import io.github.agussyahrilmubarok.backend.common.exception.EmailAlreadyInUseException;
 import io.github.agussyahrilmubarok.backend.common.exception.NotFoundException;
 import io.github.agussyahrilmubarok.backend.domain.User;
 import io.github.agussyahrilmubarok.backend.infrastructure.persistence.repository.UserRepository;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -13,20 +28,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -56,12 +64,7 @@ class UserServiceImplTest {
 
     private UserResponse buildUserResponse(User user) {
         return new UserResponse(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                LocalDateTime.now(),
-                LocalDateTime.now()
-        );
+                user.getId(), user.getName(), user.getEmail(), user.getCreatedAt(), user.getUpdatedAt());
     }
 
     @Nested
@@ -82,12 +85,10 @@ class UserServiceImplTest {
             UserPageRequest request = new UserPageRequest(1, 10, "created_at,desc", null);
 
             Page<User> userPage = new PageImpl<>(
-                    List.of(user1, user2),
-                    PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt")),
-                    2
-            );
+                    List.of(user1, user2), PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt")), 2);
 
-            when(userRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(userPage);
+            when(userRepository.findAll(any(Specification.class), any(Pageable.class)))
+                    .thenReturn(userPage);
             when(userMapper.toResponse(user1)).thenReturn(response1);
             when(userMapper.toResponse(user2)).thenReturn(response2);
 
@@ -106,13 +107,11 @@ class UserServiceImplTest {
         void shouldReturnEmptyPage() {
             UserPageRequest request = new UserPageRequest(1, 10, "created_at,desc", null);
 
-            Page<User> emptyPage = new PageImpl<>(
-                    List.of(),
-                    PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt")),
-                    0
-            );
+            Page<User> emptyPage =
+                    new PageImpl<>(List.of(), PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt")), 0);
 
-            when(userRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(emptyPage);
+            when(userRepository.findAll(any(Specification.class), any(Pageable.class)))
+                    .thenReturn(emptyPage);
 
             Page<UserResponse> result = userService.getAll(request);
 
@@ -126,13 +125,11 @@ class UserServiceImplTest {
         void shouldPassSearchKeyword() {
             UserPageRequest request = new UserPageRequest(1, 10, "name,asc", "alice");
 
-            Page<User> emptyPage = new PageImpl<>(
-                    List.of(),
-                    PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "name")),
-                    0
-            );
+            Page<User> emptyPage =
+                    new PageImpl<>(List.of(), PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "name")), 0);
 
-            when(userRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(emptyPage);
+            when(userRepository.findAll(any(Specification.class), any(Pageable.class)))
+                    .thenReturn(emptyPage);
 
             userService.getAll(request);
 
@@ -145,13 +142,11 @@ class UserServiceImplTest {
         void shouldTreatBlankSearchAsNull() {
             UserPageRequest request = new UserPageRequest(1, 10, "created_at,desc", "   ");
 
-            Page<User> emptyPage = new PageImpl<>(
-                    List.of(),
-                    PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt")),
-                    0
-            );
+            Page<User> emptyPage =
+                    new PageImpl<>(List.of(), PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt")), 0);
 
-            when(userRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(emptyPage);
+            when(userRepository.findAll(any(Specification.class), any(Pageable.class)))
+                    .thenReturn(emptyPage);
 
             userService.getAll(request);
 
@@ -166,16 +161,13 @@ class UserServiceImplTest {
 
             List<User> users = List.of(
                     buildUser(UUID.randomUUID(), "Alice", "alice@example.com"),
-                    buildUser(UUID.randomUUID(), "Bob", "bob@example.com")
-            );
+                    buildUser(UUID.randomUUID(), "Bob", "bob@example.com"));
 
-            Page<User> page = new PageImpl<>(
-                    users,
-                    PageRequest.of(1, 5, Sort.by(Sort.Direction.DESC, "createdAt")),
-                    12
-            );
+            Page<User> page =
+                    new PageImpl<>(users, PageRequest.of(1, 5, Sort.by(Sort.Direction.DESC, "createdAt")), 12);
 
-            when(userRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(page);
+            when(userRepository.findAll(any(Specification.class), any(Pageable.class)))
+                    .thenReturn(page);
             when(userMapper.toResponse(any(User.class))).thenReturn(buildUserResponse(users.getFirst()));
 
             Page<UserResponse> result = userService.getAll(request);
@@ -262,14 +254,13 @@ class UserServiceImplTest {
         }
 
         @Test
-        @DisplayName("should throw EmailAlreadyExistsException when email is taken")
+        @DisplayName("should throw EmailAlreadyInUseException when email is taken")
         void shouldThrowWhenEmailAlreadyExists() {
             CreateUserRequest request = new CreateUserRequest("Alice", "alice@example.com", "password123");
 
             when(userRepository.existsByEmail(request.email())).thenReturn(true);
 
-            assertThatThrownBy(() -> userService.create(request))
-                    .isInstanceOf(EmailAlreadyExistsException.class);
+            assertThatThrownBy(() -> userService.create(request)).isInstanceOf(EmailAlreadyInUseException.class);
 
             verify(userRepository, never()).save(any());
         }
@@ -349,7 +340,7 @@ class UserServiceImplTest {
         }
 
         @Test
-        @DisplayName("should throw EmailAlreadyExistsException when new email is taken")
+        @DisplayName("should throw EmailAlreadyInUseException when new email is taken")
         void shouldThrowWhenNewEmailTaken() {
             UpdateUserRequest request = new UpdateUserRequest(null, "taken@example.com", null);
 
@@ -357,7 +348,7 @@ class UserServiceImplTest {
             when(userRepository.existsByEmail("taken@example.com")).thenReturn(true);
 
             assertThatThrownBy(() -> userService.update(userId, request))
-                    .isInstanceOf(EmailAlreadyExistsException.class);
+                    .isInstanceOf(EmailAlreadyInUseException.class);
 
             verify(userRepository, never()).save(any());
         }

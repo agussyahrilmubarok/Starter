@@ -4,7 +4,7 @@ import io.github.agussyahrilmubarok.backend.application.dto.auth.AuthResponse;
 import io.github.agussyahrilmubarok.backend.application.dto.auth.SignInRequest;
 import io.github.agussyahrilmubarok.backend.application.dto.auth.SignUpRequest;
 import io.github.agussyahrilmubarok.backend.application.service.AuthService;
-import io.github.agussyahrilmubarok.backend.delivery.http.payload.ApiResponse;
+import io.github.agussyahrilmubarok.backend.delivery.http.model.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -27,19 +27,15 @@ public class AuthResource {
 
     @PostMapping("/sign-up")
     @SecurityRequirements
-    public ResponseEntity<ApiResponse<AuthResponse>> signUp(
-            @Valid @RequestBody SignUpRequest request) {
+    public ResponseEntity<ApiResponse<AuthResponse>> signUp(@Valid @RequestBody SignUpRequest request) {
         AuthResponse response = authService.signUp(request);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<>("Signed up successfully", response));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Signed up successfully", response));
     }
 
     @PostMapping("/sign-in")
     @SecurityRequirements
-    public ResponseEntity<ApiResponse<AuthResponse>> signIn(
-            @Valid @RequestBody SignInRequest request) {
+    public ResponseEntity<ApiResponse<AuthResponse>> signIn(@Valid @RequestBody SignInRequest request) {
         AuthResponse response = authService.signIn(request);
-        return ResponseEntity.ok()
-                .body(new ApiResponse<>("Signed in successfully", response));
+        return ResponseEntity.ok().body(new ApiResponse<>("Signed in successfully", response));
     }
 }
