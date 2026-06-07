@@ -11,18 +11,6 @@
           {{ index .T "auth.signIn.subtitle" }}
         </p>
 
-        {{ if .MsgError }}
-        <div class="alert alert-danger rounded-3">
-          {{ .MsgError }}
-        </div>
-        {{ end }}
-
-        {{ if .MsgInfo }}
-        <div class="alert alert-success rounded-3">
-          {{ .MsgInfo }}
-        </div>
-        {{ end }}
-
         <form method="POST" action="/sign-in">
           <div class="mb-3">
             <label class="form-label fw-semibold">
