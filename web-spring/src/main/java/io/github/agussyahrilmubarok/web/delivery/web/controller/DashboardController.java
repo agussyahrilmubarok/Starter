@@ -21,10 +21,7 @@ public class DashboardController {
     }
 
     @ModelAttribute
-    public void globalAttributes(
-            @AuthenticationPrincipal final CustomUserDetails userDetails,
-            final Model model
-    ) {
+    public void globalAttributes(@AuthenticationPrincipal final CustomUserDetails userDetails, final Model model) {
         if (userDetails != null) {
             model.addAttribute("userProfile", userDetails.getUser());
         }

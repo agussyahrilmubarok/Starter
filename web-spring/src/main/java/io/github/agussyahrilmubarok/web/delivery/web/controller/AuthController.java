@@ -3,7 +3,7 @@ package io.github.agussyahrilmubarok.web.delivery.web.controller;
 import io.github.agussyahrilmubarok.web.application.dto.auth.SignInRequest;
 import io.github.agussyahrilmubarok.web.application.dto.user.CreateUserRequest;
 import io.github.agussyahrilmubarok.web.application.service.UserService;
-import io.github.agussyahrilmubarok.web.common.exception.EmailAlreadyExistsException;
+import io.github.agussyahrilmubarok.web.common.exception.EmailAlreadyInUseException;
 import io.github.agussyahrilmubarok.web.common.util.WebUtils;
 import io.github.agussyahrilmubarok.web.infrastructure.security.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,8 +37,7 @@ public class AuthController {
     public String signUpForm(
             @AuthenticationPrincipal final CustomUserDetails userDetails,
             @ModelAttribute("signUp") final CreateUserRequest createUserRequest) {
-        if (userDetails != null)
-            return "redirect:/dashboard";
+        if (userDetails != null) return "redirect:/dashboard";
         return "auth/sign-up";
     }
 
@@ -48,12 +47,11 @@ public class AuthController {
             final BindingResult bindingResult,
             final Model model,
             final RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors())
-            return "auth/sign-up";
+        if (bindingResult.hasErrors()) return "auth/sign-up";
 
         try {
             userService.create(createUserRequest);
-        } catch (final EmailAlreadyExistsException e) {
+        } catch (final EmailAlreadyInUseException e) {
             bindingResult.rejectValue("email", "Exists.user.email");
             return "auth/sign-up";
         } catch (final Exception e) {
@@ -61,8 +59,7 @@ public class AuthController {
             return "auth/sign-up";
         }
 
-        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS,
-                WebUtils.getMessage("auth.signUp.success"));
+        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("auth.signUp.success"));
         return "redirect:/sign-in";
     }
 
@@ -70,8 +67,7 @@ public class AuthController {
     public String signInForm(
             @AuthenticationPrincipal final CustomUserDetails userDetails,
             @ModelAttribute("signIn") final SignInRequest signInRequest) {
-        if (userDetails != null)
-            return "redirect:/dashboard";
+        if (userDetails != null) return "redirect:/dashboard";
         return "auth/sign-in";
     }
 
@@ -82,12 +78,11 @@ public class AuthController {
             final HttpServletRequest request,
             final RedirectAttributes redirectAttributes,
             final Model model) {
-        if (bindingResult.hasErrors())
-            return "auth/sign-in";
+        if (bindingResult.hasErrors()) return "auth/sign-in";
 
         try {
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    signInRequest.email(), signInRequest.password());
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(signInRequest.email(), signInRequest.password());
 
             Authentication authentication = authenticationManager.authenticate(authToken);
 
@@ -96,8 +91,7 @@ public class AuthController {
             SecurityContextHolder.setContext(context);
 
             HttpSession session = request.getSession(true);
-            session.setAttribute(
-                    HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
 
         } catch (final BadCredentialsException e) {
             model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("auth.signIn.error"));
@@ -107,20 +101,16 @@ public class AuthController {
             return "auth/sign-in";
         }
 
-        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS,
-                WebUtils.getMessage("auth.signIn.success"));
+        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("auth.signIn.success"));
         return "redirect:/dashboard";
     }
 
     @PostMapping("/sign-out")
-    public String signOut(
-            final HttpServletRequest request,
-            final RedirectAttributes redirectAttributes) {
+    public String signOut(final HttpServletRequest request, final RedirectAttributes redirectAttributes) {
         SecurityContextHolder.clearContext();
 
         HttpSession session = request.getSession(false);
-        if (session != null)
-            session.invalidate();
+        if (session != null) session.invalidate();
 
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("auth.signOut.success"));
         return "redirect:/sign-in";

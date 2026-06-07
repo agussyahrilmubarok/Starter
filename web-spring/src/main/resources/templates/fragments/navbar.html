@@ -6,7 +6,7 @@
 
     <a class="navbar-brand fw-bold fs-5"
        th:href="@{/}"
-       th:text="'⚡ ' + #{app.title}">⚡ web-spring</a>
+       th:text="'⚡ ' + #{app.name}">⚡ web-spring</a>
 
     <div class="ms-auto">
         <th:block th:replace="~{fragments/navbar :: lang-switcher}"></th:block>
@@ -18,7 +18,7 @@
 
     <a class="navbar-brand fw-bold fs-5"
        th:href="@{/dashboard}"
-       th:text="'⚡ ' + #{app.title}">⚡ web-spring</a>
+       th:text="'⚡ ' + #{app.name}">⚡ web-spring</a>
 
     <button class="navbar-toggler"
             data-bs-target="#navbarContent"

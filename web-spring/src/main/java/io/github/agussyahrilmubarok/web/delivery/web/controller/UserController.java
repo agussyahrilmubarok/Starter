@@ -4,11 +4,12 @@ import io.github.agussyahrilmubarok.web.application.dto.user.CreateUserRequest;
 import io.github.agussyahrilmubarok.web.application.dto.user.UpdateUserRequest;
 import io.github.agussyahrilmubarok.web.application.dto.user.UserResponse;
 import io.github.agussyahrilmubarok.web.application.service.UserService;
-import io.github.agussyahrilmubarok.web.common.exception.EmailAlreadyExistsException;
+import io.github.agussyahrilmubarok.web.common.exception.EmailAlreadyInUseException;
 import io.github.agussyahrilmubarok.web.common.exception.NotFoundException;
 import io.github.agussyahrilmubarok.web.common.util.WebUtils;
 import io.github.agussyahrilmubarok.web.infrastructure.security.CustomUserDetails;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -16,8 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/dashboard/users")
@@ -33,8 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/create")
-    public String createForm(
-            @ModelAttribute("createUser") final CreateUserRequest createUserRequest) {
+    public String createForm(@ModelAttribute("createUser") final CreateUserRequest createUserRequest) {
         return "dashboard/users/create";
     }
 
@@ -44,12 +42,11 @@ public class UserController {
             final BindingResult bindingResult,
             final Model model,
             final RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors())
-            return "dashboard/users/create";
+        if (bindingResult.hasErrors()) return "dashboard/users/create";
 
         try {
             userService.create(createUserRequest);
-        } catch (final EmailAlreadyExistsException e) {
+        } catch (final EmailAlreadyInUseException e) {
             bindingResult.rejectValue("email", "Exists.user.email");
             return "dashboard/users/create";
         } catch (final Exception e) {
@@ -63,16 +60,10 @@ public class UserController {
 
     @GetMapping("/edit/{id}")
     public String editForm(
-            @PathVariable final UUID id,
-            final Model model,
-            final RedirectAttributes redirectAttributes) {
+            @PathVariable final UUID id, final Model model, final RedirectAttributes redirectAttributes) {
         try {
             UserResponse user = userService.getById(id);
-            UpdateUserRequest editUser = new UpdateUserRequest(
-                    user.id(),
-                    user.name(),
-                    user.email(),
-                    null);
+            UpdateUserRequest editUser = new UpdateUserRequest(user.id(), user.name(), user.email(), null);
             model.addAttribute("editUser", editUser);
         } catch (final NotFoundException e) {
             redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("user.notFound"));
@@ -88,12 +79,11 @@ public class UserController {
             final BindingResult bindingResult,
             final Model model,
             final RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors())
-            return "dashboard/users/edit";
+        if (bindingResult.hasErrors()) return "dashboard/users/edit";
 
         try {
             userService.update(id, request);
-        } catch (final EmailAlreadyExistsException e) {
+        } catch (final EmailAlreadyInUseException e) {
             model.addAttribute("editUser", request);
             bindingResult.rejectValue("email", "Exists.user.email");
             return "dashboard/users/edit";
@@ -102,8 +92,7 @@ public class UserController {
             return "redirect:/dashboard/users";
         } catch (final Exception e) {
             model.addAttribute("editUser", request);
-            model.addAttribute(WebUtils.MSG_ERROR,
-                    WebUtils.getMessage("error.general"));
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("error.general"));
             return "dashboard/users/edit";
         }
 
@@ -112,9 +101,7 @@ public class UserController {
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(
-            @PathVariable final UUID id,
-            final RedirectAttributes redirectAttributes) {
+    public String delete(@PathVariable final UUID id, final RedirectAttributes redirectAttributes) {
         try {
             userService.delete(id);
             redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("user.delete.success"));
@@ -125,9 +112,7 @@ public class UserController {
     }
 
     @ModelAttribute
-    public void globalAttributes(
-            @AuthenticationPrincipal final CustomUserDetails userDetails,
-            final Model model) {
+    public void globalAttributes(@AuthenticationPrincipal final CustomUserDetails userDetails, final Model model) {
         if (userDetails != null) {
             model.addAttribute("userProfile", userDetails.getUser());
         }

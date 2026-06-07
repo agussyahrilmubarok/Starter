@@ -1,5 +1,10 @@
 package io.github.agussyahrilmubarok.web.application.service.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
 import io.github.agussyahrilmubarok.web.application.dto.user.CreateUserRequest;
 import io.github.agussyahrilmubarok.web.application.dto.user.UpdateUserRequest;
 import io.github.agussyahrilmubarok.web.application.dto.user.UserMapper;
@@ -8,6 +13,10 @@ import io.github.agussyahrilmubarok.web.common.exception.EmailAlreadyExistsExcep
 import io.github.agussyahrilmubarok.web.common.exception.NotFoundException;
 import io.github.agussyahrilmubarok.web.domain.User;
 import io.github.agussyahrilmubarok.web.infrastructure.persistence.repository.UserRepository;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -17,16 +26,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -56,12 +55,7 @@ class UserServiceImplTest {
 
     private UserResponse buildUserResponse(User user) {
         return new UserResponse(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                OffsetDateTime.now(),
-                OffsetDateTime.now()
-        );
+                user.getId(), user.getName(), user.getEmail(), OffsetDateTime.now(), OffsetDateTime.now());
     }
 
     @Nested
@@ -181,8 +175,7 @@ class UserServiceImplTest {
 
             when(userRepository.existsByEmail("alice@example.com")).thenReturn(true);
 
-            assertThatThrownBy(() -> userService.create(request))
-                    .isInstanceOf(EmailAlreadyExistsException.class);
+            assertThatThrownBy(() -> userService.create(request)).isInstanceOf(EmailAlreadyExistsException.class);
 
             verify(userRepository, never()).save(any());
         }

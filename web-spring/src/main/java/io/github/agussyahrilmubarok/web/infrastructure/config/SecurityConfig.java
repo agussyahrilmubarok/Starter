@@ -27,9 +27,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(
-            final AuthenticationConfiguration authenticationConfiguration
-    ) throws Exception {
+    public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
@@ -40,29 +39,26 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
-        DaoAuthenticationProvider authProvider =
-                new DaoAuthenticationProvider(customUserDetailsService);
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(customUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
 
-        http
-                .authenticationProvider(authProvider)
+        http.authenticationProvider(authProvider)
                 .securityContext(ctx -> ctx.securityContextRepository(securityContextRepository()))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/static/**", "/webjars/**",
-                                "/css/**", "/js/**", "/images/**", "/favicon.ico"
-                        ).permitAll()
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/sign-up", "/sign-in").permitAll()
-                        .requestMatchers("/dashboard/**").authenticated()
-                        .requestMatchers("/sign-out").authenticated()
-                        .anyRequest().authenticated()
-                )
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint((request, response, authException) ->
-                                response.sendRedirect("/sign-in")
-                        )
-                );
+                .authorizeHttpRequests(auth -> auth.requestMatchers(
+                                "/static/**", "/webjars/**", "/css/**", "/js/**", "/images/**", "/favicon.ico")
+                        .permitAll()
+                        .requestMatchers("/")
+                        .permitAll()
+                        .requestMatchers("/sign-up", "/sign-in")
+                        .permitAll()
+                        .requestMatchers("/dashboard/**")
+                        .authenticated()
+                        .requestMatchers("/sign-out")
+                        .authenticated()
+                        .anyRequest()
+                        .authenticated())
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(
+                        (request, response, authException) -> response.sendRedirect("/sign-in")));
 
         return http.build();
     }

@@ -13,6 +13,8 @@ help:
 	@echo "  make run       - Run built jar"
 	@echo "  make jar       - Generate jar file"
 	@echo "  make check     - Run all verification"
+	@echo "  make format    - Format source code"
+	@echo "  make lint      - Check code formatting" 
 	@echo "  make deps      - Show dependencies"
 	@echo "  make update    - Refresh dependencies"
 	@echo "  make kill      - Kill app running on PORT (default: 3000)"
