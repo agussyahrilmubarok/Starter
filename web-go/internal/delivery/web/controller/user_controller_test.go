@@ -33,7 +33,7 @@ func setupUserRouter(ac *controller.AppController) *gin.Engine {
 	}
 
 	r.GET("/dashboard/users", injectUser, ac.UserListPage)
-	r.GET("/dashboard/users/create", injectUser, ac.UserCreate)
+	r.GET("/dashboard/users/create", injectUser, ac.UserCreatePage)
 	r.POST("/dashboard/users/create", injectUser, ac.UserCreate)
 	r.GET("/dashboard/users/:id/edit", injectUser, ac.UserEditPage)
 	r.POST("/dashboard/users/:id/edit", injectUser, ac.UserEdit)
@@ -225,10 +225,11 @@ func TestUserController_UserDelete_Success(t *testing.T) {
 	ac := controller.NewAppController(repo)
 	r := setupUserRouter(ac)
 
-	id := uuid.New()
-	repo.On("Delete", mock.Anything, id).Return(nil)
+	user := newSampleDomainUser()
+	repo.On("FindByID", mock.Anything, user.ID).Return(user, nil)
+	repo.On("Delete", mock.Anything, user.ID).Return(nil)
 
-	req := httptest.NewRequest(http.MethodPost, "/dashboard/users/"+id.String()+"/delete", nil)
+	req := httptest.NewRequest(http.MethodPost, "/dashboard/users/"+user.ID.String()+"/delete", nil)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -249,15 +250,32 @@ func TestUserController_UserDelete_InvalidUUID(t *testing.T) {
 	assert.Equal(t, "/dashboard/users", w.Header().Get("Location"))
 }
 
-func TestUserController_UserDelete_RepoError(t *testing.T) {
+func TestUserController_UserDelete_UserNotFound(t *testing.T) {
 	repo := mocks.NewUserRepository(t)
 	ac := controller.NewAppController(repo)
 	r := setupUserRouter(ac)
 
 	id := uuid.New()
-	repo.On("Delete", mock.Anything, id).Return(errors.New("db error"))
+	repo.On("FindByID", mock.Anything, id).Return(nil, nil)
 
 	req := httptest.NewRequest(http.MethodPost, "/dashboard/users/"+id.String()+"/delete", nil)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusFound, w.Code)
+	assert.Equal(t, "/dashboard/users", w.Header().Get("Location"))
+}
+
+func TestUserController_UserDelete_RepoError(t *testing.T) {
+	repo := mocks.NewUserRepository(t)
+	ac := controller.NewAppController(repo)
+	r := setupUserRouter(ac)
+
+	user := newSampleDomainUser()
+	repo.On("FindByID", mock.Anything, user.ID).Return(user, nil)
+	repo.On("Delete", mock.Anything, user.ID).Return(errors.New("db error"))
+
+	req := httptest.NewRequest(http.MethodPost, "/dashboard/users/"+user.ID.String()+"/delete", nil)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 

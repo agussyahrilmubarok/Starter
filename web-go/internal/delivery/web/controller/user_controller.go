@@ -16,15 +16,6 @@ import (
 	"go.uber.org/zap"
 )
 
-func getLang(c *gin.Context) string {
-	if v, ok := c.Get("Lang"); ok {
-		if l, ok := v.(string); ok {
-			return l
-		}
-	}
-	return i18n.DefaultLang
-}
-
 func (h *AppController) UserListPage(c *gin.Context) {
 	data := gin.H{
 		"Title": "Users",
@@ -225,7 +216,7 @@ func (h *AppController) UserEdit(c *gin.Context) {
 		user.Name = req.Name
 	}
 
-	if req.Email != "" && req.Email != user.Email {
+	if req.Email != "" && strings.ToLower(req.Email) != user.Email {
 		exists, err := h.userRepository.ExistsByEmail(c.Request.Context(), strings.ToLower(req.Email))
 		if err != nil {
 			log.Error("failed to check email existence", zap.Error(err))
@@ -264,7 +255,7 @@ func (h *AppController) UserEdit(c *gin.Context) {
 	}
 
 	s := sessions.Default(c)
-	s.AddFlash(i18n.T(lang, "user.edit.success"), "success")
+	s.AddFlash(i18n.T(lang, "user.update.success"), "success")
 	s.Save()
 
 	c.Redirect(http.StatusFound, "/dashboard/users")
@@ -282,10 +273,23 @@ func (h *AppController) UserDelete(c *gin.Context) {
 		return
 	}
 
+	log := logger.FromCtx(c.Request.Context())
+
+	user, err := h.userRepository.FindByID(c.Request.Context(), parsedID)
+	if err != nil || user == nil {
+		s := sessions.Default(c)
+		s.AddFlash(i18n.T(lang, "user.notFound"), "error")
+		s.Save()
+		c.Redirect(http.StatusFound, "/dashboard/users")
+		return
+	}
+
 	s := sessions.Default(c)
-	if err := h.userRepository.Delete(c.Request.Context(), parsedID); err != nil {
+	if err := h.userRepository.Delete(c.Request.Context(), user.ID); err != nil {
+		log.Error("failed to delete user", zap.Error(err))
 		s.AddFlash(i18n.T(lang, "error.general"), "error")
 	} else {
+		log.Info("user deleted", zap.String("id", user.ID.String()))
 		s.AddFlash(i18n.T(lang, "user.delete.success"), "success")
 	}
 	s.Save()

@@ -1,6 +1,7 @@
 {
     "app": {
-        "title": "Web Go"
+        "title": "Web Go",
+        "name": "web-go"
     },
     "navigation": {
         "toggle": "Toggle navigation",
@@ -44,7 +45,7 @@
         "email": {
             "label": "Email Address",
             "placeholder": "Enter your email address",
-            "alreadyTaken": "The email has already been taken"
+            "alreadyTaken": "Email is already registered"
         },
         "password": {
             "label": "Password",

@@ -124,20 +124,20 @@ func (h *AppController) SignIn(c *gin.Context) {
 	if err != nil {
 		log.Error("failed to find user", zap.Error(err))
 		data["Values"] = req
-		data["MsgError"] = i18n.T(lang, "user.general.error")
+		data["MsgError"] = i18n.T(lang, "auth.general.error")
 		render(c, http.StatusInternalServerError, "sign_in_index.html", data)
 		return
 	}
 	if user == nil {
 		data["Values"] = req
-		data["Errors"] = map[string]string{"Email": i18n.T(lang, "auth.signIn.error")}
+		data["MsgError"] = i18n.T(lang, "auth.signIn.error")
 		render(c, http.StatusBadRequest, "sign_in_index.html", data)
 		return
 	}
 
 	if !crypto.CheckPassword(user.Password, req.Password) {
 		data["Values"] = req
-		data["Errors"] = map[string]string{"Password": i18n.T(lang, "auth.signIn.error")}
+		data["MsgError"] = i18n.T(lang, "auth.signIn.error")
 		render(c, http.StatusBadRequest, "sign_in_index.html", data)
 		return
 	}
@@ -151,7 +151,12 @@ func (h *AppController) SignIn(c *gin.Context) {
 }
 
 func (h *AppController) SignOut(c *gin.Context) {
+	lang := getLang(c)
+
 	s := sessions.Default(c)
 	session.DeleteUser(s)
+	s.AddFlash(i18n.T(lang, "auth.signOut.success"), "success")
+	s.Save()
+
 	c.Redirect(http.StatusFound, "/sign-in")
 }

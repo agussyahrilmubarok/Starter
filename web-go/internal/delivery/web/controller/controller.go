@@ -10,6 +10,7 @@ import (
 	"agussyahrilmubarok.github.io/web/internal/delivery/web/payload"
 	"agussyahrilmubarok.github.io/web/internal/delivery/web/session"
 	"agussyahrilmubarok.github.io/web/internal/domain"
+	"agussyahrilmubarok.github.io/web/pkg/i18n"
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -66,6 +67,15 @@ func mustGetUserFromContext(c *gin.Context) (payload.UserResponse, bool) {
 	}
 
 	return user, true
+}
+
+func getLang(c *gin.Context) string {
+	if v, ok := c.Get("Lang"); ok {
+		if l, ok := v.(string); ok {
+			return l
+		}
+	}
+	return i18n.DefaultLang
 }
 
 func (h *AppController) LoadTemplate(templateDir string) multitemplate.Renderer {

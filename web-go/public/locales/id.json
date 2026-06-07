@@ -1,6 +1,7 @@
 {
     "app": {
-        "title": "Web Go"
+        "title": "Web Go",
+        "name": "web-go"
     },
     "navigation": {
         "toggle": "Buka navigasi",

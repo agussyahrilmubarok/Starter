@@ -6,6 +6,18 @@ import (
 	"agussyahrilmubarok.github.io/web/internal/domain"
 )
 
+type CreateUserRequest struct {
+	Name     string `form:"name"     binding:"required,min=2,max=100"`
+	Email    string `form:"email"    binding:"required,email,max=150"`
+	Password string `form:"password" binding:"required,min=8,max=72"`
+}
+
+type UpdateUserRequest struct {
+	Name     string `form:"name"     binding:"omitempty,min=2,max=100"`
+	Email    string `form:"email"    binding:"omitempty,email,max=150"`
+	Password string `form:"password" binding:"omitempty,min=8,max=72"`
+}
+
 type UserResponse struct {
 	ID        string
 	Name      string
@@ -30,16 +42,4 @@ func ToUserListResponse(users []domain.User) []UserResponse {
 		result[i] = ToUserResponse(&user)
 	}
 	return result
-}
-
-type CreateUserRequest struct {
-	Name     string `form:"name"     binding:"required,min=2,max=100"`
-	Email    string `form:"email"    binding:"required,email,max=100"`
-	Password string `form:"password" binding:"required,min=8,max=255"`
-}
-
-type UpdateUserRequest struct {
-	Name     string `form:"name"     binding:"omitempty,min=2,max=100"`
-	Email    string `form:"email"    binding:"omitempty,email,max=100"`
-	Password string `form:"password" binding:"omitempty,min=8,max=255"`
 }
