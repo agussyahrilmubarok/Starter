@@ -7,7 +7,6 @@ import (
 	"agussyahrilmubarok.github.io/web/internal/delivery/web/payload"
 	"agussyahrilmubarok.github.io/web/internal/domain"
 	"agussyahrilmubarok.github.io/web/pkg/crypto"
-	"agussyahrilmubarok.github.io/web/pkg/i18n"
 	"agussyahrilmubarok.github.io/web/pkg/logger"
 	"agussyahrilmubarok.github.io/web/pkg/validator"
 	"github.com/gin-contrib/sessions"
@@ -41,7 +40,7 @@ func (h *AppController) UserListPage(c *gin.Context) {
 	users, err := h.userRepository.FindAll(c.Request.Context())
 	if err != nil {
 		log.Error("failed to get all users", zap.Error(err))
-		data["MsgError"] = i18n.T(getLang(c), "error.general")
+		data["MsgError"] = "Something went wrong. Please try again"
 		render(c, http.StatusInternalServerError, "users_index.html", data)
 		return
 	}
@@ -77,7 +76,6 @@ func (h *AppController) UserCreate(c *gin.Context) {
 	data["UserProfile"] = userProfile
 
 	log := logger.FromCtx(c.Request.Context())
-	lang := getLang(c)
 
 	var req payload.CreateUserRequest
 
@@ -93,13 +91,13 @@ func (h *AppController) UserCreate(c *gin.Context) {
 	if err != nil {
 		log.Error("failed to check email existence", zap.Error(err))
 		data["Values"] = req
-		data["MsgError"] = i18n.T(lang, "auth.general.error")
+		data["MsgError"] = "Something went wrong. Please try again"
 		render(c, http.StatusInternalServerError, "users_create.html", data)
 		return
 	}
 	if exists {
 		data["Values"] = req
-		data["Errors"] = map[string]string{"Email": i18n.T(lang, "user.email.alreadyTaken")}
+		data["Errors"] = map[string]string{"Email": "Email is already in use"}
 		render(c, http.StatusBadRequest, "users_create.html", data)
 		return
 	}
@@ -108,7 +106,7 @@ func (h *AppController) UserCreate(c *gin.Context) {
 	if err != nil {
 		log.Error("failed to hash password", zap.Error(err))
 		data["Values"] = req
-		data["MsgError"] = i18n.T(lang, "auth.general.error")
+		data["MsgError"] = "Something went wrong. Please try again"
 		render(c, http.StatusInternalServerError, "users_create.html", data)
 		return
 	}
@@ -122,13 +120,13 @@ func (h *AppController) UserCreate(c *gin.Context) {
 	if err := h.userRepository.Create(c.Request.Context(), &user); err != nil {
 		log.Error("failed to create user", zap.Error(err))
 		data["Values"] = req
-		data["MsgError"] = i18n.T(lang, "auth.general.error")
+		data["MsgError"] = "Something went wrong. Please try again"
 		render(c, http.StatusInternalServerError, "users_create.html", data)
 		return
 	}
 
 	s := sessions.Default(c)
-	s.AddFlash(i18n.T(lang, "user.create.success"), "success")
+	s.AddFlash("User created successfully", "success")
 	s.Save()
 
 	c.Redirect(http.StatusFound, "/dashboard/users")
@@ -145,12 +143,11 @@ func (h *AppController) UserEditPage(c *gin.Context) {
 	}
 	data["UserProfile"] = userProfile
 
-	lang := getLang(c)
 	id := c.Param("id")
 	parsedID, err := uuid.Parse(id)
 	if err != nil {
 		s := sessions.Default(c)
-		s.AddFlash(i18n.T(lang, "user.notFound"), "error")
+		s.AddFlash("User not found", "error")
 		s.Save()
 		c.Redirect(http.StatusFound, "/dashboard/users")
 		return
@@ -159,7 +156,7 @@ func (h *AppController) UserEditPage(c *gin.Context) {
 	user, err := h.userRepository.FindByID(c.Request.Context(), parsedID)
 	if err != nil || user == nil {
 		s := sessions.Default(c)
-		s.AddFlash(i18n.T(lang, "user.notFound"), "error")
+		s.AddFlash("User not found", "error")
 		s.Save()
 		c.Redirect(http.StatusFound, "/dashboard/users")
 		return
@@ -181,13 +178,12 @@ func (h *AppController) UserEdit(c *gin.Context) {
 	data["UserProfile"] = userProfile
 
 	log := logger.FromCtx(c.Request.Context())
-	lang := getLang(c)
 
 	id := c.Param("id")
 	parsedID, err := uuid.Parse(id)
 	if err != nil {
 		s := sessions.Default(c)
-		s.AddFlash(i18n.T(lang, "user.notFound"), "error")
+		s.AddFlash("User not found", "error")
 		s.Save()
 		c.Redirect(http.StatusFound, "/dashboard/users")
 		return
@@ -196,7 +192,7 @@ func (h *AppController) UserEdit(c *gin.Context) {
 	user, err := h.userRepository.FindByID(c.Request.Context(), parsedID)
 	if err != nil || user == nil {
 		s := sessions.Default(c)
-		s.AddFlash(i18n.T(lang, "user.notFound"), "error")
+		s.AddFlash("User not found", "error")
 		s.Save()
 		c.Redirect(http.StatusFound, "/dashboard/users")
 		return
@@ -221,13 +217,13 @@ func (h *AppController) UserEdit(c *gin.Context) {
 		if err != nil {
 			log.Error("failed to check email existence", zap.Error(err))
 			data["Values"] = payload.ToUserResponse(user)
-			data["MsgError"] = i18n.T(lang, "auth.general.error")
+			data["MsgError"] = "Something went wrong. Please try again"
 			render(c, http.StatusInternalServerError, "users_edit.html", data)
 			return
 		}
 		if exists {
 			data["Values"] = payload.ToUserResponse(user)
-			data["Errors"] = map[string]string{"Email": i18n.T(lang, "user.email.alreadyTaken")}
+			data["Errors"] = map[string]string{"Email": "Email is already in use"}
 			render(c, http.StatusBadRequest, "users_edit.html", data)
 			return
 		}
@@ -239,7 +235,7 @@ func (h *AppController) UserEdit(c *gin.Context) {
 		if err != nil {
 			log.Error("failed to hash password", zap.Error(err))
 			data["Values"] = payload.ToUserResponse(user)
-			data["MsgError"] = i18n.T(lang, "auth.general.error")
+			data["MsgError"] = "Something went wrong. Please try again"
 			render(c, http.StatusInternalServerError, "users_edit.html", data)
 			return
 		}
@@ -249,25 +245,24 @@ func (h *AppController) UserEdit(c *gin.Context) {
 	if err := h.userRepository.Update(c.Request.Context(), user); err != nil {
 		log.Error("failed to update user", zap.Error(err))
 		data["Values"] = payload.ToUserResponse(user)
-		data["MsgError"] = i18n.T(lang, "auth.general.error")
+		data["MsgError"] = "Something went wrong. Please try again"
 		render(c, http.StatusInternalServerError, "users_edit.html", data)
 		return
 	}
 
 	s := sessions.Default(c)
-	s.AddFlash(i18n.T(lang, "user.update.success"), "success")
+	s.AddFlash("User updated successfully", "success")
 	s.Save()
 
 	c.Redirect(http.StatusFound, "/dashboard/users")
 }
 
 func (h *AppController) UserDelete(c *gin.Context) {
-	lang := getLang(c)
 	id := c.Param("id")
 	parsedID, err := uuid.Parse(id)
 	if err != nil {
 		s := sessions.Default(c)
-		s.AddFlash(i18n.T(lang, "user.notFound"), "error")
+		s.AddFlash("User not found", "error")
 		s.Save()
 		c.Redirect(http.StatusFound, "/dashboard/users")
 		return
@@ -278,7 +273,7 @@ func (h *AppController) UserDelete(c *gin.Context) {
 	user, err := h.userRepository.FindByID(c.Request.Context(), parsedID)
 	if err != nil || user == nil {
 		s := sessions.Default(c)
-		s.AddFlash(i18n.T(lang, "user.notFound"), "error")
+		s.AddFlash("User not found", "error")
 		s.Save()
 		c.Redirect(http.StatusFound, "/dashboard/users")
 		return
@@ -287,10 +282,10 @@ func (h *AppController) UserDelete(c *gin.Context) {
 	s := sessions.Default(c)
 	if err := h.userRepository.Delete(c.Request.Context(), user.ID); err != nil {
 		log.Error("failed to delete user", zap.Error(err))
-		s.AddFlash(i18n.T(lang, "error.general"), "error")
+		s.AddFlash("Something went wrong. Please try again", "error")
 	} else {
 		log.Info("user deleted", zap.String("id", user.ID.String()))
-		s.AddFlash(i18n.T(lang, "user.delete.success"), "success")
+		s.AddFlash("User deleted successfully", "success")
 	}
 	s.Save()
 

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ .Lang }}">
-
+<html lang="en">
+  
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
-  <title>{{ index .T "app.title" }}</title>
+  <title>{{ .Title }} | web-go</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -33,7 +33,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3 shadow-sm">
     <a class="navbar-brand fw-bold fs-5" href="/dashboard">
-      ⚡ {{ index .T "app.name" }}
+      ⚡ web-go
     </a>
 
     <button
@@ -41,17 +41,13 @@
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#navbarContent"
-      aria-label="{{ index .T "navigation.toggle" }}"
+      aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarContent">
       <ul class="navbar-nav ms-auto align-items-center gap-2">
-        <li class="nav-item">
-          {{ template "lang_switcher" . }}
-        </li>
-
         <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle text-light"
@@ -64,7 +60,7 @@
           <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
             <li>
               <a class="dropdown-item" href="/dashboard/profile">
-                {{ index .T "navigation.profile" }}
+                My Profile
               </a>
             </li>
 
@@ -78,7 +74,7 @@
                   type="submit"
                   class="dropdown-item text-danger w-100 text-start border-0 bg-transparent"
                 >
-                  {{ index .T "navigation.signOut" }}
+                  Sign Out
                 </button>
               </form>
             </li>
@@ -95,7 +91,7 @@
       <div class="col-12 col-md-3">
         <div class="card border-0 rounded-4 shadow-sm">
           <div class="card-header text-uppercase small fw-semibold">
-            {{ index .T "navigation.mainMenu" }}
+            Main Menu
           </div>
 
           <div class="card-body p-2">
@@ -105,14 +101,14 @@
                 href="/dashboard"
                 class="list-group-item list-group-item-action rounded-3 {{ if eq .RequestURI "/dashboard" }}active{{ end }}"
               >
-                {{ index .T "navigation.dashboard" }}
+                Dashboard
               </a>
 
               <a
                 href="/dashboard/users"
                 class="list-group-item list-group-item-action rounded-3 {{ if hasPrefix .RequestURI "/dashboard/users" }}active{{ end }}"
               >
-                {{ index .T "navigation.users" }}
+                Users
               </a>
 
             </div>

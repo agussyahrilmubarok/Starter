@@ -10,7 +10,6 @@ import (
 	"agussyahrilmubarok.github.io/web/internal/delivery/web/payload"
 	"agussyahrilmubarok.github.io/web/internal/delivery/web/session"
 	"agussyahrilmubarok.github.io/web/internal/domain"
-	"agussyahrilmubarok.github.io/web/pkg/i18n"
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -39,12 +38,6 @@ var templateFuncMap = template.FuncMap{
 }
 
 func render(c *gin.Context, code int, tmpl string, data gin.H) {
-	if lang, exists := c.Get("Lang"); exists {
-		data["Lang"] = lang
-	}
-	if t, exists := c.Get("T"); exists {
-		data["T"] = t
-	}
 	data["RequestURI"] = c.Request.URL.Path
 	c.HTML(code, tmpl, data)
 }
@@ -69,15 +62,6 @@ func mustGetUserFromContext(c *gin.Context) (payload.UserResponse, bool) {
 	return user, true
 }
 
-func getLang(c *gin.Context) string {
-	if v, ok := c.Get("Lang"); ok {
-		if l, ok := v.(string); ok {
-			return l
-		}
-	}
-	return i18n.DefaultLang
-}
-
 func (h *AppController) LoadTemplate(templateDir string) multitemplate.Renderer {
 	renderer := multitemplate.NewRenderer()
 
@@ -92,7 +76,7 @@ func (h *AppController) LoadTemplate(templateDir string) multitemplate.Renderer 
 	}
 	for _, page := range homePages {
 		if fileInfo, err := os.Stat(page); err == nil && !fileInfo.IsDir() {
-			files := []string{filepath.Join(templateDir, "layouts", "default_layout.html"), page}
+			files := []string{filepath.Join(templateDir, "layouts", "layout.html"), page}
 			files = append(files, commons...)
 			renderer.AddFromFilesFuncs(filepath.Base(page), templateFuncMap, files...)
 		}
@@ -104,7 +88,7 @@ func (h *AppController) LoadTemplate(templateDir string) multitemplate.Renderer 
 	}
 	for _, page := range authPages {
 		if fileInfo, err := os.Stat(page); err == nil && !fileInfo.IsDir() {
-			files := []string{filepath.Join(templateDir, "layouts", "default_layout.html"), page}
+			files := []string{filepath.Join(templateDir, "layouts", "layout.html"), page}
 			files = append(files, commons...)
 			renderer.AddFromFilesFuncs(filepath.Base(page), templateFuncMap, files...)
 		}

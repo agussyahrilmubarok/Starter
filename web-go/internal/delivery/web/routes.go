@@ -11,7 +11,6 @@ func Register(
 	appController *controller.AppController,
 ) {
 	r.Use(middleware.RequestIDMiddleware())
-	r.Use(middleware.LocaleMiddleware())
 
 	r.HTMLRender = appController.LoadTemplate("./public/templates")
 	r.Static("/static", "./public/static")

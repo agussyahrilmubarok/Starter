@@ -1,9 +1,11 @@
 {{ define "content" }}
+
 <div class="card border-0 rounded-4 shadow-sm">
-  <div class="card-header">{{ index .T "dashboard.headline" }}</div>
+  <div class="card-header">Dashboard</div>
   <div class="card-body">
-    <span>{{ index .T "dashboard.welcome" }}</span>
+    <span>Welcome back,</span>
     <strong>{{ if .UserProfile }}{{ .UserProfile.Name }}{{ end }}</strong>
   </div>
 </div>
+
 {{ end }}

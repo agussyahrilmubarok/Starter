@@ -8,7 +8,6 @@ import (
 	"agussyahrilmubarok.github.io/web/internal/delivery/web/session"
 	"agussyahrilmubarok.github.io/web/internal/domain"
 	"agussyahrilmubarok.github.io/web/pkg/crypto"
-	"agussyahrilmubarok.github.io/web/pkg/i18n"
 	"agussyahrilmubarok.github.io/web/pkg/logger"
 	"agussyahrilmubarok.github.io/web/pkg/validator"
 	"github.com/gin-contrib/sessions"
@@ -22,7 +21,6 @@ func (h *AppController) SignUp(c *gin.Context) {
 	}
 
 	log := logger.FromCtx(c.Request.Context())
-	lang := getLang(c)
 
 	s := sessions.Default(c)
 	if flashes := s.Flashes("success"); len(flashes) > 0 {
@@ -50,13 +48,13 @@ func (h *AppController) SignUp(c *gin.Context) {
 	if err != nil {
 		log.Error("failed to check email existence", zap.Error(err))
 		data["Values"] = req
-		data["MsgError"] = i18n.T(lang, "auth.general.error")
+		data["MsgError"] = "Something went wrong. Please try again"
 		render(c, http.StatusInternalServerError, "sign_up_index.html", data)
 		return
 	}
 	if exists {
 		data["Values"] = req
-		data["Errors"] = map[string]string{"Email": i18n.T(lang, "user.email.alreadyTaken")}
+		data["Errors"] = map[string]string{"Email": "Email is already in use"}
 		render(c, http.StatusBadRequest, "sign_up_index.html", data)
 		return
 	}
@@ -65,7 +63,7 @@ func (h *AppController) SignUp(c *gin.Context) {
 	if err != nil {
 		log.Error("failed to hash password", zap.Error(err))
 		data["Values"] = req
-		data["MsgError"] = i18n.T(lang, "auth.general.error")
+		data["MsgError"] = "Something went wrong. Please try again"
 		render(c, http.StatusInternalServerError, "sign_up_index.html", data)
 		return
 	}
@@ -79,12 +77,12 @@ func (h *AppController) SignUp(c *gin.Context) {
 	if err := h.userRepository.Create(c.Request.Context(), &user); err != nil {
 		log.Error("failed to create user", zap.Error(err))
 		data["Values"] = req
-		data["MsgError"] = i18n.T(lang, "auth.general.error")
+		data["MsgError"] = "Something went wrong. Please try again"
 		render(c, http.StatusInternalServerError, "sign_up_index.html", data)
 		return
 	}
 
-	s.AddFlash(i18n.T(lang, "auth.signUp.success"), "success")
+	s.AddFlash("Sign up successfully! Please sign in", "success")
 	s.Save()
 
 	c.Redirect(http.StatusFound, "/sign-in")
@@ -96,7 +94,6 @@ func (h *AppController) SignIn(c *gin.Context) {
 	}
 
 	log := logger.FromCtx(c.Request.Context())
-	lang := getLang(c)
 
 	s := sessions.Default(c)
 	if flashes := s.Flashes("success"); len(flashes) > 0 {
@@ -124,38 +121,36 @@ func (h *AppController) SignIn(c *gin.Context) {
 	if err != nil {
 		log.Error("failed to find user", zap.Error(err))
 		data["Values"] = req
-		data["MsgError"] = i18n.T(lang, "auth.general.error")
+		data["MsgError"] = "Something went wrong. Please try again"
 		render(c, http.StatusInternalServerError, "sign_in_index.html", data)
 		return
 	}
 	if user == nil {
 		data["Values"] = req
-		data["MsgError"] = i18n.T(lang, "auth.signIn.error")
+		data["Errors"] = map[string]string{"Email": "Email is not registered"}
 		render(c, http.StatusBadRequest, "sign_in_index.html", data)
 		return
 	}
 
 	if !crypto.CheckPassword(user.Password, req.Password) {
 		data["Values"] = req
-		data["MsgError"] = i18n.T(lang, "auth.signIn.error")
+		data["Errors"] = map[string]string{"Password": "Password do not match"}
 		render(c, http.StatusBadRequest, "sign_in_index.html", data)
 		return
 	}
 
 	session.SaveUser(s, payload.ToUserResponse(user))
 
-	s.AddFlash(i18n.T(lang, "auth.signIn.success"), "success")
+	s.AddFlash("Signed in successfully", "success")
 	s.Save()
 
 	c.Redirect(http.StatusFound, "/dashboard")
 }
 
 func (h *AppController) SignOut(c *gin.Context) {
-	lang := getLang(c)
-
 	s := sessions.Default(c)
 	session.DeleteUser(s)
-	s.AddFlash(i18n.T(lang, "auth.signOut.success"), "success")
+	s.AddFlash("You have been signed out", "success")
 	s.Save()
 
 	c.Redirect(http.StatusFound, "/sign-in")
