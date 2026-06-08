@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value></resheader>
+
+  <!-- Application -->
+  <data name="app.title"><value>Web DotNet</value></data>
+  <data name="app.name"><value>web-dotnet</value></data>
+
+  <!-- Home -->
+  <data name="home.title"><value>Beranda</value></data>
+  <data name="home.index.badge"><value>ASP.NET Core + Razor Pages</value></data>
+  <data name="home.index.text"><value>Aplikasi web sederhana berbasis ASP.NET Core</value></data>
+  <data name="home.index.getStarted"><value>Mulai Sekarang</value></data>
+  <data name="home.index.signIn"><value>Masuk</value></data>
+  <data name="home.index.footer"><value>web-dotnet starter</value></data>
+
+  <!-- Navigation -->
+  <data name="navigation.toggle"><value>Buka navigasi</value></data>
+  <data name="navigation.home"><value>Beranda</value></data>
+  <data name="navigation.dashboard"><value>Dasbor</value></data>
+  <data name="navigation.users"><value>Pengguna</value></data>
+  <data name="navigation.profile"><value>Profil Saya</value></data>
+  <data name="navigation.signOut"><value>Keluar</value></data>
+  <data name="navigation.mainMenu"><value>Menu Utama</value></data>
+
+  <!-- Auth -->
+  <data name="auth.signIn.title"><value>Masuk</value></data>
+  <data name="auth.signIn.headline"><value>Masuk</value></data>
+  <data name="auth.signIn.subtitle"><value>Selamat datang kembali! Masukkan detail Anda</value></data>
+  <data name="auth.signIn.noAccount"><value>Belum punya akun?</value></data>
+  <data name="auth.signIn.submit"><value>Masuk</value></data>
+  <data name="auth.signIn.success"><value>Berhasil masuk</value></data>
+  <data name="auth.signIn.error"><value>Email atau kata sandi salah</value></data>
+  <data name="auth.signOut.success"><value>Anda telah keluar</value></data>
+  <data name="auth.signUp.title"><value>Daftar</value></data>
+  <data name="auth.signUp.headline"><value>Daftar</value></data>
+  <data name="auth.signUp.subtitle"><value>Daftar untuk melanjutkan</value></data>
+  <data name="auth.signUp.hasAccount"><value>Sudah punya akun?</value></data>
+  <data name="auth.signUp.submit"><value>Daftar</value></data>
+  <data name="auth.signUp.success"><value>Pendaftaran berhasil! Silakan masuk</value></data>
+  <data name="auth.general.error"><value>Terjadi kesalahan. Silakan coba lagi</value></data>
+
+  <!-- Dashboard -->
+  <data name="dashboard.title"><value>Dasbor</value></data>
+  <data name="dashboard.headline"><value>Dasbor</value></data>
+  <data name="dashboard.welcome"><value>Selamat datang kembali,</value></data>
+
+  <!-- User Labels -->
+  <data name="user.id.label"><value>ID</value></data>
+  <data name="user.name.label"><value>Nama Lengkap</value></data>
+  <data name="user.email.label"><value>Alamat Email</value></data>
+  <data name="user.password.label"><value>Kata Sandi</value></data>
+  <data name="user.createdAt.label"><value>Dibuat Pada</value></data>
+  <data name="user.updatedAt.label"><value>Diperbarui Pada</value></data>
+  <data name="user.name.placeholder"><value>Masukkan nama lengkap Anda</value></data>
+  <data name="user.email.placeholder"><value>Masukkan alamat email Anda</value></data>
+  <data name="user.password.placeholder"><value>Masukkan kata sandi</value></data>
+  <data name="user.password.hint"><value>Kosongkan jika tidak ingin mengubah kata sandi</value></data>
+
+  <!-- User List -->
+  <data name="user.list.title"><value>Pengguna</value></data>
+  <data name="user.list.headline"><value>Pengguna</value></data>
+  <data name="user.list.createNew"><value>Tambah Pengguna Baru</value></data>
+  <data name="user.list.empty"><value>Tidak ada pengguna ditemukan</value></data>
+  <data name="user.list.actions"><value>Aksi</value></data>
+  <data name="user.list.edit"><value>Ubah</value></data>
+  <data name="user.list.delete"><value>Hapus</value></data>
+
+  <!-- User Create -->
+  <data name="user.create.title"><value>Tambah Pengguna</value></data>
+  <data name="user.create.headline"><value>Tambah Pengguna</value></data>
+  <data name="user.create.submit"><value>Simpan</value></data>
+  <data name="user.create.back"><value>Batal</value></data>
+  <data name="user.create.success"><value>Pengguna berhasil ditambahkan</value></data>
+
+  <!-- User Edit -->
+  <data name="user.edit.title"><value>Ubah Pengguna</value></data>
+  <data name="user.edit.headline"><value>Ubah Pengguna</value></data>
+  <data name="user.edit.submit"><value>Perbarui</value></data>
+  <data name="user.edit.back"><value>Batal</value></data>
+  <data name="user.update.success"><value>Pengguna berhasil diperbarui</value></data>
+
+  <!-- User Delete -->
+  <data name="user.delete.success"><value>Pengguna berhasil dihapus</value></data>
+
+  <!-- User Messages -->
+  <data name="user.notFound"><value>Pengguna tidak ditemukan</value></data>
+  <data name="user.email.exists"><value>Email ini sudah digunakan</value></data>
+
+  <!-- Profile -->
+  <data name="profile.title"><value>Profil</value></data>
+  <data name="profile.headline"><value>Profil Saya</value></data>
+  <data name="profile.fullName"><value>Nama Lengkap</value></data>
+  <data name="profile.email"><value>Email</value></data>
+  <data name="profile.userId"><value>ID Pengguna</value></data>
+  <data name="profile.memberSince"><value>Bergabung Sejak</value></data>
+  <data name="profile.notFound"><value>Data pengguna tidak ditemukan. Silakan masuk kembali.</value></data>
+
+  <!-- Error -->
+  <data name="error.page.headline"><value>Halaman Tidak Ditemukan</value></data>
+  <data name="error.page.message"><value>Halaman yang Anda cari tidak ada atau telah dipindahkan</value></data>
+  <data name="error.backToHome"><value>Kembali ke Beranda</value></data>
+  <data name="error.general"><value>Terjadi kesalahan. Silakan coba lagi</value></data>
+  <data name="error.unauthorized"><value>Anda tidak memiliki akses ke halaman ini</value></data>
+
+  <!-- Common -->
+  <data name="delete.confirm"><value>Apakah Anda yakin ingin menghapus ini? Tindakan ini tidak dapat dibatalkan</value></data>
+  <data name="select.empty.label"><value>Pilih salah satu</value></data>
+  <data name="operation.success"><value>Operasi berhasil dilakukan</value></data>
+
+  <!-- Language -->
+  <data name="lang.switch"><value>Bahasa</value></data>
+  <data name="lang.en"><value>Inggris</value></data>
+  <data name="lang.id"><value>Indonesia</value></data>
+
+  <!-- Validation -->
+  <data name="user.name.notBlank"><value>Nama wajib diisi</value></data>
+  <data name="user.name.size"><value>Nama harus antara 2 hingga 100 karakter</value></data>
+  <data name="user.email.notBlank"><value>Email wajib diisi</value></data>
+  <data name="user.email.invalid"><value>Format email tidak valid</value></data>
+  <data name="user.email.size"><value>Email tidak boleh lebih dari 150 karakter</value></data>
+  <data name="user.password.notBlank"><value>Kata sandi wajib diisi</value></data>
+  <data name="user.password.size"><value>Kata sandi harus antara 8 hingga 72 karakter</value></data>
+</root>

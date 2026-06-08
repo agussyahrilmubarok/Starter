@@ -1,0 +1,50 @@
+{{ define "content" }}
+<div class="card border-0 rounded-4 shadow-sm">
+    <div class="card-header fw-semibold">{{ index .T "user.edit.headline" }}</div>
+    <div class="card-body p-4">
+
+        {{ if .MsgError }}
+        <div class="alert alert-danger rounded-3">{{ .MsgError }}</div>
+        {{ end }}
+
+        <form method="POST" action="/dashboard/users/{{ .Values.ID }}/edit">
+            <div class="form-group mb-3">
+                <label class="mb-1 fw-bold">{{ index .T "user.name.label" }}</label>
+                <input type="text" name="name" value="{{ .Values.Name }}"
+                    class="form-control rounded-3 {{ if .Errors.Name }}is-invalid{{ end }}"
+                    placeholder="{{ index .T "user.name.label" }}" />
+                {{ if .Errors.Name }}
+                <div class="invalid-feedback">{{ .Errors.Name }}</div>
+                {{ end }}
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="mb-1 fw-bold">{{ index .T "user.email.label" }}</label>
+                <input type="email" name="email" value="{{ .Values.Email }}"
+                    class="form-control rounded-3 {{ if .Errors.Email }}is-invalid{{ end }}" 
+                    placeholder="{{ index .T "user.email.label" }}"/>
+                {{ if .Errors.Email }}
+                <div class="invalid-feedback">{{ .Errors.Email }}</div>
+                {{ end }}
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="mb-1 fw-bold">{{ index .T "user.password.label" }}</label>
+                <input type="password" name="password"
+                    class="form-control rounded-3 {{ if .Errors.Password }}is-invalid{{ end }}" 
+                    placeholder="{{ index .T "user.password.hint" }}"/>
+                {{ if .Errors.Password }}
+                <div class="invalid-feedback">{{ .Errors.Password }}</div>
+                {{ end }}
+            </div>
+
+            <button type="submit" class="btn btn-md btn-primary rounded-4 shadow-sm border-0">
+                {{ index .T "user.edit.submit" }}
+            </button>
+            <a href="/dashboard/users" class="btn btn-md btn-secondary rounded-4 shadow-sm border-0 ms-2">
+                {{ index .T "user.edit.back" }}
+            </a>
+        </form>
+    </div>
+</div>
+{{ end }}

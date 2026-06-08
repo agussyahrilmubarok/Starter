@@ -1,0 +1,97 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<Web.Resources.Lang.MessageHelper> L
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <style>
+        body {
+        background-color: lightgray;
+        font-family: 'Quicksand', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3 shadow-sm">
+        <a class="navbar-brand fw-bold fs-5" href="/dashboard">⚡ web-dotnet</a>
+        <button class="navbar-toggler" data-bs-target="#navbarContent" data-bs-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#">
+                        👤 @ViewData["UserEmail"]
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="/dashboard/profile">@L["navigation.profile"]</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider" />
+                        </li>
+                        <form method="post" action="/sign-out" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit"
+                                    class="dropdown-item text-danger border-0 bg-transparent w-100 text-start">
+                                @L["navigation.signOut"]
+                            </button>
+                        </form>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4 mb-5">
+        <div class="row g-4">
+            <div class="col-12 col-md-3">
+                <div class="card border-0 rounded-4 shadow-sm">
+                    <div class="card-header">@L["navigation.mainMenu"]</div>
+                    <div class="card-body p-2">
+                        <div class="list-group list-group-flush">
+                            <a class="list-group-item list-group-item-action rounded-3" href="/dashboard">
+                                @L["navigation.dashboard"]
+                            </a>
+                            <a class="list-group-item list-group-item-action rounded-3" href="/dashboard/users">
+                                @L["navigation.users"]
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-9">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        var successMsg = '@TempData["MSG_SUCCESS"]';
+        var infoMsg = '@TempData["MSG_INFO"]';
+        var errorMsg = '@TempData["MSG_ERROR"]';
+        if (successMsg && successMsg.trim()) toastr.success(successMsg);
+        if (infoMsg && infoMsg.trim()) toastr.info(infoMsg);
+        if (errorMsg && errorMsg.trim()) toastr.error(errorMsg);
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

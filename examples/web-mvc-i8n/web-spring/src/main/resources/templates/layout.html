@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}">
+
+<head>
+    <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE" th:text="#{app.title}">web-spring</title>
+    <th:block th:replace="~{fragments/head :: common-head}"></th:block>
+</head>
+
+<body>
+
+<th:block th:replace="~{fragments/navbar :: navbar-public}"></th:block>
+
+<div layout:fragment="content"></div>
+
+<script defer th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

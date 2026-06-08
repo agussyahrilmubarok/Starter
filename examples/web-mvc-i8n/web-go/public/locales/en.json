@@ -1,0 +1,124 @@
+{
+    "app": {
+        "title": "Web Go",
+        "name": "web-go"
+    },
+    "navigation": {
+        "toggle": "Toggle navigation",
+        "home": "Home",
+        "dashboard": "Dashboard",
+        "users": "Users",
+        "profile": "My Profile",
+        "signOut": "Sign Out",
+        "mainMenu": "Main Menu"
+    },
+    "home": {
+        "index": {
+            "headline": "Welcome to Web Go!",
+            "text": "A simple Go web application",
+            "getStarted": "Get Started",
+            "signIn": "Sign In",
+            "badge": "Go + Template",
+            "footer": "starter.agussyahrilmubarok.github.io"
+        }
+    },
+    "dashboard": {
+        "headline": "Dashboard",
+        "welcome": "Welcome back,"
+    },
+    "user": {
+        "list": {
+            "headline": "Users",
+            "createNew": "Create New User",
+            "empty": "No users found",
+            "edit": "Edit",
+            "delete": "Delete",
+            "actions": "Actions"
+        },
+        "id": {
+            "label": "ID"
+        },
+        "name": {
+            "label": "Full Name",
+            "placeholder": "Enter your full name"
+        },
+        "email": {
+            "label": "Email Address",
+            "placeholder": "Enter your email address",
+            "alreadyTaken": "Email is already registered"
+        },
+        "password": {
+            "label": "Password",
+            "placeholder": "Enter your password",
+            "hint": "Leave blank to keep current password"
+        },
+        "createdAt": {
+            "label": "Created At"
+        },
+        "updatedAt": {
+            "label": "Updated At"
+        },
+        "create": {
+            "headline": "Create User",
+            "submit": "Save",
+            "back": "Cancel",
+            "success": "User created successfully"
+        },
+        "edit": {
+            "headline": "Edit User",
+            "submit": "Update",
+            "back": "Cancel",
+            "success": "User updated successfully"
+        },
+        "delete": {
+            "success": "User deleted successfully"
+        },
+        "notFound": "User not found"
+    },
+    "profile": {
+        "headline": "My Profile",
+        "fullName": "FULL NAME",
+        "email": "EMAIL",
+        "userId": "USER ID",
+        "memberSince": "MEMBER SINCE",
+        "notFound": "User data not found. Please log in again."
+    },
+    "auth": {
+        "signIn": {
+            "headline": "Sign In",
+            "subtitle": "Welcome back! Please enter your details",
+            "noAccount": "Don't have an account?",
+            "success": "Signed in successfully",
+            "error": "Invalid email or password"
+        },
+        "signUp": {
+            "headline": "Sign Up",
+            "subtitle": "Sign up to continue",
+            "hasAccount": "Already have an account?",
+            "success": "Sign up successfully! Please sign in"
+        },
+        "signOut": {
+            "success": "You have been signed out"
+        },
+        "general": {
+            "error": "Something went wrong. Please try again"
+        }
+    },
+    "error": {
+        "page": {
+            "headline": "Page Not Found",
+            "message": "The page you are looking for does not exist or has been moved"
+        },
+        "backToHome": "Back to Home",
+        "general": "Something went wrong. Please try again",
+        "unauthorized": "You are not authorized to access this page"
+    },
+    "delete": {
+        "confirm": "Are you sure you want to delete this? This action cannot be undone"
+    },
+    "lang": {
+        "switch": "Language",
+        "en": "English",
+        "id": "Indonesian"
+    }
+}

@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{auth.signUp.title}">Sign Up</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="col-11 col-sm-10 col-md-8 col-lg-5">
+            <div class="card border-0 rounded-4 shadow-lg">
+                <div class="card-body p-4 p-md-5">
+                    <h3 class="fw-bold text-center mb-2" th:text="#{auth.signUp.headline}">Sign Up</h3>
+                    <p class="text-secondary text-center mb-4" th:text="#{auth.signUp.subtitle}">
+                        Sign up to continue
+                    </p>
+
+                    <div class="alert alert-danger rounded-3"
+                         th:if="${MSG_ERROR}" th:text="${MSG_ERROR}"></div>
+                    <div class="alert alert-success rounded-3"
+                         th:if="${MSG_SUCCESS}" th:text="${MSG_SUCCESS}"></div>
+
+                    <form method="post" novalidate th:action="@{/sign-up}" th:object="${signUp}">
+                        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" th:text="#{user.name.label}">Full Name</label>
+                            <input class="form-control rounded-3"
+                                   th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
+                                   th:field="*{name}"
+                                   th:placeholder="#{user.name.placeholder}"
+                                   type="text"/>
+                            <div class="invalid-feedback" th:errors="*{name}"
+                                 th:if="${#fields.hasErrors('name')}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" th:text="#{user.email.label}">Email Address</label>
+                            <input class="form-control rounded-3"
+                                   th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
+                                   th:field="*{email}"
+                                   th:placeholder="#{user.email.placeholder}"
+                                   type="email"/>
+                            <div class="invalid-feedback" th:errors="*{email}"
+                                 th:if="${#fields.hasErrors('email')}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" th:text="#{user.password.label}">Password</label>
+                            <input class="form-control rounded-3"
+                                   th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
+                                   th:field="*{password}"
+                                   th:placeholder="#{user.password.placeholder}"
+                                   type="password"/>
+                            <div class="invalid-feedback" th:errors="*{password}"
+                                 th:if="${#fields.hasErrors('password')}"></div>
+                        </div>
+                        <button class="btn btn-primary w-100 rounded-4 mt-2"
+                                th:text="#{auth.signUp.submit}"
+                                type="submit">Sign Up
+                        </button>
+                        <div class="text-center mt-3">
+                            <span class="text-secondary" th:text="#{auth.signUp.hasAccount}">
+                                Already have an account?
+                            </span>
+                            <a class="text-decoration-none fw-semibold ms-1"
+                               th:href="@{/sign-in}"
+                               th:text="#{auth.signIn.headline}">Sign In</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

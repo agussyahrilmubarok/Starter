@@ -1,0 +1,41 @@
+@page "/dashboard/users/edit/{id:guid}"
+@model Web.Pages.Dashboard.Users.EditModel
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = L["user.edit.headline"].Value;
+    ViewData["UserEmail"] = Model.UserEmail;
+}
+
+<div class="card border-0 rounded-4 shadow-sm">
+    <div class="card-header fw-semibold">@L["user.edit.headline"]</div>
+    <div class="card-body p-4">
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger rounded-3">@Model.ErrorMessage</div>
+        }
+        <form method="post">
+            <div class="form-group mb-3">
+                <label class="mb-1 fw-bold">@L["user.name.label"]</label>
+                <input asp-for="Input.Name" class="form-control" type="text" />
+                <span asp-validation-for="Input.Name" class="text-danger small"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label class="mb-1 fw-bold">@L["user.email.label"]</label>
+                <input asp-for="Input.Email" class="form-control" type="email" />
+                <span asp-validation-for="Input.Email" class="text-danger small"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label class="mb-1 fw-bold">@L["user.password.label"]</label>
+                <input asp-for="Input.Password" class="form-control" type="password" />
+                <span asp-validation-for="Input.Password" class="text-danger small"></span>
+            </div>
+            <button class="btn btn-md btn-primary rounded-4 shadow-sm border-0" type="submit">@L["user.edit.save"]</button>
+            <a class="btn btn-md btn-secondary rounded-4 shadow-sm border-0 ms-2"
+               href="/dashboard/users">@L["user.edit.back"]</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

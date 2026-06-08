@@ -1,0 +1,59 @@
+@page "/dashboard/users"
+@model Web.Pages.Dashboard.Users.IndexModel
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = L["user.list.headline"].Value;
+    ViewData["UserEmail"] = Model.UserEmail;
+}
+
+<div class="card border-0 rounded-4 shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>@L["user.list.headline"]</span>
+        <a class="btn btn-sm btn-success rounded-4 shadow-sm border-0" href="/dashboard/users/create">
+            @L["user.list.createNew"]
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>@L["user.name.label"]</th>
+                        <th>@L["user.email.label"]</th>
+                        <th>@L["user.createdAt.label"]</th>
+                        <th style="width:20%">@L["user.list.actions"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Users.Any())
+                    {
+                        <tr>
+                            <td class="text-center text-muted py-4" colspan="4">@L["user.list.empty"]</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var u in Model.Users)
+                        {
+                            <tr>
+                                <td>@u.Name</td>
+                                <td>@u.Email</td>
+                                <td>@u.CreatedAt.ToString("dd MMM yyyy")</td>
+                                <td class="text-center text-nowrap">
+                                    <a class="btn btn-sm btn-primary rounded-4 shadow-sm border-0 me-1"
+                                       href="/dashboard/users/edit/@u.Id">@L["user.list.edit"]</a>
+                                    <form class="d-inline" method="post" asp-page-handler="Delete" asp-route-id="@u.Id"
+                                          onsubmit="return confirm('@L["delete.confirm"]')">
+                                        <button class="btn btn-sm btn-danger rounded-4 shadow-sm border-0" type="submit">
+                                            @L["user.list.delete"]
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html layout:decorate="~{dashboard-layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="#{dashboard.headline}">Dashboard</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="card border-0 rounded-4 shadow-sm">
+        <div class="card-header" th:text="#{dashboard.headline}">Dashboard</div>
+        <div class="card-body">
+            <span th:text="#{dashboard.welcome}">Welcome back,</span>
+            <strong th:text="${userProfile?.name ?: ''}">User</strong>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

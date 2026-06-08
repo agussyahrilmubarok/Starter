@@ -1,0 +1,51 @@
+{{ define "content" }}
+<div class="card border-0 rounded-4 shadow-sm">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span>{{ index .T "user.list.headline" }}</span>
+    <a href="/dashboard/users/create" class="btn btn-sm btn-success rounded-4 shadow-sm border-0">
+      {{ index .T "user.list.createNew" }}
+    </a>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th>{{ index .T "user.name.label" }}</th>
+            <th>{{ index .T "user.email.label" }}</th>
+            <th>{{ index .T "user.createdAt.label" }}</th>
+            <th style="width:20%">{{ index .T "user.list.actions" }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ if .Values }}
+          {{ range .Values }}
+          <tr>
+            <td>{{ .Name }}</td>
+            <td>{{ .Email }}</td>
+            <td>{{ .CreatedAt.Format "02 Jan 2006" }}</td>
+            <td class="text-center text-nowrap">
+              <a href="/dashboard/users/{{ .ID }}/edit"
+                class="btn btn-sm btn-primary rounded-4 shadow-sm border-0 me-1">
+                {{ index $.T "user.list.edit" }}
+              </a>
+              <form class="d-inline js-submit-confirm" method="POST" action="/dashboard/users/{{ .ID }}/delete"
+                data-confirm-message="{{ index $.T " delete.confirm" }}">
+                <button type="submit" class="btn btn-sm btn-danger rounded-4 shadow-sm border-0">
+                  {{ index $.T "user.list.delete" }}
+                </button>
+              </form>
+            </td>
+          </tr>
+          {{ end }}
+          {{ else }}
+          <tr>
+            <td colspan="4" class="text-center text-muted py-4">{{ index .T "user.list.empty" }}</td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{{ end }}
