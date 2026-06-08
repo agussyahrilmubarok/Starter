@@ -5,34 +5,26 @@
      class="navbar navbar-expand-lg navbar-dark bg-dark px-3 shadow-sm">
 
     <a class="navbar-brand fw-bold fs-5"
-       th:href="@{/}"
-       th:text="'⚡ ' + #{app.name}">⚡ web-spring</a>
+       th:href="@{/}">⚡ web-spring</a>
 
-    <div class="ms-auto">
-        <th:block th:replace="~{fragments/navbar :: lang-switcher}"></th:block>
-    </div>
 </nav>
 
 <nav th:fragment="navbar-dashboard"
      class="navbar navbar-expand-lg navbar-dark bg-dark px-3 shadow-sm">
 
     <a class="navbar-brand fw-bold fs-5"
-       th:href="@{/dashboard}"
-       th:text="'⚡ ' + #{app.name}">⚡ web-spring</a>
+       th:href="@{/dashboard}">⚡ web-spring</a>
 
     <button class="navbar-toggler"
             data-bs-target="#navbarContent"
             data-bs-toggle="collapse"
-            th:attr="aria-label=#{navigation.toggle}"
+            aria-label="Toggle navigation"
             type="button">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav ms-auto align-items-center gap-2">
-            <li class="nav-item">
-                <th:block th:replace="~{fragments/navbar :: lang-switcher}"></th:block>
-            </li>
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-light"
@@ -43,8 +35,7 @@
                 <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
                     <li>
                         <a class="dropdown-item"
-                           th:href="@{/dashboard/profile}"
-                           th:text="#{navigation.profile}">My Profile</a>
+                           th:href="@{/dashboard/profile}">My Profile</a>
                     </li>
                     <li><hr class="dropdown-divider"/></li>
                     <li>
@@ -53,7 +44,6 @@
                                    th:value="${_csrf.token}"
                                    type="hidden"/>
                             <button class="dropdown-item text-danger w-100 text-start border-0 bg-transparent"
-                                    th:text="#{navigation.signOut}"
                                     type="submit">Sign Out
                             </button>
                         </form>
@@ -64,34 +54,5 @@
         </ul>
     </div>
 </nav>
-
-<th:block th:fragment="lang-switcher">
-    <div class="dropdown">
-        <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-2 py-1 px-2"
-                data-bs-toggle="dropdown"
-                type="button">
-            <span th:text="${#locale.language == 'id'} ? '🇮🇩' : '🇬🇧'"></span>
-            <span class="small" th:text="${#locale.language == 'id'} ? 'ID' : 'EN'"></span>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" style="min-width: 140px;">
-            <li>
-                <a class="dropdown-item d-flex align-items-center gap-2 py-2"
-                   th:classappend="${#locale.language == 'en'} ? ' active'"
-                   th:href="@{''(lang='en')}">
-                    <span>🇬🇧</span>
-                    <span th:text="#{lang.en}">English</span>
-                </a>
-            </li>
-            <li>
-                <a class="dropdown-item d-flex align-items-center gap-2 py-2"
-                   th:classappend="${#locale.language == 'id'} ? ' active'"
-                   th:href="@{''(lang='id')}">
-                    <span>🇮🇩</span>
-                    <span th:text="#{lang.id}">Indonesian</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-</th:block>
 
 </html>

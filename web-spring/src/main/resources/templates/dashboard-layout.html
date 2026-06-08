@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org"
-      th:lang="${#locale.language}">
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE" th:text="#{app.title}">web-spring</title>
+    <title layout:title-pattern="$CONTENT_TITLE | $LAYOUT_TITLE">web-spring</title>
     <th:block th:replace="~{fragments/head :: common-head}"></th:block>
 </head>
 
@@ -18,19 +17,16 @@
 
         <div class="col-12 col-md-3">
             <div class="card border-0 rounded-4 shadow-sm">
-                <div class="card-header text-uppercase small fw-semibold"
-                     th:text="#{navigation.mainMenu}">Main Menu</div>
+                <div class="card-header text-uppercase small fw-semibold">Main Menu</div>
                 <div class="card-body p-2">
                     <div class="list-group list-group-flush">
                         <a class="list-group-item list-group-item-action rounded-3"
                            th:classappend="${requestUri == '/dashboard'} ? ' active'"
-                           th:href="@{/dashboard}"
-                           th:text="#{navigation.dashboard}">Dashboard</a>
+                           th:href="@{/dashboard}">Dashboard</a>
 
                         <a class="list-group-item list-group-item-action rounded-3"
                            th:classappend="${#strings.startsWith(requestUri, '/dashboard/users')} ? ' active'"
-                           th:href="@{/dashboard/users}"
-                           th:text="#{navigation.users}">Users</a>
+                           th:href="@{/dashboard/users}">Users</a>
                     </div>
                 </div>
             </div>

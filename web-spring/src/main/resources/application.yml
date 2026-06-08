@@ -23,11 +23,6 @@ spring:
         id:
           new_generator_mappings: true
 
-  messages:
-    basename: messages
-    encoding: UTF-8
-    use-code-as-default-message: false
-
   thymeleaf:
     cache: ${THYMELEAF_CACHE:true}
     encoding: UTF-8

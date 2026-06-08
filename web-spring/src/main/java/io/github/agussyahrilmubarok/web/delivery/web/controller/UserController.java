@@ -6,7 +6,7 @@ import io.github.agussyahrilmubarok.web.application.dto.user.UserResponse;
 import io.github.agussyahrilmubarok.web.application.service.UserService;
 import io.github.agussyahrilmubarok.web.common.exception.EmailAlreadyInUseException;
 import io.github.agussyahrilmubarok.web.common.exception.NotFoundException;
-import io.github.agussyahrilmubarok.web.common.util.WebUtils;
+import io.github.agussyahrilmubarok.web.common.WebUtils;
 import io.github.agussyahrilmubarok.web.infrastructure.security.CustomUserDetails;
 import jakarta.validation.Valid;
 import java.util.UUID;
@@ -50,11 +50,11 @@ public class UserController {
             bindingResult.rejectValue("email", "Exists.user.email");
             return "dashboard/users/create";
         } catch (final Exception e) {
-            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("error.general"));
+            model.addAttribute(WebUtils.MSG_ERROR, "Something went wrong. Please try again");
             return "dashboard/users/create";
         }
 
-        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("user.create.success"));
+        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, "User created successfully");
         return "redirect:/dashboard/users";
     }
 
@@ -66,7 +66,7 @@ public class UserController {
             UpdateUserRequest editUser = new UpdateUserRequest(user.id(), user.name(), user.email(), null);
             model.addAttribute("editUser", editUser);
         } catch (final NotFoundException e) {
-            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("user.notFound"));
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, "User not found");
             return "redirect:/dashboard/users";
         }
         return "dashboard/users/edit";
@@ -85,18 +85,18 @@ public class UserController {
             userService.update(id, request);
         } catch (final EmailAlreadyInUseException e) {
             model.addAttribute("editUser", request);
-            bindingResult.rejectValue("email", "Exists.user.email");
+            bindingResult.rejectValue("email", "Exists.user.email", "Email is already in use");
             return "dashboard/users/edit";
         } catch (final NotFoundException e) {
-            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("user.notFound"));
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, "User not found");
             return "redirect:/dashboard/users";
         } catch (final Exception e) {
             model.addAttribute("editUser", request);
-            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("error.general"));
+            model.addAttribute(WebUtils.MSG_ERROR, "Something went wrong. Please try again");
             return "dashboard/users/edit";
         }
 
-        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("user.update.success"));
+        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, "User updated successfully");
         return "redirect:/dashboard/users";
     }
 
@@ -104,9 +104,9 @@ public class UserController {
     public String delete(@PathVariable final UUID id, final RedirectAttributes redirectAttributes) {
         try {
             userService.delete(id);
-            redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("user.delete.success"));
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, "User deleted successfully");
         } catch (final NotFoundException e) {
-            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("user.notFound"));
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, "User not found");
         }
         return "redirect:/dashboard/users";
     }

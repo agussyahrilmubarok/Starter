@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org"
-      th:lang="${#locale.language}">
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE" th:text="#{app.title}">web-spring</title>
+    <title layout:title-pattern="$CONTENT_TITLE | $LAYOUT_TITLE">web-spring</title>
     <th:block th:replace="~{fragments/head :: common-head}"></th:block>
 </head>
 

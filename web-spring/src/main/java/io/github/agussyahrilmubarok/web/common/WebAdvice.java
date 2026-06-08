@@ -1,4 +1,4 @@
-package io.github.agussyahrilmubarok.web.common.util;
+package io.github.agussyahrilmubarok.web.common;
 
 import io.github.agussyahrilmubarok.web.common.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;

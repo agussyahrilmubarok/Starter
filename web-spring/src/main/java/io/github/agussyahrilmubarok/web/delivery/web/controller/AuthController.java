@@ -4,7 +4,7 @@ import io.github.agussyahrilmubarok.web.application.dto.auth.SignInRequest;
 import io.github.agussyahrilmubarok.web.application.dto.user.CreateUserRequest;
 import io.github.agussyahrilmubarok.web.application.service.UserService;
 import io.github.agussyahrilmubarok.web.common.exception.EmailAlreadyInUseException;
-import io.github.agussyahrilmubarok.web.common.util.WebUtils;
+import io.github.agussyahrilmubarok.web.common.WebUtils;
 import io.github.agussyahrilmubarok.web.infrastructure.security.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -52,14 +52,14 @@ public class AuthController {
         try {
             userService.create(createUserRequest);
         } catch (final EmailAlreadyInUseException e) {
-            bindingResult.rejectValue("email", "Exists.user.email");
+            bindingResult.rejectValue("email", "Exists.user.email", "Email is already in use");
             return "auth/sign-up";
         } catch (final Exception e) {
-            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("auth.general.error"));
+            model.addAttribute(WebUtils.MSG_ERROR, "Something went wrong. Please try again");
             return "auth/sign-up";
         }
 
-        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("auth.signUp.success"));
+        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, "Sign up successfully! Please sign in");
         return "redirect:/sign-in";
     }
 
@@ -94,14 +94,14 @@ public class AuthController {
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
 
         } catch (final BadCredentialsException e) {
-            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("auth.signIn.error"));
+            model.addAttribute(WebUtils.MSG_ERROR, "Invalid email or password");
             return "auth/sign-in";
         } catch (final Exception e) {
-            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("auth.general.error"));
+            model.addAttribute(WebUtils.MSG_ERROR, "Something went wrong. Please try again");
             return "auth/sign-in";
         }
 
-        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("auth.signIn.success"));
+        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, "Signed in successfully");
         return "redirect:/dashboard";
     }
 
@@ -112,7 +112,7 @@ public class AuthController {
         HttpSession session = request.getSession(false);
         if (session != null) session.invalidate();
 
-        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("auth.signOut.success"));
+        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, "You have been signed out");
         return "redirect:/sign-in";
     }
 }

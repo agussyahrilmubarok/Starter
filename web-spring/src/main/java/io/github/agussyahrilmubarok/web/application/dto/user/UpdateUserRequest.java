@@ -7,10 +7,11 @@ import java.util.UUID;
 public record UpdateUserRequest(
         UUID id,
 
-        @Size(max = 100, message = "{user.name.size}") String name,
+        @Size(max = 100, message = "Name must be between 2 and 100 characters")
+        String name,
 
-        @Email(message = "{user.email.invalid}") @Size(max = 150, message = "{user.email.size}")
+        @Email(message = "Email format is invalid") @Size(max = 150, message = "Email must not exceed 150 characters")
         String email,
 
-        @Size(min = 8, max = 72, message = "{user.password.size}")
+        @Size(min = 8, max = 72, message = "Password must be between 8 and 72 characters")
         String password) {}
