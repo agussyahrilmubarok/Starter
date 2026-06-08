@@ -9,7 +9,7 @@ import io.github.agussyahrilmubarok.web.application.dto.user.CreateUserRequest;
 import io.github.agussyahrilmubarok.web.application.dto.user.UpdateUserRequest;
 import io.github.agussyahrilmubarok.web.application.dto.user.UserMapper;
 import io.github.agussyahrilmubarok.web.application.dto.user.UserResponse;
-import io.github.agussyahrilmubarok.web.common.exception.EmailAlreadyExistsException;
+import io.github.agussyahrilmubarok.web.common.exception.EmailAlreadyInUseException;
 import io.github.agussyahrilmubarok.web.common.exception.NotFoundException;
 import io.github.agussyahrilmubarok.web.domain.User;
 import io.github.agussyahrilmubarok.web.infrastructure.persistence.repository.UserRepository;
@@ -169,13 +169,13 @@ class UserServiceImplTest {
         }
 
         @Test
-        @DisplayName("should throw EmailAlreadyExistsException when email is taken")
-        void shouldThrowWhenEmailAlreadyExists() {
+        @DisplayName("should throw EmailAlreadyInUseExceptionException when email is taken")
+        void shouldThrowWhenEmailAlreadyInUse() {
             CreateUserRequest request = new CreateUserRequest("Alice", "alice@example.com", "password123");
 
             when(userRepository.existsByEmail("alice@example.com")).thenReturn(true);
 
-            assertThatThrownBy(() -> userService.create(request)).isInstanceOf(EmailAlreadyExistsException.class);
+            assertThatThrownBy(() -> userService.create(request)).isInstanceOf(EmailAlreadyInUseException.class);
 
             verify(userRepository, never()).save(any());
         }
@@ -255,15 +255,15 @@ class UserServiceImplTest {
         }
 
         @Test
-        @DisplayName("should throw EmailAlreadyExistsException when new email is taken")
-        void shouldThrowWhenNewEmailTaken() {
+        @DisplayName("should throw EmailAlreadyInUseExceptionException when new email is taken")
+        void shouldThrowWhenEmailAlreadyInUseException() {
             UpdateUserRequest request = new UpdateUserRequest(userId, null, "taken@example.com", null);
 
             when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
             when(userRepository.existsByEmail("taken@example.com")).thenReturn(true);
 
             assertThatThrownBy(() -> userService.update(userId, request))
-                    .isInstanceOf(EmailAlreadyExistsException.class);
+                    .isInstanceOf(EmailAlreadyInUseException.class);
 
             verify(userRepository, never()).save(any());
         }
