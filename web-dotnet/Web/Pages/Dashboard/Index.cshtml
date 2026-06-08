@@ -2,13 +2,13 @@
 @model Web.Pages.Dashboard.IndexModel
 @{
     Layout = "_DashboardLayout";
-    ViewData["Title"] = L["dashboard.headline"].Value;
+    ViewData["Title"] = "Dashboard";
     ViewData["UserEmail"] = Model.UserEmail;
 }
 
 <div class="card border-0 rounded-4 shadow-sm">
-    <div class="card-header">@L["dashboard.headline"]</div>
+    <div class="card-header">Dashboard</div>
     <div class="card-body">
-        @L["dashboard.welcome"] <strong>@Model.UserName</strong>
+        Welcome back, <strong>@Model.UserName</strong>
     </div>
 </div>

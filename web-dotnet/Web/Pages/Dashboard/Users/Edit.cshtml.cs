@@ -4,19 +4,16 @@ using Web.Application.DTO.User;
 using Web.Application.Service;
 using Web.Common.Exceptions;
 using Web.Common.Utils;
-using Web.Resources.Lang;
 
 namespace Web.Pages.Dashboard.Users;
 
 public class EditModel : PageModel
 {
     private readonly IUserService _userService;
-    private readonly MessageHelper _msg;
 
-    public EditModel(IUserService userService, MessageHelper msg)
+    public EditModel(IUserService userService)
     {
         _userService = userService;
-        _msg = msg;
     }
 
     [BindProperty(SupportsGet = true)]
@@ -42,7 +39,7 @@ public class EditModel : PageModel
         }
         catch (NotFoundException)
         {
-            TempData[WebUtils.MsgError] = _msg.Get("user.notFound");
+            TempData[WebUtils.MsgError] = "User not found";
             return RedirectToPage("/Dashboard/Users/Index");
         }
 
@@ -61,21 +58,21 @@ public class EditModel : PageModel
         }
         catch (EmailAlreadyExistsException)
         {
-            ModelState.AddModelError("Input.Email", _msg.Get("user.notFound"));
+            ModelState.AddModelError("Input.Email", "Email is already in use");
             return Page();
         }
         catch (NotFoundException)
         {
-            TempData[WebUtils.MsgError] = _msg.Get("user.notFound");
+            TempData[WebUtils.MsgError] = "User not found";
             return RedirectToPage("/Dashboard/Users/Index");
         }
         catch (Exception)
         {
-            ErrorMessage = _msg.Get("error.general");
+            ErrorMessage = "Something went wrong. Please try again";
             return Page();
         }
 
-        TempData[WebUtils.MsgSuccess] = _msg.Get("user.update.success");
+        TempData[WebUtils.MsgSuccess] = "User updated successfully";
         return RedirectToPage("/Dashboard/Users/Index");
     }
 }

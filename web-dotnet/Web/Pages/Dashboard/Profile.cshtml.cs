@@ -4,22 +4,19 @@ using Web.Application.DTO.User;
 using Web.Application.Service;
 using Web.Common.Exceptions;
 using Web.Common.Utils;
-using Web.Resources.Lang;
 
 namespace Web.Pages.Dashboard;
 
 public class ProfileModel : PageModel
 {
     private readonly IUserService _userService;
-    private readonly MessageHelper _msg;
 
-    public ProfileModel(IUserService userService, MessageHelper msg)
+    public ProfileModel(IUserService userService)
     {
         _userService = userService;
-        _msg = msg;
     }
 
-    public UserResponse? User { get; private set; }
+    public new UserResponse? User { get; private set; }
     public string UserEmail { get; private set; } = string.Empty;
 
     public async Task<IActionResult> OnGetAsync(CancellationToken ct)
@@ -39,7 +36,7 @@ public class ProfileModel : PageModel
         }
         catch (NotFoundException)
         {
-            TempData[WebUtils.MsgError] = _msg.Get("user.notFound");
+            TempData[WebUtils.MsgError] = "User not found";
             return RedirectToPage("/SignIn");
         }
 

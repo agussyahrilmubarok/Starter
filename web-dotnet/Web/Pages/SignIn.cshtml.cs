@@ -4,19 +4,16 @@ using Web.Application.DTO.Auth;
 using Web.Application.Service;
 using Web.Common.Exceptions;
 using Web.Common.Utils;
-using Web.Resources.Lang;
 
 namespace Web.Pages;
 
 public class SignInModel : PageModel
 {
     private readonly IAuthService _authService;
-    private readonly MessageHelper _msg;
 
-    public SignInModel(IAuthService authService, MessageHelper msg)
+    public SignInModel(IAuthService authService)
     {
         _authService = authService;
-        _msg = msg;
     }
 
     [BindProperty]
@@ -42,16 +39,16 @@ public class SignInModel : PageModel
         }
         catch (InvalidCredentialsException)
         {
-            ErrorMessage = _msg.Get("auth.signIn.error");
+            ErrorMessage = "Invalid email or password";
             return Page();
         }
         catch (Exception)
         {
-            ErrorMessage = _msg.Get("auth.general.error");
+            ErrorMessage = "Something went wrong. Please try again";
             return Page();
         }
 
-        TempData[WebUtils.MsgSuccess] = _msg.Get("auth.signIn.success");
+        TempData[WebUtils.MsgSuccess] = "Signed in successfully";
         return RedirectToPage("/Dashboard/Index");
     }
 }

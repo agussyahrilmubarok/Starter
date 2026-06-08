@@ -4,19 +4,16 @@ using Web.Application.DTO.User;
 using Web.Application.Service;
 using Web.Common.Exceptions;
 using Web.Common.Utils;
-using Web.Resources.Lang;
 
 namespace Web.Pages.Dashboard.Users;
 
 public class CreateModel : PageModel
 {
     private readonly IUserService _userService;
-    private readonly MessageHelper _msg;
 
-    public CreateModel(IUserService userService, MessageHelper msg)
+    public CreateModel(IUserService userService)
     {
         _userService = userService;
-        _msg = msg;
     }
 
     [BindProperty]
@@ -46,16 +43,16 @@ public class CreateModel : PageModel
         }
         catch (EmailAlreadyExistsException)
         {
-            ModelState.AddModelError("Input.Email", _msg.Get("user.notFound"));
+            ModelState.AddModelError("Input.Email", "Email is already in use");
             return Page();
         }
         catch (Exception)
         {
-            ErrorMessage = _msg.Get("error.general");
+            ErrorMessage = "Something went wrong. Please try again";
             return Page();
         }
 
-        TempData[WebUtils.MsgSuccess] = _msg.Get("user.create.success");
+        TempData[WebUtils.MsgSuccess] = "User created successfully";
         return RedirectToPage("/Dashboard/Users/Index");
     }
 }
