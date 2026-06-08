@@ -1,0 +1,26 @@
+app:
+  name: "backend"
+  port: 8080
+  env: "production"
+  jwt:
+    secret: "SecretKeySecretKeySecretKeySecretKeySecretKeySecretKeySecretKeySecretKey"
+    expiry_hour: 24
+  logger:
+    file_path: "logs/app.log"
+    level: "debug"
+  cors:
+    allowed_origins:
+      - "http://localhost:3000"
+      - "https://your.domain.com"
+
+postgres:
+  host: "localhost"
+  port: 5432
+  name: "sandbox_db"
+  user: "sandbox"
+  password: "sandbox"
+  ssl_mode: "disable"
+  timezone: "Asia/Jakarta"
+  max_open_conns: 10
+  max_idle_conns: 5
+  conn_max_lifetime: 30

@@ -1,0 +1,14 @@
+@page "/dashboard"
+@model Web.Pages.Dashboard.IndexModel
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "Dashboard";
+    ViewData["UserEmail"] = Model.UserEmail;
+}
+
+<div class="card border-0 rounded-4 shadow-sm">
+    <div class="card-header">Dashboard</div>
+    <div class="card-body">
+        Welcome back, <strong>@Model.UserName</strong>
+    </div>
+</div>

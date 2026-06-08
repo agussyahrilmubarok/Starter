@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<nav th:fragment="navbar-public"
+     class="navbar navbar-expand-lg navbar-dark bg-dark px-3 shadow-sm">
+
+    <a class="navbar-brand fw-bold fs-5"
+       th:href="@{/}">⚡ web-spring</a>
+
+</nav>
+
+<nav th:fragment="navbar-dashboard"
+     class="navbar navbar-expand-lg navbar-dark bg-dark px-3 shadow-sm">
+
+    <a class="navbar-brand fw-bold fs-5"
+       th:href="@{/dashboard}">⚡ web-spring</a>
+
+    <button class="navbar-toggler"
+            data-bs-target="#navbarContent"
+            data-bs-toggle="collapse"
+            aria-label="Toggle navigation"
+            type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto align-items-center gap-2">
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-light"
+                   data-bs-toggle="dropdown"
+                   href="#">
+                    👤 <span th:text="${userProfile?.email}">User</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                    <li>
+                        <a class="dropdown-item"
+                           th:href="@{/dashboard/profile}">My Profile</a>
+                    </li>
+                    <li><hr class="dropdown-divider"/></li>
+                    <li>
+                        <form method="post" style="display:inline" th:action="@{/sign-out}">
+                            <input th:name="${_csrf.parameterName}"
+                                   th:value="${_csrf.token}"
+                                   type="hidden"/>
+                            <button class="dropdown-item text-danger w-100 text-start border-0 bg-transparent"
+                                    type="submit">Sign Out
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+</html>

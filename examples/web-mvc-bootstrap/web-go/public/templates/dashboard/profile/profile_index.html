@@ -1,0 +1,46 @@
+{{ define "content" }}
+
+{{ if not .UserProfile }}
+<div class="card border-0 rounded-4 shadow-sm">
+  <div class="card-body text-center text-muted py-5">
+    User data not found. Please log in again.
+  </div>
+</div>
+{{ else }}
+<div class="card border-0 rounded-4 shadow-sm">
+  <div class="card-header fw-semibold">My Profile</div>
+  <div class="card-body">
+    <div class="text-center mb-4">
+      <div class="rounded-circle d-inline-flex align-items-center justify-content-center bg-dark text-white fw-bold"
+        style="width: 80px; height: 80px; font-size: 32px">
+        {{ .UserProfileImg }}
+      </div>
+      <h5 class="mt-3 mb-0">{{ .UserProfile.Name }}</h5>
+      <small class="text-muted">{{ .UserProfile.Email }}</small>
+    </div>
+
+    <hr />
+
+    <div class="row g-3">
+      <div class="col-12 col-md-6">
+        <label class="form-label text-muted small fw-semibold">Full Name</label>
+        <p class="form-control-plaintext fw-medium">{{ .UserProfile.Name }}</p>
+      </div>
+      <div class="col-12 col-md-6">
+        <label class="form-label text-muted small fw-semibold">Email Address</label>
+        <p class="form-control-plaintext fw-medium">{{ .UserProfile.Email }}</p>
+      </div>
+      <div class="col-12 col-md-6">
+        <label class="form-label text-muted small fw-semibold">User ID</label>
+        <p class="form-control-plaintext text-muted small">{{ .UserProfile.ID }}</p>
+      </div>
+      <div class="col-12 col-md-6">
+        <label class="form-label text-muted small fw-semibold">Member Since</label>
+        <p class="form-control-plaintext fw-medium">{{ .UserProfile.CreatedAt.Format "02 January 2006" }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{{ end }}
+
+{{ end }}

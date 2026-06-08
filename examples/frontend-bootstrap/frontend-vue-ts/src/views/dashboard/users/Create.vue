@@ -1,0 +1,113 @@
+<script setup lang="ts">
+import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
+import { type AxiosError } from "axios";
+import { toast } from "vue-sonner";
+import { useUserCreate } from "../../../composables/user/useUserCreate";
+import { type ValidationErrors } from "../../../types/common";
+import { type UserResponse } from "../../../types/user";
+import DashboardLayout from "../../../layouts/DashboardLayout.vue";
+import useDocumentTitle from "../../../composables/common/useDocumentTitle";
+
+useDocumentTitle("Create User");
+
+const router = useRouter();
+const { mutate, isPending } = useUserCreate();
+
+const name = ref<string>("");
+const email = ref<string>("");
+const password = ref<string>("");
+const errors = reactive<ValidationErrors>({});
+
+const handleCreate = () => {
+  mutate(
+    { name: name.value, email: email.value, password: password.value },
+    {
+      onSuccess: (data: UserResponse) => {
+        toast.success(data?.message || "User created successfully");
+        router.push({ name: "users" });
+      },
+      onError: (error: Error) => {
+        const axiosError = error as AxiosError<{
+          errors: Record<string, string>;
+        }>;
+        const validationErrors = axiosError.response?.data?.errors;
+        if (validationErrors) {
+          Object.assign(errors, validationErrors);
+        } else {
+          toast.error("Something went wrong");
+        }
+      },
+    },
+  );
+};
+</script>
+
+<template>
+  <DashboardLayout>
+    <div class="card border-0 rounded-4 shadow-sm">
+      <div class="card-header">CREATE USER</div>
+      <div class="card-body">
+
+        <form @submit.prevent="handleCreate">
+
+          <div class="form-group mb-3">
+            <label class="mb-1 fw-bold">Full Name</label>
+            <input
+              v-model="name"
+              type="text"
+              :class="`form-control ${errors.name ? 'is-invalid' : ''}`"
+              placeholder="Full Name"
+            />
+            <div v-if="errors.name" class="invalid-feedback">
+              {{ errors.name }}
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <label class="mb-1 fw-bold">Email Address</label>
+            <input
+              v-model="email"
+              type="email"
+              :class="`form-control ${errors.email ? 'is-invalid' : ''}`"
+              placeholder="Email Address"
+            />
+            <div v-if="errors.email" class="invalid-feedback">
+              {{ errors.email }}
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <label class="mb-1 fw-bold">Password</label>
+            <input
+              v-model="password"
+              type="password"
+              :class="`form-control ${errors.password ? 'is-invalid' : ''}`"
+              placeholder="Password"
+            />
+            <div v-if="errors.password" class="invalid-feedback">
+              {{ errors.password }}
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-md btn-primary rounded-4 shadow-sm border-0"
+            :disabled="isPending"
+          >
+            {{ isPending ? "Saving..." : "Save" }}
+          </button>
+
+          <RouterLink
+            to="/dashboard/users"
+            class="btn btn-md btn-secondary rounded-4 shadow-sm border-0 ms-2"
+          >
+            Cancel
+          </RouterLink>
+          
+        </form>
+        
+      </div>
+    </div>
+  </DashboardLayout>
+</template>
