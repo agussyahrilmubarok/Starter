@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {
+      "name": "be-dotnet",
+      "path": "./be-dotnet"
+    },
+    {
+      "name": "fe-react",
+      "path": "./fe-react"
+    },
+    {
+      "name": "docker",
+      "path": "./docker"
+    }
+  ],
+}

@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {
+      "name": "be-golang",
+      "path": "./be-golang"
+    },
+    {
+      "name": "fe-react",
+      "path": "./fe-react"
+    },
+    {
+      "name": "docker",
+      "path": "./docker"
+    }
+  ],
+}
