@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "name": "golang-stack",
+      "path": "./golang-stack"
+    },
+    {
+      "name": "docker",
+      "path": "./docker"
+    }
+  ],
+}
