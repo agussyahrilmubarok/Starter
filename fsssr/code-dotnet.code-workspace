@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "name": "dotnet-stack",
+      "path": "./dotnet-stack"
+    },
+    {
+      "name": "docker",
+      "path": "./docker"
+    }
+  ],
+}

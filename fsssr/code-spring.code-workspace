@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "name": "spring-stack",
+      "path": "./spring-stack"
+    },
+    {
+      "name": "docker",
+      "path": "./docker"
+    }
+  ],
+}
