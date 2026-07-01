@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {
+      "name": "be-spring",
+      "path": "./be-spring"
+    },
+    {
+      "name": "fe-vue",
+      "path": "./fe-vue"
+    },
+    {
+      "name": "docker",
+      "path": "./docker"
+    }
+  ],
+}
